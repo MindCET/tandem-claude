@@ -58,6 +58,30 @@ export type TaskStatus =
   | 'approved'
   | 'blocked'
 
+export type ArtifactSource = 'user_created' | 'ai_generated' | 'imported'
+
+export type ArtifactVersionChangedBy = 'user' | 'ai_suggestion' | 'return_brief'
+
+export interface ArtifactVersion {
+  id: string
+  artifact_id: string
+  content_markdown: string | null
+  version: number
+  changed_by: ArtifactVersionChangedBy
+  change_summary: string | null
+  created_at: string
+}
+
+// Computed artifact health — not stored, derived at runtime
+export interface ArtifactHealth {
+  type: ArtifactType
+  label: string
+  status: 'complete' | 'draft' | 'missing' | 'skipped'
+  href: string
+  artifactId?: string
+  skipReason?: string | null
+}
+
 export type RiskSeverity = 'low' | 'medium' | 'high' | 'critical'
 
 export type DecisionCategory =

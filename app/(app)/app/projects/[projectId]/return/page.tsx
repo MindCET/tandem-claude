@@ -123,7 +123,7 @@ export default function ReturnPage() {
           <RotateCcw className="h-5 w-5 text-primary" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold">Return Brief</h1>
+          <h1 className="text-2xl font-bold">תדריך חזרה</h1>
           <p className="text-sm text-muted-foreground">הדבק את הסיכום מהכלי ו-AI ינתח את התקדמות הפרויקט</p>
         </div>
       </div>

@@ -1,10 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { 
-  History, 
+import {
+  History,
   Search,
-  ChevronRight,
   FileText,
   GitBranch,
   Compass,
@@ -18,60 +17,58 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ScrollArea } from "@/components/ui/scroll-area"
 
 const memoryArtifacts = {
   productBrief: {
     id: "brief",
-    title: "Product Brief",
+    title: "תדריך מוצר",
     icon: FileText,
-    lastUpdated: "2 days ago",
+    lastUpdated: "לפני יומיים",
     version: "1.3",
-    summary: "SaaS analytics dashboard for small businesses to track key metrics and make data-driven decisions.",
+    summary: "דשבורד אנליטיקה SaaS לעסקים קטנים למעקב אחר מדדי מפתח וקבלת החלטות מונעת נתונים.",
     content: {
-      problemStatement: "Small businesses lack affordable, easy-to-use analytics tools. Enterprise solutions are too complex and expensive.",
-      targetUsers: "Small business owners, marketing managers, operations leads at companies with 10-50 employees",
-      coreValue: "Simple, actionable insights from connected data sources without technical expertise",
-      successMetrics: ["Time to first insight < 5 minutes", "Daily active usage rate > 40%", "NPS > 50"]
+      problemStatement: "לעסקים קטנים חסרים כלי אנליטיקה נגישים וקלים לשימוש. פתרונות ארגוניים מורכבים ויקרים מדי.",
+      targetUsers: "בעלי עסקים קטנים, מנהלי שיווק, אחראי תפעול בחברות של 10-50 עובדים",
+      coreValue: "תובנות פשוטות וניתנות לפעולה ממקורות נתונים מחוברים ללא מומחיות טכנית",
+      successMetrics: ["זמן לתובנה ראשונה < 5 דקות", "שיעור שימוש יומי פעיל > 40%", "NPS > 50"]
     }
   },
   prd: {
     id: "prd",
     title: "PRD",
     icon: FileText,
-    lastUpdated: "1 day ago",
+    lastUpdated: "לפני יום",
     version: "2.1",
-    summary: "Full product requirements including user stories, acceptance criteria, and scope boundaries.",
+    summary: "דרישות מוצר מלאות כולל user stories, קריטריוני קבלה וגבולות היקף.",
     sections: [
       { name: "User Stories", count: 24 },
-      { name: "Acceptance Criteria", count: 48 },
-      { name: "Non-functional Requirements", count: 12 },
-      { name: "Out of Scope", count: 8 }
+      { name: "קריטריוני קבלה", count: 48 },
+      { name: "דרישות לא-פונקציונליות", count: 12 },
+      { name: "מחוץ להיקף", count: 8 }
     ]
   },
   architecture: {
     id: "arch",
-    title: "Architecture Map",
+    title: "מפת ארכיטקטורה",
     icon: Layers,
-    lastUpdated: "3 days ago",
+    lastUpdated: "לפני 3 ימים",
     version: "1.2",
-    summary: "System architecture including frontend, backend, database, and external integrations.",
+    summary: "ארכיטקטורת מערכת כולל frontend, backend, בסיס נתונים ואינטגרציות חיצוניות.",
     components: [
-      { name: "Next.js Frontend", status: "active" },
-      { name: "Supabase Backend", status: "active" },
-      { name: "PostgreSQL Database", status: "active" },
-      { name: "Stripe Payments", status: "planned" },
-      { name: "Analytics Pipeline", status: "planned" }
+      { name: "Next.js Frontend", status: "פעיל" },
+      { name: "Supabase Backend", status: "פעיל" },
+      { name: "PostgreSQL Database", status: "פעיל" },
+      { name: "Stripe Payments", status: "מתוכנן" },
+      { name: "Analytics Pipeline", status: "מתוכנן" }
     ]
   },
   dataModel: {
     id: "data",
-    title: "Data Model",
+    title: "מודל נתונים",
     icon: Database,
-    lastUpdated: "4 days ago",
+    lastUpdated: "לפני 4 ימים",
     version: "1.1",
-    summary: "Entity relationship diagram and database schema documentation.",
+    summary: "תרשים יחסי ישויות ותיעוד סכמת בסיס הנתונים.",
     entities: [
       { name: "users", fields: 8 },
       { name: "organizations", fields: 6 },
@@ -86,41 +83,41 @@ const recentChanges = [
   {
     id: "c1",
     artifact: "PRD",
-    change: "Added user story for dashboard sharing",
-    timestamp: "2 hours ago",
+    change: "נוסף user story לשיתוף דשבורד",
+    timestamp: "לפני שעתיים",
     author: "Tandem AI"
   },
   {
     id: "c2",
-    artifact: "Architecture",
-    change: "Updated auth flow to include OAuth providers",
-    timestamp: "1 day ago",
-    author: "User"
+    artifact: "ארכיטקטורה",
+    change: "עודכן זרימת auth לכלול OAuth providers",
+    timestamp: "לפני יום",
+    author: "משתמש"
   },
   {
     id: "c3",
-    artifact: "Data Model",
-    change: "Added soft delete to all entities",
-    timestamp: "2 days ago",
+    artifact: "מודל נתונים",
+    change: "נוסף soft delete לכל הישויות",
+    timestamp: "לפני יומיים",
     author: "Tandem AI"
   },
   {
     id: "c4",
-    artifact: "Product Brief",
-    change: "Refined target user segment",
-    timestamp: "3 days ago",
-    author: "User"
+    artifact: "תדריך מוצר",
+    change: "עודן פלח משתמשי היעד",
+    timestamp: "לפני 3 ימים",
+    author: "משתמש"
   },
 ]
 
 const contextGraph = {
   nodes: [
-    { id: "brief", label: "Product Brief", x: 50, y: 50 },
-    { id: "prd", label: "PRD", x: 200, y: 30 },
-    { id: "arch", label: "Architecture", x: 200, y: 100 },
-    { id: "data", label: "Data Model", x: 350, y: 50 },
-    { id: "decisions", label: "Decisions", x: 350, y: 120 },
-    { id: "missions", label: "Missions", x: 500, y: 70 },
+    { id: "brief", label: "תדריך מוצר", x: 30, y: 50 },
+    { id: "prd", label: "PRD", x: 180, y: 30 },
+    { id: "arch", label: "ארכיטקטורה", x: 180, y: 100 },
+    { id: "data", label: "מודל נתונים", x: 340, y: 50 },
+    { id: "decisions", label: "החלטות", x: 340, y: 120 },
+    { id: "missions", label: "משימות", x: 490, y: 70 },
   ],
   edges: [
     { from: "brief", to: "prd" },
@@ -143,14 +140,14 @@ export default function MemoryPage() {
       <header className="sticky top-0 z-10 border-b border-border/50 bg-background/80 backdrop-blur-sm">
         <div className="flex h-16 items-center justify-between px-6">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Project Memory</h1>
-            <p className="text-sm text-muted-foreground">Living documentation and context graph</p>
+            <h1 className="text-xl font-semibold tracking-tight">זיכרון פרויקט</h1>
+            <p className="text-sm text-muted-foreground">תיעוד חי וגרף קונטקסט</p>
           </div>
           <div className="flex items-center gap-3">
             <div className="relative max-w-sm">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input 
-                placeholder="Search memory..." 
+              <Input
+                placeholder="חיפוש בזיכרון..."
                 className="pl-10 bg-background/50 border-border/50 w-64"
               />
             </div>
@@ -165,25 +162,23 @@ export default function MemoryPage() {
             <div className="flex items-center justify-between">
               <CardTitle className="text-base font-semibold flex items-center gap-2">
                 <Brain className="h-5 w-5 text-primary" />
-                Context Graph
+                גרף קונטקסט
               </CardTitle>
               <Badge variant="secondary" className="text-xs">
-                6 artifacts connected
+                6 ארטיפקטים מחוברים
               </Badge>
             </div>
           </CardHeader>
           <CardContent>
             <div className="relative h-48 bg-muted/20 rounded-lg border border-border/30">
-              {/* Simple context visualization */}
               <svg className="w-full h-full" viewBox="0 0 600 180">
-                {/* Edges */}
                 {contextGraph.edges.map((edge, i) => {
                   const from = contextGraph.nodes.find(n => n.id === edge.from)!
                   const to = contextGraph.nodes.find(n => n.id === edge.to)!
                   return (
                     <line
                       key={i}
-                      x1={from.x + 40}
+                      x1={from.x + 55}
                       y1={from.y + 15}
                       x2={to.x}
                       y2={to.y + 15}
@@ -193,24 +188,24 @@ export default function MemoryPage() {
                     />
                   )
                 })}
-                {/* Nodes */}
                 {contextGraph.nodes.map((node) => (
                   <g key={node.id} className="cursor-pointer" onClick={() => setSelectedArtifact(node.id)}>
                     <rect
                       x={node.x}
                       y={node.y}
-                      width="80"
+                      width="90"
                       height="30"
                       rx="6"
                       fill="currentColor"
                       className={`${selectedArtifact === node.id ? "text-primary" : "text-muted/50"} transition-colors`}
                     />
                     <text
-                      x={node.x + 40}
+                      x={node.x + 45}
                       y={node.y + 19}
                       textAnchor="middle"
                       fill="currentColor"
-                      className={`text-xs font-medium ${selectedArtifact === node.id ? "text-primary-foreground" : "text-foreground"}`}
+                      fontSize="10"
+                      className={`font-medium ${selectedArtifact === node.id ? "text-primary-foreground" : "text-foreground"}`}
                     >
                       {node.label}
                     </text>
@@ -224,9 +219,9 @@ export default function MemoryPage() {
         <div className="grid gap-6 lg:grid-cols-3">
           {/* Artifacts List */}
           <div className="space-y-3">
-            <h2 className="text-sm font-medium mb-4">Core Artifacts</h2>
+            <h2 className="text-sm font-medium mb-4">ארטיפקטים מרכזיים</h2>
             {Object.values(memoryArtifacts).map((artifact) => (
-              <Card 
+              <Card
                 key={artifact.id}
                 className={`cursor-pointer transition-all hover:border-primary/50 ${
                   selectedArtifact === artifact.id ? "border-primary ring-1 ring-primary/20" : "border-border/50"
@@ -246,7 +241,7 @@ export default function MemoryPage() {
                       <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{artifact.summary}</p>
                       <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
                         <Clock className="h-3 w-3" />
-                        <span>Updated {artifact.lastUpdated}</span>
+                        <span>עודכן {artifact.lastUpdated}</span>
                       </div>
                     </div>
                   </div>
@@ -257,38 +252,38 @@ export default function MemoryPage() {
 
           {/* Artifact Detail */}
           <div className="lg:col-span-2">
-            {selectedArtifact && selectedArtifact === "brief" && (
+            {selectedArtifact === "brief" && (
               <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div>
                       <div className="flex items-center gap-2 mb-2">
                         <Badge variant="secondary" className="text-xs">v{memoryArtifacts.productBrief.version}</Badge>
-                        <span className="text-xs text-muted-foreground">Updated {memoryArtifacts.productBrief.lastUpdated}</span>
+                        <span className="text-xs text-muted-foreground">עודכן {memoryArtifacts.productBrief.lastUpdated}</span>
                       </div>
                       <CardTitle className="text-lg">{memoryArtifacts.productBrief.title}</CardTitle>
                     </div>
                     <Button variant="outline" size="sm" className="gap-1">
-                      Edit
+                      ערוך
                       <ArrowUpRight className="h-3 w-3" />
                     </Button>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div>
-                    <h4 className="text-sm font-medium mb-2">Problem Statement</h4>
+                    <h4 className="text-sm font-medium mb-2">הגדרת הבעיה</h4>
                     <p className="text-sm text-muted-foreground">{memoryArtifacts.productBrief.content.problemStatement}</p>
                   </div>
                   <div>
-                    <h4 className="text-sm font-medium mb-2">Target Users</h4>
+                    <h4 className="text-sm font-medium mb-2">משתמשי יעד</h4>
                     <p className="text-sm text-muted-foreground">{memoryArtifacts.productBrief.content.targetUsers}</p>
                   </div>
                   <div>
-                    <h4 className="text-sm font-medium mb-2">Core Value Proposition</h4>
+                    <h4 className="text-sm font-medium mb-2">הצעת ערך מרכזית</h4>
                     <p className="text-sm text-muted-foreground">{memoryArtifacts.productBrief.content.coreValue}</p>
                   </div>
                   <div>
-                    <h4 className="text-sm font-medium mb-2">Success Metrics</h4>
+                    <h4 className="text-sm font-medium mb-2">מדדי הצלחה</h4>
                     <ul className="space-y-1.5">
                       {memoryArtifacts.productBrief.content.successMetrics.map((metric, i) => (
                         <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
@@ -309,12 +304,12 @@ export default function MemoryPage() {
                     <div>
                       <div className="flex items-center gap-2 mb-2">
                         <Badge variant="secondary" className="text-xs">v{memoryArtifacts.prd.version}</Badge>
-                        <span className="text-xs text-muted-foreground">Updated {memoryArtifacts.prd.lastUpdated}</span>
+                        <span className="text-xs text-muted-foreground">עודכן {memoryArtifacts.prd.lastUpdated}</span>
                       </div>
                       <CardTitle className="text-lg">{memoryArtifacts.prd.title}</CardTitle>
                     </div>
                     <Button variant="outline" size="sm" className="gap-1">
-                      Edit
+                      ערוך
                       <ArrowUpRight className="h-3 w-3" />
                     </Button>
                   </div>
@@ -340,12 +335,12 @@ export default function MemoryPage() {
                     <div>
                       <div className="flex items-center gap-2 mb-2">
                         <Badge variant="secondary" className="text-xs">v{memoryArtifacts.architecture.version}</Badge>
-                        <span className="text-xs text-muted-foreground">Updated {memoryArtifacts.architecture.lastUpdated}</span>
+                        <span className="text-xs text-muted-foreground">עודכן {memoryArtifacts.architecture.lastUpdated}</span>
                       </div>
                       <CardTitle className="text-lg">{memoryArtifacts.architecture.title}</CardTitle>
                     </div>
                     <Button variant="outline" size="sm" className="gap-1">
-                      Edit
+                      ערוך
                       <ArrowUpRight className="h-3 w-3" />
                     </Button>
                   </div>
@@ -356,7 +351,7 @@ export default function MemoryPage() {
                     {memoryArtifacts.architecture.components.map((comp) => (
                       <div key={comp.name} className="flex items-center justify-between rounded-lg border border-border/50 p-3 bg-background/50">
                         <span className="text-sm font-medium">{comp.name}</span>
-                        <Badge variant={comp.status === "active" ? "default" : "secondary"} className="text-xs capitalize">
+                        <Badge variant={comp.status === "פעיל" ? "default" : "secondary"} className="text-xs">
                           {comp.status}
                         </Badge>
                       </div>
@@ -373,12 +368,12 @@ export default function MemoryPage() {
                     <div>
                       <div className="flex items-center gap-2 mb-2">
                         <Badge variant="secondary" className="text-xs">v{memoryArtifacts.dataModel.version}</Badge>
-                        <span className="text-xs text-muted-foreground">Updated {memoryArtifacts.dataModel.lastUpdated}</span>
+                        <span className="text-xs text-muted-foreground">עודכן {memoryArtifacts.dataModel.lastUpdated}</span>
                       </div>
                       <CardTitle className="text-lg">{memoryArtifacts.dataModel.title}</CardTitle>
                     </div>
                     <Button variant="outline" size="sm" className="gap-1">
-                      Edit
+                      ערוך
                       <ArrowUpRight className="h-3 w-3" />
                     </Button>
                   </div>
@@ -389,7 +384,7 @@ export default function MemoryPage() {
                     {memoryArtifacts.dataModel.entities.map((entity) => (
                       <div key={entity.name} className="flex items-center justify-between rounded-lg border border-border/50 p-3 bg-background/50">
                         <code className="text-sm font-mono text-primary">{entity.name}</code>
-                        <span className="text-xs text-muted-foreground">{entity.fields} fields</span>
+                        <span className="text-xs text-muted-foreground">{entity.fields} שדות</span>
                       </div>
                     ))}
                   </div>
@@ -400,7 +395,7 @@ export default function MemoryPage() {
             {/* Recent Changes */}
             <Card className="border-border/50 bg-card/50 backdrop-blur-sm mt-6">
               <CardHeader className="pb-2">
-                <CardTitle className="text-base font-semibold">Recent Changes</CardTitle>
+                <CardTitle className="text-base font-semibold">שינויים אחרונים</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">

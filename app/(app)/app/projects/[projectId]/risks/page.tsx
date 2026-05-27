@@ -18,7 +18,7 @@ const SEVERITY_CONFIG: Record<string, { label: string; className: string; order:
 
 const SOURCE_LABELS: Record<string, string> = {
   architecture:  'ארכיטקטורה',
-  return_brief:  'Return Brief',
+  return_brief:  'תדריך חזרה',
   manual:        'ידני',
 }
 

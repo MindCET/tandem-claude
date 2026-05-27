@@ -18,15 +18,15 @@ interface Props {
 }
 
 const PRIORITY_STYLE: Record<string, { label: string; className: string }> = {
-  P0: { label: 'P0 חובה',   className: 'bg-red-100 text-red-800' },
-  P1: { label: 'P1 חשוב',   className: 'bg-amber-100 text-amber-800' },
-  P2: { label: 'P2 נחמד',   className: 'bg-slate-100 text-slate-700' },
+  P0: { label: 'P0 חובה', className: 'bg-red-950/60 text-red-400 border border-red-800/50' },
+  P1: { label: 'P1 חשוב', className: 'bg-amber-950/60 text-amber-400 border border-amber-800/50' },
+  P2: { label: 'P2 נחמד', className: 'bg-muted text-muted-foreground border border-border' },
 }
 
 const COMPLEXITY_STYLE: Record<string, string> = {
-  small:  'bg-green-100 text-green-800',
-  medium: 'bg-blue-100 text-blue-800',
-  large:  'bg-purple-100 text-purple-800',
+  small:  'bg-emerald-950/60 text-emerald-400 border border-emerald-800/50',
+  medium: 'bg-primary/10 text-primary border border-primary/30',
+  large:  'bg-purple-950/60 text-purple-400 border border-purple-800/50',
 }
 
 const COMPLEXITY_HE: Record<string, string> = {
@@ -97,7 +97,7 @@ export function TaskCard({
             <Button asChild size="sm" variant="outline" className="w-full text-xs h-8">
               <Link href={`/app/projects/${projectId}/missions/new?taskId=${id}`}>
                 <Compass className="ml-1.5 h-3 w-3" />
-                צור Mission Brief
+                צור תדריך משימה
               </Link>
             </Button>
           </div>

@@ -1,5 +1,5 @@
 import { streamText } from "ai"
-import { anthropic } from "@ai-sdk/anthropic"
+import { anthropic, MODEL } from "@/lib/ai/client"
 import { createClient } from "@/lib/supabase/server"
 import { buildProjectContext } from "@/lib/ai/companion/context"
 import { buildCompanionSystem } from "@/lib/ai/companion/prompts"
@@ -21,7 +21,7 @@ export async function POST(req: Request) {
     : ""
 
   const result = streamText({
-    model: anthropic("claude-sonnet-4-5"),
+    model: anthropic(MODEL),
     system: buildCompanionSystem(projectContext),
     messages,
   })

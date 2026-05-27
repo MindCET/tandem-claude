@@ -7,8 +7,9 @@ import { createClient } from '@/lib/supabase/client'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { ArtifactViewer } from '@/components/artifacts/ArtifactViewer'
-import { Loader2, Sparkles, ArrowRight, AlertCircle, CheckCircle2 } from 'lucide-react'
+import { EditableArtifact } from '@/components/artifacts/EditableArtifact'
+import { ImportArtifactDialog } from '@/components/artifacts/ImportArtifactDialog'
+import { Loader2, Sparkles, CheckCircle2, AlertCircle } from 'lucide-react'
 
 export default function PRDPage() {
   const params = useParams<{ projectId: string }>()
@@ -25,12 +26,7 @@ export default function PRDPage() {
   useEffect(() => {
     async function load() {
       const [artRes, projRes] = await Promise.all([
-        supabase
-          .from('artifacts')
-          .select('*')
-          .eq('project_id', projectId)
-          .eq('type', 'prd')
-          .maybeSingle(),
+        supabase.from('artifacts').select('*').eq('project_id', projectId).eq('type', 'prd').maybeSingle(),
         supabase.from('projects').select('name').eq('id', projectId).single(),
       ])
       setArtifact(artRes.data)
@@ -76,24 +72,30 @@ export default function PRDPage() {
     setApproving(true)
     setError(null)
     try {
-      const [artRes, projRes] = await Promise.all([
-        supabase
-          .from('artifacts')
-          .update({ status: 'approved', updated_at: new Date().toISOString() })
-          .eq('id', artifact.id as string),
-        supabase
-          .from('projects')
-          .update({ current_stage: 'prd_approved', updated_at: new Date().toISOString() })
-          .eq('id', projectId),
-      ])
-      if (artRes.error) throw new Error(artRes.error.message)
-      if (projRes.error) throw new Error(projRes.error.message)
+      const { error: artErr } = await supabase
+        .from('artifacts')
+        .update({ status: 'approved', updated_at: new Date().toISOString() })
+        .eq('id', artifact.id as string)
+      if (artErr) throw new Error(artErr.message)
       setArtifact({ ...artifact, status: 'approved' })
     } catch (err) {
       setError(err instanceof Error ? err.message : 'שגיאה באישור ה-PRD')
     } finally {
       setApproving(false)
     }
+  }
+
+  function handleImported(markdown: string, artifactId: string) {
+    setArtifact({
+      id: artifactId,
+      title: `PRD — ${projectName}`,
+      type: 'prd',
+      status: 'approved',
+      source: 'imported',
+      content_markdown: markdown,
+      version: 1,
+      updated_at: new Date().toISOString(),
+    })
   }
 
   if (loading) {
@@ -125,38 +127,40 @@ export default function PRDPage() {
       {artifact ? (
         <Card>
           <CardContent className="pt-6">
-            <ArtifactViewer
+            <EditableArtifact
+              artifactId={artifact.id as string}
               title={artifact.title as string}
               type="prd"
               status={artifact.status as string}
               markdown={(artifact.content_markdown as string) ?? ''}
-              version={artifact.version as number}
-              updatedAt={artifact.updated_at as string}
+              version={(artifact.version as number) ?? 1}
+              updatedAt={(artifact.updated_at as string) ?? ''}
             />
 
-            <div className="mt-6 pt-4 border-t flex items-center justify-between">
-              {artifact.status === 'draft' ? (
-                <>
-                  <Button variant="outline" onClick={handleGenerate} disabled={generating}>
-                    {generating ? <Loader2 className="ml-2 h-4 w-4 animate-spin" /> : null}
-                    ייצר מחדש
-                  </Button>
-                  <Button onClick={handleApprove} disabled={approving}>
-                    {approving ? (
-                      <Loader2 className="ml-2 h-4 w-4 animate-spin" />
-                    ) : (
-                      <CheckCircle2 className="ml-2 h-4 w-4" />
-                    )}
-                    אשר PRD
-                  </Button>
-                </>
-              ) : (
-                <Button asChild>
-                  <Link href={`/app/projects/${projectId}/architecture`}>
-                    המשך לארכיטקטורה
-                    <ArrowRight className="mr-2 h-4 w-4" />
-                  </Link>
+            <div className="mt-6 pt-4 border-t flex items-center justify-between flex-wrap gap-3">
+              <div className="flex items-center gap-2">
+                <Button variant="outline" onClick={handleGenerate} disabled={generating}>
+                  {generating ? <Loader2 className="ml-2 h-4 w-4 animate-spin" /> : null}
+                  ייצר מחדש
                 </Button>
+                <ImportArtifactDialog
+                  projectId={projectId}
+                  artifactType="prd"
+                  onImported={handleImported}
+                />
+              </div>
+              {artifact.status !== 'approved' ? (
+                <Button onClick={handleApprove} disabled={approving}>
+                  {approving
+                    ? <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                    : <CheckCircle2 className="ml-2 h-4 w-4" />}
+                  אשר PRD
+                </Button>
+              ) : (
+                <span className="text-sm text-muted-foreground flex items-center gap-1">
+                  <CheckCircle2 className="h-4 w-4 text-green-500" />
+                  מאושר — ניתן לעריכה בכל עת
+                </span>
               )}
             </div>
           </CardContent>
@@ -165,22 +169,22 @@ export default function PRDPage() {
         <Card>
           <CardHeader className="text-center">
             <CardTitle>PRD — מסמך דרישות מוצר</CardTitle>
-            <CardDescription>AI ייצר PRD מפורט מה-Product Brief המאושר שלך</CardDescription>
+            <CardDescription>ייצר PRD מ-AI, ייבא מסמך קיים, או כתוב ידנית</CardDescription>
           </CardHeader>
-          <CardContent className="text-center pb-8">
+          <CardContent className="text-center pb-8 flex flex-col items-center gap-3">
             <Button onClick={handleGenerate} disabled={generating} size="lg">
               {generating ? (
-                <>
-                  <Loader2 className="ml-2 h-4 w-4 animate-spin" />
-                  מייצר PRD...
-                </>
+                <><Loader2 className="ml-2 h-4 w-4 animate-spin" />מייצר PRD...</>
               ) : (
-                <>
-                  <Sparkles className="ml-2 h-4 w-4" />
-                  צור PRD מ-AI
-                </>
+                <><Sparkles className="ml-2 h-4 w-4" />צור PRD מ-AI</>
               )}
             </Button>
+            <ImportArtifactDialog
+              projectId={projectId}
+              artifactType="prd"
+              onImported={handleImported}
+              variant="outline"
+            />
           </CardContent>
         </Card>
       )}

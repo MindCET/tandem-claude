@@ -120,7 +120,7 @@ export default function DocsPage() {
     const lines: string[] = []
     const date = new Date().toLocaleDateString('he-IL')
 
-    lines.push(`# ${projectName} — Living Docs`)
+    lines.push(`# ${projectName} — תיעוד חי`)
     lines.push(`> ייוצא מ-Tandem · ${date}`)
     lines.push('')
     lines.push('---')
@@ -236,7 +236,7 @@ export default function DocsPage() {
             <BookOpen className="h-5 w-5 text-primary" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold">Living Docs</h1>
+            <h1 className="text-2xl font-bold">תיעוד חי</h1>
             <p className="text-sm text-muted-foreground">
               כל תיעוד הפרויקט — מוכן לייצוא ל-Notion / GitHub
             </p>

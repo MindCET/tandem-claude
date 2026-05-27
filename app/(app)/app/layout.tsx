@@ -5,49 +5,31 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { CompanionButton } from "@/components/companion/CompanionButton"
-import {
-  LayoutDashboard,
-  FolderKanban,
-  FileText,
-  GitBranch,
-  AlertTriangle,
-  History,
-  Settings,
-  ChevronLeft,
-  ChevronRight,
-  Compass,
-  Zap
-} from "lucide-react"
+import { useLanguage } from "@/components/language-provider"
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
-const navigation = [
-  { name: "Control Tower", href: "/app", icon: LayoutDashboard },
-  { name: "Projects", href: "/app/projects", icon: FolderKanban },
-  { name: "Mission Briefs", href: "/app/missions", icon: Compass },
-  { name: "Return Briefs", href: "/app/returns", icon: FileText },
-  { name: "Decision Log", href: "/app/decisions", icon: GitBranch },
-  { name: "Drift Detection", href: "/app/drift", icon: AlertTriangle },
-  { name: "Project Memory", href: "/app/memory", icon: History },
+const navItems = [
+  { labelHe: "מגדל שליטה",   href: "/app" },
+  { labelHe: "פרויקטים",     href: "/app/projects" },
+  { labelHe: "משימות",       href: "/app/missions" },
+  { labelHe: "תדריכי חזרה",  href: "/app/returns" },
+  { labelHe: "יומן החלטות",  href: "/app/decisions" },
+  { labelHe: "זיהוי סטייה",  href: "/app/drift" },
+  { labelHe: "זיכרון",       href: "/app/memory" },
 ]
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  const [collapsed, setCollapsed] = useState(false)
   const [companionProjectName, setCompanionProjectName] = useState<string | undefined>()
   const pathname = usePathname()
   const supabase = createClient()
+  const { lang } = useLanguage()
 
-  // Extract projectId from URL pattern /app/projects/[projectId]/...
   const projectIdMatch = pathname.match(/\/app\/projects\/([^/]+)/)
   const companionProjectId = projectIdMatch ? projectIdMatch[1] : undefined
 
-  // Fetch project name whenever projectId changes
   useEffect(() => {
-    if (!companionProjectId) {
-      setCompanionProjectName(undefined)
-      return
-    }
+    if (!companionProjectId) { setCompanionProjectName(undefined); return }
     supabase
       .from('projects')
       .select('name')
@@ -57,104 +39,165 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   }, [companionProjectId])
 
   return (
-    <div className="flex h-screen bg-background">
-      {/* Sidebar */}
-      <aside 
-        className={cn(
-          "flex flex-col border-r border-border/50 bg-card/30 backdrop-blur-sm transition-all duration-300",
-          collapsed ? "w-16" : "w-64"
-        )}
+    <div className="flex h-screen bg-background" dir="rtl">
+      {/* Editorial sidebar — narrow dark strip */}
+      <aside
+        className="flex flex-col items-center flex-shrink-0 border-l"
+        style={{
+          width: 60,
+          background: '#18182a',
+          borderColor: 'rgba(255,255,255,0.06)',
+        }}
       >
-        {/* Logo */}
-        <div className="flex h-16 items-center justify-between border-b border-border/50 px-4">
-          {!collapsed && (
-            <Link href="/app" className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary">
-                <Zap className="h-5 w-5 text-primary-foreground" />
-              </div>
-              <span className="font-semibold tracking-tight">Tandem</span>
-            </Link>
-          )}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setCollapsed(!collapsed)}
-            className={cn("h-8 w-8", collapsed && "mx-auto")}
+        {/* Vertical logo */}
+        <Link
+          href="/app"
+          className="flex items-center justify-center py-5 mb-2"
+          style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+        >
+          <span
+            style={{
+              fontFamily: 'Rubik, sans-serif',
+              fontWeight: 800,
+              fontSize: 13,
+              letterSpacing: '0.12em',
+              color: '#f0e9da',
+              textTransform: 'uppercase',
+              textDecoration: 'none',
+            }}
           >
-            {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-          </Button>
-        </div>
+            Tandem
+          </span>
+        </Link>
 
-        {/* Navigation */}
-        <nav className="flex-1 space-y-1 p-2">
-          <TooltipProvider delayDuration={0}>
-            {navigation.map((item) => {
-              const isActive = pathname === item.href || 
+        {/* Nav pips */}
+        <TooltipProvider delayDuration={0}>
+          <nav className="flex flex-col items-center gap-1.5 flex-1 pt-2">
+            {navItems.map((item) => {
+              const isActive =
+                pathname === item.href ||
                 (item.href !== "/app" && pathname.startsWith(item.href))
-              
+
               return (
-                <Tooltip key={item.name}>
+                <Tooltip key={item.href}>
                   <TooltipTrigger asChild>
-                    <Link
-                      href={item.href}
-                      className={cn(
-                        "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all",
-                        isActive 
-                          ? "bg-primary/10 text-primary" 
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground",
-                        collapsed && "justify-center px-2"
-                      )}
-                    >
-                      <item.icon className={cn("h-5 w-5 shrink-0", isActive && "text-primary")} />
-                      {!collapsed && <span>{item.name}</span>}
-                      {isActive && !collapsed && (
-                        <div className="ml-auto h-1.5 w-1.5 rounded-full bg-primary" />
-                      )}
+                    <Link href={item.href}>
+                      <span
+                        className="block rounded-sm transition-all duration-200"
+                        style={{
+                          width: isActive ? 36 : 28,
+                          height: 4,
+                          background: isActive ? '#e85d3a' : 'rgba(255,255,255,0.15)',
+                          marginTop: 3,
+                          marginBottom: 3,
+                        }}
+                      />
                     </Link>
                   </TooltipTrigger>
-                  {collapsed && (
-                    <TooltipContent side="right" className="border-border/50">
-                      {item.name}
-                    </TooltipContent>
-                  )}
+                  <TooltipContent
+                    side="left"
+                    className="border text-xs font-medium"
+                    style={{
+                      background: '#18182a',
+                      borderColor: 'rgba(255,255,255,0.12)',
+                      color: 'rgba(255,255,255,0.75)',
+                      fontFamily: 'Rubik, sans-serif',
+                      letterSpacing: '0.04em',
+                      borderRadius: 2,
+                    }}
+                  >
+                    {item.labelHe}
+                  </TooltipContent>
                 </Tooltip>
               )
             })}
-          </TooltipProvider>
-        </nav>
+          </nav>
+        </TooltipProvider>
 
-        {/* Settings */}
-        <div className="border-t border-border/50 p-2">
-          <TooltipProvider delayDuration={0}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link
-                  href="/app/settings"
-                  className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-all hover:bg-muted hover:text-foreground",
-                    collapsed && "justify-center px-2"
-                  )}
-                >
-                  <Settings className="h-5 w-5 shrink-0" />
-                  {!collapsed && <span>Settings</span>}
-                </Link>
-              </TooltipTrigger>
-              {collapsed && (
-                <TooltipContent side="right" className="border-border/50">
-                  Settings
-                </TooltipContent>
-              )}
-            </Tooltip>
-          </TooltipProvider>
+        {/* Bottom: date/issue tag */}
+        <div
+          className="pb-5"
+          style={{
+            writingMode: 'vertical-rl',
+            transform: 'rotate(180deg)',
+            fontFamily: 'IBM Plex Mono, monospace',
+            fontSize: 8,
+            letterSpacing: '0.1em',
+            color: 'rgba(255,255,255,0.18)',
+          }}
+        >
+          2026.V / 001
         </div>
       </aside>
 
-      {/* Main content */}
-      <main className="flex-1 overflow-auto">
-        {children}
-      </main>
+      {/* Top bar */}
+      <div className="flex flex-col flex-1 overflow-hidden">
+        <header
+          className="flex items-center gap-5 flex-shrink-0 border-b px-5"
+          style={{
+            height: 40,
+            background: '#18182a',
+            borderColor: 'rgba(255,255,255,0.06)',
+          }}
+        >
+          <span
+            style={{
+              fontFamily: 'Rubik, sans-serif',
+              fontSize: 9,
+              fontWeight: 400,
+              color: 'rgba(255,255,255,0.22)',
+              letterSpacing: '0.06em',
+              marginInlineEnd: 'auto',
+            }}
+          >
+            2026.V — Issue No. 001
+          </span>
 
-      {/* AI Companion */}
+          {navItems.map((item) => {
+            const isActive =
+              pathname === item.href ||
+              (item.href !== "/app" && pathname.startsWith(item.href))
+
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="transition-all duration-150"
+                style={{
+                  fontFamily: 'Rubik, sans-serif',
+                  fontSize: 10,
+                  fontWeight: 500,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: isActive ? '#f0e9da' : 'rgba(255,255,255,0.28)',
+                  paddingBottom: 2,
+                  borderBottom: isActive ? '2px solid #e85d3a' : '2px solid transparent',
+                  textDecoration: 'none',
+                }}
+              >
+                {item.labelHe}
+              </Link>
+            )
+          })}
+
+          {/* Live indicator */}
+          <div className="flex items-center gap-1.5">
+            <span
+              className="animate-pulse rounded-full"
+              style={{ width: 6, height: 6, background: '#4af0c4', boxShadow: '0 0 5px #4af0c4' }}
+            />
+            <span style={{ fontFamily: 'Rubik, sans-serif', fontSize: 9, fontWeight: 500, color: 'rgba(255,255,255,0.3)' }}>
+              Live
+            </span>
+          </div>
+        </header>
+
+        {/* Page content */}
+        <main className="flex-1 overflow-auto bg-background">
+          {children}
+        </main>
+      </div>
+
       <CompanionButton projectId={companionProjectId} projectName={companionProjectName} />
     </div>
   )

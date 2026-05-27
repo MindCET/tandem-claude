@@ -1,10 +1,10 @@
 "use client"
 
 import { useState } from "react"
-import { 
-  Compass, 
-  Plus, 
-  Search, 
+import {
+  Compass,
+  Plus,
+  Search,
   Filter,
   Copy,
   ExternalLink,
@@ -26,66 +26,66 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 const missions = [
   {
     id: "m1",
-    title: "Implement user authentication with Supabase",
-    description: "Set up complete auth flow including sign up, sign in, password reset, and session management using Supabase Auth.",
+    title: "מימוש אימות משתמשים עם Supabase",
+    description: "הגדרת זרימת auth מלאה כולל הרשמה, כניסה, איפוס סיסמה וניהול session עם Supabase Auth.",
     project: "SaaS Dashboard",
     tool: "Cursor",
     toolIcon: Code,
     status: "in-progress",
     priority: "high",
-    createdAt: "2 hours ago",
+    createdAt: "לפני שעתיים",
     context: {
-      constraints: ["Use magic links for passwordless auth", "Implement RLS policies", "Add session refresh logic"],
-      references: ["PRD Section 4.2", "Architecture Doc - Auth Flow"],
-      acceptanceCriteria: ["Users can sign up with email", "Session persists across refreshes", "Protected routes redirect to login"]
+      constraints: ["שימוש ב-magic links לאימות ללא סיסמה", "מימוש מדיניות RLS", "הוספת לוגיקת רענון session"],
+      references: ["PRD סעיף 4.2", "מסמך ארכיטקטורה - Auth Flow"],
+      acceptanceCriteria: ["משתמשים יכולים להירשם עם אימייל", "ה-session נשמר בין רענונים", "protected routes מפנים ל-login"]
     }
   },
   {
     id: "m2",
-    title: "Create dashboard layout components",
-    description: "Build the main dashboard shell including sidebar navigation, header, and responsive layout grid.",
+    title: "יצירת קומפוננטות פריסת דשבורד",
+    description: "בניית מעטפת הדשבורד הראשית כולל ניווט sidebar, header וגריד פריסה רספונסיבי.",
     project: "SaaS Dashboard",
     tool: "v0",
     toolIcon: Palette,
     status: "pending-review",
     priority: "medium",
-    createdAt: "1 day ago",
+    createdAt: "לפני יום",
     context: {
-      constraints: ["Follow design system tokens", "Mobile-first approach", "Dark mode support"],
+      constraints: ["עקוב אחר tokens של מערכת העיצוב", "גישה mobile-first", "תמיכה במצב כהה"],
       references: ["Design System v1.2", "Figma Mockups"],
-      acceptanceCriteria: ["Responsive down to 320px", "Collapsible sidebar", "Breadcrumb navigation"]
+      acceptanceCriteria: ["רספונסיבי עד 320px", "sidebar מתקפל", "ניווט breadcrumb"]
     }
   },
   {
     id: "m3",
-    title: "Set up database schema",
-    description: "Create the initial database schema with users, organizations, projects, and activity tables.",
+    title: "הגדרת סכמת בסיס נתונים",
+    description: "יצירת סכמת בסיס הנתונים הראשונית עם טבלאות users, organizations, projects ו-activity.",
     project: "Mobile App MVP",
     tool: "Claude Code",
     toolIcon: Database,
     status: "queued",
     priority: "high",
-    createdAt: "3 days ago",
+    createdAt: "לפני 3 ימים",
     context: {
-      constraints: ["Use Supabase migrations", "Add proper indexes", "Implement soft deletes"],
-      references: ["Data Model Doc", "Entity Relationship Diagram"],
-      acceptanceCriteria: ["All tables created", "RLS enabled", "Seed data script ready"]
+      constraints: ["שימוש ב-Supabase migrations", "הוספת indexes מתאימים", "מימוש soft deletes"],
+      references: ["מסמך מודל נתונים", "תרשים יחסי ישויות"],
+      acceptanceCriteria: ["כל הטבלאות נוצרו", "RLS מופעל", "סקריפט seed מוכן"]
     }
   },
   {
     id: "m4",
-    title: "Build onboarding wizard flow",
-    description: "Create a multi-step onboarding experience for new users with progress tracking and skip options.",
+    title: "בניית אשף onboarding",
+    description: "יצירת חוויית onboarding רב-שלבית למשתמשים חדשים עם מעקב התקדמות ואפשרות דילוג.",
     project: "SaaS Dashboard",
     tool: "v0",
     toolIcon: Palette,
     status: "completed",
     priority: "medium",
-    createdAt: "5 days ago",
+    createdAt: "לפני 5 ימים",
     context: {
-      constraints: ["5 steps maximum", "Progress auto-save", "Can skip and return later"],
-      references: ["User Flow Doc", "Onboarding Best Practices"],
-      acceptanceCriteria: ["All steps implemented", "Progress persisted", "Skip functionality works"]
+      constraints: ["מקסימום 5 שלבים", "שמירה אוטומטית של התקדמות", "אפשרות לדלג ולחזור מאוחר יותר"],
+      references: ["מסמך זרימת משתמש", "Onboarding Best Practices"],
+      acceptanceCriteria: ["כל השלבים מומשו", "התקדמות נשמרת", "פונקציונליות דילוג עובדת"]
     }
   },
 ]
@@ -98,10 +98,16 @@ const statusColors = {
 }
 
 const statusLabels = {
-  "in-progress": "In Progress",
-  "pending-review": "Pending Review",
-  "queued": "Queued",
-  "completed": "Completed"
+  "in-progress": "בתהליך",
+  "pending-review": "ממתין לבחינה",
+  "queued": "בתור",
+  "completed": "הושלם"
+}
+
+const priorityLabels = {
+  high: "גבוה",
+  medium: "בינוני",
+  low: "נמוך"
 }
 
 export default function MissionsPage() {
@@ -114,12 +120,12 @@ export default function MissionsPage() {
       <header className="sticky top-0 z-10 border-b border-border/50 bg-background/80 backdrop-blur-sm">
         <div className="flex h-16 items-center justify-between px-6">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Mission Briefs</h1>
-            <p className="text-sm text-muted-foreground">Task specifications for external AI tools</p>
+            <h1 className="text-xl font-semibold tracking-tight">תדריכי משימה</h1>
+            <p className="text-sm text-muted-foreground">מפרטי משימות לכלי AI חיצוניים</p>
           </div>
           <Button size="sm" className="gap-2">
             <Plus className="h-4 w-4" />
-            Generate Mission
+            צור תדריך
           </Button>
         </div>
       </header>
@@ -129,8 +135,8 @@ export default function MissionsPage() {
         <div className="flex items-center gap-4 mb-6">
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input 
-              placeholder="Search missions..." 
+            <Input
+              placeholder="חיפוש משימות..."
               className="pl-10 bg-background/50 border-border/50"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -138,17 +144,17 @@ export default function MissionsPage() {
           </div>
           <Button variant="outline" size="sm" className="gap-2">
             <Filter className="h-4 w-4" />
-            Filter
+            סינון
           </Button>
         </div>
 
         {/* Tabs */}
         <Tabs defaultValue="all" className="space-y-6">
           <TabsList className="bg-muted/50">
-            <TabsTrigger value="all">All Missions</TabsTrigger>
-            <TabsTrigger value="in-progress">In Progress</TabsTrigger>
-            <TabsTrigger value="pending">Pending Review</TabsTrigger>
-            <TabsTrigger value="completed">Completed</TabsTrigger>
+            <TabsTrigger value="all">כל המשימות</TabsTrigger>
+            <TabsTrigger value="in-progress">בתהליך</TabsTrigger>
+            <TabsTrigger value="pending">ממתינות לבחינה</TabsTrigger>
+            <TabsTrigger value="completed">הושלמו</TabsTrigger>
           </TabsList>
 
           <TabsContent value="all" className="space-y-0">
@@ -156,7 +162,7 @@ export default function MissionsPage() {
               {/* Mission List */}
               <div className="space-y-3">
                 {missions.map((mission) => (
-                  <Card 
+                  <Card
                     key={mission.id}
                     className={`cursor-pointer border-border/50 bg-card/50 backdrop-blur-sm transition-all hover:border-primary/50 ${
                       selectedMission?.id === mission.id ? "border-primary ring-1 ring-primary/20" : ""
@@ -169,11 +175,11 @@ export default function MissionsPage() {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between gap-2">
                             <h3 className="font-medium text-sm leading-snug">{mission.title}</h3>
-                            <Badge 
+                            <Badge
                               variant={mission.priority === "high" ? "destructive" : "secondary"}
                               className="text-xs shrink-0"
                             >
-                              {mission.priority}
+                              {priorityLabels[mission.priority as keyof typeof priorityLabels]}
                             </Badge>
                           </div>
                           <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{mission.description}</p>
@@ -214,11 +220,10 @@ export default function MissionsPage() {
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-6">
-                    {/* Constraints */}
                     <div>
                       <h4 className="text-sm font-medium mb-2 flex items-center gap-2">
                         <AlertCircle className="h-4 w-4 text-amber-500" />
-                        Constraints
+                        אסור לעשות
                       </h4>
                       <ul className="space-y-1.5">
                         {selectedMission.context.constraints.map((constraint, i) => (
@@ -230,11 +235,10 @@ export default function MissionsPage() {
                       </ul>
                     </div>
 
-                    {/* References */}
                     <div>
                       <h4 className="text-sm font-medium mb-2 flex items-center gap-2">
                         <ExternalLink className="h-4 w-4 text-primary" />
-                        References
+                        מקורות
                       </h4>
                       <div className="flex flex-wrap gap-2">
                         {selectedMission.context.references.map((ref, i) => (
@@ -245,11 +249,10 @@ export default function MissionsPage() {
                       </div>
                     </div>
 
-                    {/* Acceptance Criteria */}
                     <div>
                       <h4 className="text-sm font-medium mb-2 flex items-center gap-2">
                         <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-                        Acceptance Criteria
+                        קריטריוני קבלה
                       </h4>
                       <ul className="space-y-1.5">
                         {selectedMission.context.acceptanceCriteria.map((criteria, i) => (
@@ -261,15 +264,14 @@ export default function MissionsPage() {
                       </ul>
                     </div>
 
-                    {/* Actions */}
                     <div className="flex gap-2 pt-2 border-t border-border/50">
                       <Button className="flex-1 gap-2">
                         <Copy className="h-4 w-4" />
-                        Copy Brief
+                        העתק תדריך
                       </Button>
                       <Button variant="outline" className="gap-2">
                         <Zap className="h-4 w-4" />
-                        Open in {selectedMission.tool}
+                        פתח ב-{selectedMission.tool}
                       </Button>
                     </div>
                   </CardContent>
@@ -278,7 +280,7 @@ export default function MissionsPage() {
                 <Card className="border-border/50 bg-card/30 backdrop-blur-sm flex items-center justify-center min-h-[400px]">
                   <div className="text-center text-muted-foreground">
                     <Compass className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p className="text-sm">Select a mission to view details</p>
+                    <p className="text-sm">בחר משימה לצפייה בפרטים</p>
                   </div>
                 </Card>
               )}
@@ -287,19 +289,19 @@ export default function MissionsPage() {
 
           <TabsContent value="in-progress">
             <div className="text-center py-12 text-muted-foreground">
-              <p>In Progress missions will appear here</p>
+              <p>משימות בתהליך יופיעו כאן</p>
             </div>
           </TabsContent>
 
           <TabsContent value="pending">
             <div className="text-center py-12 text-muted-foreground">
-              <p>Pending Review missions will appear here</p>
+              <p>משימות הממתינות לבחינה יופיעו כאן</p>
             </div>
           </TabsContent>
 
           <TabsContent value="completed">
             <div className="text-center py-12 text-muted-foreground">
-              <p>Completed missions will appear here</p>
+              <p>משימות שהושלמו יופיעו כאן</p>
             </div>
           </TabsContent>
         </Tabs>

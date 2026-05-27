@@ -55,7 +55,7 @@ export default async function MissionsPage({ params }: PageProps) {
             <Compass className="h-5 w-5 text-primary" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold">Mission Briefs</h1>
+            <h1 className="text-2xl font-bold">תדריכי משימה</h1>
             <p className="text-sm text-muted-foreground">{missions.length} משימות נוצרו</p>
           </div>
         </div>
@@ -69,7 +69,7 @@ export default async function MissionsPage({ params }: PageProps) {
           <CardContent className="pt-6 text-center py-12">
             <Compass className="h-8 w-8 text-muted-foreground mx-auto mb-3" />
             <p className="text-muted-foreground mb-4">
-              עוד לא נוצרו Mission Briefs — לחץ על "צור Mission Brief" מכל משימה ברשימה
+              עוד לא נוצרו תדריכי משימה — לחץ על "צור תדריך משימה" מכל משימה ברשימה
             </p>
             <Button asChild>
               <Link href={`/app/projects/${projectId}/tasks`}>

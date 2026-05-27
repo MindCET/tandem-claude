@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tandem — Design Exploration</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Outfit:wght@100;200;300;400;500;700;900&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ── ROOT ── */
+body{background:#111;font-family:'Space Grotesk',sans-serif;overflow:hidden;height:100vh;display:flex;flex-direction:column}
+
+/* ── TOP SWITCHER ── */
+.switcher{display:flex;align-items:center;gap:0;background:#0a0a0a;border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0;padding:0 20px}
+.sw-label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.2em;color:rgba(255,255,255,0.2);text-transform:uppercase;padding:12px 0;margin-left:16px}
+.sw-btn{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;padding:12px 18px;color:rgba(255,255,255,0.3);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;user-select:none}
+.sw-btn:hover{color:rgba(255,255,255,0.6)}
+.sw-btn.active-1{color:#4af0c4;border-bottom-color:#4af0c4}
+.sw-btn.active-2{color:#e85d3a;border-bottom-color:#e85d3a}
+.sw-sep{width:1px;height:20px;background:rgba(255,255,255,0.08);margin:0 8px}
+
+/* ── MAIN AREA ── */
+.main{flex:1;display:flex;overflow:hidden}
+
+/* ── PANEL ── */
+.panel{flex:1;display:none;overflow:hidden}
+.panel.visible{display:flex}
+
+/* ════════════════════════════════════════
+   OPTION 1 — MISSION CONTROL
+════════════════════════════════════════ */
+.mc{background:#030408;font-family:'IBM Plex Mono',monospace;display:flex;height:100%;position:relative;overflow:hidden}
+.mc::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(74,240,196,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(74,240,196,0.03) 1px,transparent 1px);background-size:36px 36px;z-index:0;pointer-events:none}
+.mc::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(74,240,196,0.012) 2px,rgba(74,240,196,0.012) 4px);z-index:0;pointer-events:none}
+
+/* sidebar */
+.mc-sb{width:56px;border-left:1px solid rgba(74,240,196,0.1);display:flex;flex-direction:column;align-items:center;padding:14px 0;gap:6px;position:relative;z-index:2;background:rgba(74,240,196,0.02)}
+.mc-logo{width:30px;height:30px;border:1.5px solid rgba(74,240,196,0.7);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#4af0c4;margin-bottom:10px;box-shadow:0 0 12px rgba(74,240,196,0.25),inset 0 0 8px rgba(74,240,196,0.05);letter-spacing:0}
+.mc-nav-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(74,240,196,0.25);font-size:14px;transition:all .15s;border:1px solid transparent;position:relative}
+.mc-nav-btn:hover{color:rgba(74,240,196,0.6);background:rgba(74,240,196,0.04)}
+.mc-nav-btn.active{color:#4af0c4;border-color:rgba(74,240,196,0.25);background:rgba(74,240,196,0.06);box-shadow:0 0 8px rgba(74,240,196,0.15)}
+.mc-nav-btn .tooltip{position:absolute;right:calc(100% + 8px);background:#0a0f0c;border:1px solid rgba(74,240,196,0.2);padding:3px 8px;font-size:8px;letter-spacing:0.12em;color:rgba(74,240,196,0.7);white-space:nowrap;display:none;pointer-events:none}
+.mc-nav-btn:hover .tooltip{display:block}
+
+/* topbar */
+.mc-wrap{flex:1;display:flex;flex-direction:column;position:relative;z-index:2;overflow:hidden}
+.mc-top{height:34px;border-bottom:1px solid rgba(74,240,196,0.08);display:flex;align-items:center;padding:0 14px;gap:10px;flex-shrink:0}
+.mc-crumb{font-size:8px;letter-spacing:0.2em;color:rgba(74,240,196,0.4);text-transform:uppercase}
+.mc-crumb span{color:rgba(74,240,196,0.6)}
+.mc-ping{width:5px;height:5px;border-radius:50%;background:#4af0c4;box-shadow:0 0 5px #4af0c4;margin-right:auto}
+.mc-clock{font-size:8px;color:rgba(74,240,196,0.25);letter-spacing:0.1em}
+
+/* screens */
+.mc-screen{flex:1;overflow:auto;display:none;padding:14px;gap:10px}
+.mc-screen.visible{display:grid}
+
+/* ── SCREEN: CONTROL TOWER ── */
+#mc-s1{grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto auto 1fr;align-content:start}
+.mc-cell{border:1px solid rgba(74,240,196,0.12);background:rgba(74,240,196,0.02);padding:12px 14px;overflow:hidden}
+.mc-cell.hi{border-color:rgba(74,240,196,0.35);background:rgba(74,240,196,0.05);box-shadow:0 0 18px rgba(74,240,196,0.07)}
+.mc-cell.warn{border-color:rgba(247,194,49,0.3);background:rgba(247,194,49,0.03)}
+.mc-cell.span2{grid-column:span 2}
+.mc-cell.span3{grid-column:span 3}
+.mc-lbl{font-size:7px;letter-spacing:0.22em;color:rgba(74,240,196,0.35);text-transform:uppercase;margin-bottom:6px}
+.mc-lbl.warn{color:rgba(247,194,49,0.4)}
+.mc-num{font-size:38px;font-weight:300;color:#4af0c4;line-height:1;letter-spacing:-0.02em;text-shadow:0 0 20px rgba(74,240,196,0.35)}
+.mc-num.warn{color:#f7c231;text-shadow:0 0 20px rgba(247,194,49,0.35)}
+.mc-num.sm{font-size:28px}
+.mc-sub{font-size:7px;color:rgba(74,240,196,0.25);margin-top:4px;letter-spacing:0.1em}
+.mc-sub.warn{color:rgba(247,194,49,0.3)}
+.mc-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(74,240,196,0.05);font-size:8px;color:rgba(255,255,255,0.5)}
+.mc-row:last-child{border:none}
+.mc-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.mc-tag-s{font-size:7px;padding:1px 6px;border:1px solid rgba(74,240,196,0.18);color:rgba(74,240,196,0.45);letter-spacing:0.1em;margin-right:auto}
+.mc-pct{font-size:9px;color:#4af0c4;letter-spacing:0.05em}
+.mc-bar{height:2px;background:rgba(74,240,196,0.08);margin-top:4px;position:relative;overflow:hidden}
+.mc-fill{position:absolute;top:0;left:0;bottom:0;background:#4af0c4;box-shadow:0 0 5px #4af0c4}
+.mc-alert{padding:7px 10px;border:1px solid;margin-bottom:6px}
+.mc-alert.red{border-color:rgba(255,70,70,0.3);background:rgba(255,70,70,0.04)}
+.mc-alert.amber{border-color:rgba(247,194,49,0.25);background:rgba(247,194,49,0.03)}
+.mc-alert-t{font-size:8px;font-weight:600;color:rgba(255,255,255,0.75);margin-bottom:2px}
+.mc-alert-b{font-size:7px;color:rgba(255,255,255,0.35);line-height:1.5}
+
+/* ── SCREEN: PROJECTS ── */
+#mc-s2{grid-template-columns:1fr;align-content:start;gap:6px}
+.mc-proj-card{border:1px solid rgba(74,240,196,0.1);padding:14px;cursor:pointer;transition:all .15s;background:rgba(74,240,196,0.015)}
+.mc-proj-card:hover{border-color:rgba(74,240,196,0.3);background:rgba(74,240,196,0.04)}
+.mc-proj-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.mc-proj-id{font-size:7px;letter-spacing:0.2em;color:rgba(74,240,196,0.3);margin-top:2px}
+.mc-proj-name{font-size:14px;font-weight:400;color:#fff;letter-spacing:-0.01em;flex:1}
+.mc-proj-phase{font-size:7px;padding:2px 8px;border:1px solid rgba(74,240,196,0.25);color:rgba(74,240,196,0.55);letter-spacing:0.12em;text-transform:uppercase;white-space:nowrap}
+.mc-proj-desc{font-size:8px;color:rgba(255,255,255,0.35);margin-bottom:10px;line-height:1.5;letter-spacing:0.02em}
+.mc-proj-meta{display:flex;gap:14px;font-size:7px;color:rgba(74,240,196,0.3);letter-spacing:0.1em}
+
+/* ── SCREEN: MISSIONS ── */
+#mc-s3{grid-template-columns:1fr 1fr;align-content:start}
+.mc-mission{border:1px solid rgba(74,240,196,0.1);padding:12px;cursor:pointer;transition:border .15s}
+.mc-mission:hover{border-color:rgba(74,240,196,0.3)}
+.mc-mission-status{display:flex;align-items:center;gap:6px;font-size:7px;letter-spacing:0.15em;color:rgba(74,240,196,0.35);text-transform:uppercase;margin-bottom:8px}
+.mc-mission-title{font-size:11px;color:rgba(255,255,255,0.8);line-height:1.4;margin-bottom:8px;letter-spacing:0.01em}
+.mc-mission-meta{display:flex;gap:8px;align-items:center}
+.mc-badge{font-size:7px;padding:1px 7px;border:1px solid rgba(74,240,196,0.2);color:rgba(74,240,196,0.5);letter-spacing:0.1em}
+.mc-badge.active{border-color:rgba(74,240,196,0.5);color:#4af0c4;box-shadow:0 0 6px rgba(74,240,196,0.15)}
+.mc-badge.review{border-color:rgba(247,194,49,0.4);color:#f7c231}
+
+/* ── SCREEN: DECISIONS ── */
+#mc-s4{grid-template-columns:1fr;align-content:start;gap:0}
+.mc-decision{padding:12px 14px;border-bottom:1px solid rgba(74,240,196,0.06);display:grid;grid-template-columns:80px 1fr auto;gap:12px;align-items:start;cursor:pointer;transition:background .15s}
+.mc-decision:hover{background:rgba(74,240,196,0.025)}
+.mc-dec-ts{font-size:7px;color:rgba(74,240,196,0.25);letter-spacing:0.1em;line-height:1.6;padding-top:1px}
+.mc-dec-title{font-size:10px;color:rgba(255,255,255,0.7);line-height:1.45}
+.mc-dec-proj{font-size:7px;color:rgba(74,240,196,0.3);margin-top:3px;letter-spacing:0.08em}
+.mc-dec-cat{font-size:7px;padding:2px 7px;border:1px solid rgba(74,240,196,0.15);color:rgba(74,240,196,0.4);letter-spacing:0.12em;text-transform:uppercase;white-space:nowrap;align-self:center}
+
+/* ── SCREEN: MEMORY ── */
+#mc-s5{grid-template-columns:1fr 1fr;align-content:start}
+.mc-mem-entry{border:1px solid rgba(74,240,196,0.08);padding:12px;position:relative;overflow:hidden}
+.mc-mem-entry::before{content:'';position:absolute;top:0;right:0;width:2px;height:100%}
+.mc-mem-entry.arch::before{background:rgba(74,240,196,0.5)}
+.mc-mem-entry.stack::before{background:rgba(247,194,49,0.5)}
+.mc-mem-entry.ux::before{background:rgba(180,120,255,0.5)}
+.mc-mem-entry.ops::before{background:rgba(255,120,80,0.5)}
+.mc-mem-tag{font-size:7px;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:6px;color:rgba(74,240,196,0.4)}
+.mc-mem-tag.stack{color:rgba(247,194,49,0.5)}
+.mc-mem-tag.ux{color:rgba(180,120,255,0.5)}
+.mc-mem-tag.ops{color:rgba(255,120,80,0.5)}
+.mc-mem-body{font-size:9px;color:rgba(255,255,255,0.55);line-height:1.6;letter-spacing:0.01em}
+.mc-mem-date{font-size:7px;color:rgba(74,240,196,0.2);margin-top:6px;letter-spacing:0.1em}
+
+
+/* ════════════════════════════════════════
+   OPTION 2 — EDITORIAL
+════════════════════════════════════════ */
+.ed{background:#f2ece0;font-family:'Outfit',sans-serif;display:flex;height:100%;overflow:hidden}
+
+/* sidebar */
+.ed-sb{width:52px;background:#161622;display:flex;flex-direction:column;align-items:center;padding:14px 0;gap:8px;flex-shrink:0}
+.ed-logo-v{writing-mode:vertical-rl;transform:rotate(180deg);font-family:'Playfair Display',serif;font-weight:900;font-size:14px;color:#f2ece0;letter-spacing:0.06em;margin-bottom:12px;cursor:pointer}
+.ed-nav-pip{width:3px;height:32px;background:rgba(255,255,255,0.1);cursor:pointer;transition:all .15s;position:relative}
+.ed-nav-pip.active{background:#e85d3a}
+.ed-nav-pip .tt{position:absolute;right:calc(100% + 8px);top:50%;transform:translateY(-50%);background:#161622;border:1px solid rgba(255,255,255,0.15);padding:3px 8px;font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:0.1em;color:rgba(255,255,255,0.6);white-space:nowrap;display:none;z-index:50}
+.ed-nav-pip:hover .tt{display:block}
+.ed-nav-pip:hover{background:rgba(255,255,255,0.25)}
+
+/* wrap */
+.ed-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.ed-top{height:36px;background:#161622;display:flex;align-items:center;padding:0 16px;gap:16px;flex-shrink:0}
+.ed-top-item{font-family:'Outfit',sans-serif;font-size:9px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.3);cursor:pointer;padding-bottom:2px;border-bottom:2px solid transparent;transition:all .15s}
+.ed-top-item:hover{color:rgba(255,255,255,0.6)}
+.ed-top-item.active{color:#f2ece0;border-bottom-color:#e85d3a}
+.ed-date{font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,0.2);margin-right:auto;letter-spacing:0.1em}
+.ed-status{display:flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,0.3)}
+.ed-status-dot{width:5px;height:5px;border-radius:50%;background:#4af0c4}
+
+/* screens */
+.ed-screen{flex:1;overflow:auto;display:none}
+.ed-screen.visible{display:block}
+
+/* ── SCREEN: CONTROL TOWER ── */
+#ed-s1{display:none}
+#ed-s1.visible{display:grid;grid-template-columns:1.8fr 1px 1fr;height:calc(100% - 0px)}
+.ed-left-col{padding:20px 20px 20px 24px;overflow:auto}
+.ed-right-col{padding:20px 20px 20px 20px;overflow:auto}
+.ed-divider-v{background:rgba(22,22,34,0.1)}
+.ed-section{margin-bottom:22px}
+.ed-section-head{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(22,22,34,0.35);padding-bottom:7px;border-bottom:2px solid #161622;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.ed-hero-num{font-family:'Playfair Display',serif;font-weight:900;font-size:80px;color:#161622;line-height:0.85;letter-spacing:-0.03em}
+.ed-hero-label{font-family:'Outfit',sans-serif;font-weight:200;font-size:13px;color:rgba(22,22,34,0.45);letter-spacing:0.04em;margin-top:6px}
+.ed-stat-strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(22,22,34,0.12);margin-top:16px;margin-bottom:20px}
+.ed-stat-cell{background:#f2ece0;padding:10px 12px}
+.ed-stat-n{font-family:'Playfair Display',serif;font-weight:700;font-size:26px;color:#161622;line-height:1}
+.ed-stat-n.red{color:#e85d3a}
+.ed-stat-l{font-size:7px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(22,22,34,0.4);margin-top:2px}
+.ed-proj-entry{padding:8px 0;border-bottom:1px solid rgba(22,22,34,0.1);display:flex;align-items:baseline;gap:10px;cursor:pointer;transition:opacity .15s}
+.ed-proj-entry:hover{opacity:0.7}
+.ed-proj-name-e{font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;color:#161622;flex:1}
+.ed-proj-phase-e{font-family:'DM Mono',monospace;font-size:7px;color:rgba(22,22,34,0.4);letter-spacing:0.08em}
+.ed-proj-pct-e{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:#e85d3a}
+.ed-proj-bar-e{height:1px;background:rgba(22,22,34,0.1);margin-top:3px;position:relative}
+.ed-proj-bar-fill{position:absolute;top:0;left:0;bottom:0;background:#161622}
+.ed-alert-card{padding:10px 12px;margin-bottom:8px}
+.ed-alert-card.hot{background:#e85d3a}
+.ed-alert-card.cool{background:#161622}
+.ed-alert-title-e{font-weight:700;font-size:10px;color:#fff;margin-bottom:3px}
+.ed-alert-body-e{font-size:8px;color:rgba(255,255,255,0.65);line-height:1.5}
+.ed-dec-row{padding:7px 0;border-bottom:1px solid rgba(22,22,34,0.08);display:flex;align-items:flex-start;gap:8px;font-size:9px}
+.ed-dec-cat-e{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:0.08em;color:#e85d3a;flex-shrink:0;padding-top:1px}
+.ed-dec-text{color:rgba(22,22,34,0.6);flex:1;line-height:1.4}
+.ed-dec-time{font-family:'DM Mono',monospace;font-size:7px;color:rgba(22,22,34,0.3);white-space:nowrap}
+
+/* ── SCREEN: PROJECTS ── */
+#ed-s2{display:none}
+#ed-s2.visible{display:block;padding:24px}
+.ed-page-title{font-family:'Playfair Display',serif;font-weight:900;font-size:52px;color:#161622;line-height:0.9;letter-spacing:-0.02em;margin-bottom:4px}
+.ed-page-sub{font-family:'Outfit',sans-serif;font-weight:200;font-size:12px;color:rgba(22,22,34,0.4);letter-spacing:0.04em;margin-bottom:24px;padding-bottom:14px;border-bottom:2px solid #161622}
+.ed-proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:rgba(22,22,34,0.1)}
+.ed-proj-tile{background:#f2ece0;padding:16px 18px;cursor:pointer;transition:background .15s}
+.ed-proj-tile:hover{background:#ece4d4}
+.ed-pt-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.ed-pt-name{font-family:'Playfair Display',serif;font-weight:700;font-size:18px;color:#161622;line-height:1.1}
+.ed-pt-phase{font-family:'DM Mono',monospace;font-size:8px;color:rgba(22,22,34,0.4);letter-spacing:0.12em;text-transform:uppercase;margin-top:2px}
+.ed-pt-pct{font-family:'Playfair Display',serif;font-weight:900;font-size:36px;color:#e85d3a;line-height:1}
+.ed-pt-desc{font-size:11px;color:rgba(22,22,34,0.5);line-height:1.5;margin-bottom:10px}
+.ed-pt-bar{height:2px;background:rgba(22,22,34,0.1);position:relative}
+.ed-pt-bar-fill{position:absolute;top:0;left:0;bottom:0;background:#161622}
+.ed-pt-meta{display:flex;gap:12px;margin-top:8px;font-family:'DM Mono',monospace;font-size:7px;letter-spacing:0.1em;color:rgba(22,22,34,0.3)}
+
+/* ── SCREEN: MISSION DETAIL ── */
+#ed-s3{display:none}
+#ed-s3.visible{display:grid;grid-template-columns:1fr 280px;height:100%}
+.ed-mission-main{padding:24px;border-left:1px solid rgba(22,22,34,0.1);overflow:auto}
+.ed-mission-side{padding:20px;overflow:auto}
+.ed-mission-num{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;color:rgba(22,22,34,0.3);margin-bottom:8px}
+.ed-mission-title{font-family:'Playfair Display',serif;font-weight:900;font-size:32px;color:#161622;line-height:1.1;margin-bottom:4px}
+.ed-mission-proj{font-family:'Outfit',sans-serif;font-size:12px;color:rgba(22,22,34,0.4);margin-bottom:20px;padding-bottom:16px;border-bottom:1.5px solid rgba(22,22,34,0.1)}
+.ed-mission-label{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(22,22,34,0.35);margin-bottom:6px;margin-top:14px}
+.ed-mission-body{font-size:12px;color:rgba(22,22,34,0.65);line-height:1.7}
+.ed-checklist-item{display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-bottom:1px solid rgba(22,22,34,0.07);font-size:11px;color:rgba(22,22,34,0.6)}
+.ed-check-box{width:12px;height:12px;border:1.5px solid rgba(22,22,34,0.3);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:8px;color:#e85d3a}
+.ed-check-box.done{background:#161622;border-color:#161622;color:#f2ece0}
+.ed-side-card{background:#161622;padding:14px;margin-bottom:10px}
+.ed-side-card-label{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:6px}
+.ed-side-card-val{font-family:'Playfair Display',serif;font-weight:700;font-size:22px;color:#fff}
+.ed-side-card-sub{font-size:9px;color:rgba(255,255,255,0.4);margin-top:2px}
+.ed-side-tool{background:#e85d3a;padding:14px;margin-bottom:10px}
+.ed-side-tool-label{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:4px}
+.ed-side-tool-val{font-family:'Playfair Display',serif;font-weight:900;font-size:20px;color:#fff}
+
+/* ── SCREEN: DECISIONS ── */
+#ed-s4{display:none}
+#ed-s4.visible{display:block;padding:24px;overflow:auto}
+.ed-dec-page-title{font-family:'Playfair Display',serif;font-weight:900;font-size:52px;color:#161622;line-height:0.9;letter-spacing:-0.02em;margin-bottom:20px}
+.ed-dec-table{width:100%;border-collapse:collapse}
+.ed-dec-table th{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(22,22,34,0.35);text-align:right;padding:8px 12px;border-bottom:2px solid #161622}
+.ed-dec-table td{padding:10px 12px;border-bottom:1px solid rgba(22,22,34,0.08);font-size:11px;color:rgba(22,22,34,0.65);vertical-align:top}
+.ed-dec-table tr:hover td{background:rgba(22,22,34,0.03)}
+.ed-dec-table .cat-cell{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.08em;color:#e85d3a;font-weight:400}
+.ed-dec-table .proj-cell{font-family:'DM Mono',monospace;font-size:8px;color:rgba(22,22,34,0.4)}
+.ed-dec-table .time-cell{font-family:'DM Mono',monospace;font-size:8px;color:rgba(22,22,34,0.3);white-space:nowrap}
+
+/* ── SCREEN: DRIFT ── */
+#ed-s5{display:none}
+#ed-s5.visible{display:block;padding:24px;overflow:auto}
+.ed-drift-title{font-family:'Playfair Display',serif;font-weight:900;font-size:52px;color:#161622;line-height:0.9;letter-spacing:-0.02em;margin-bottom:20px}
+.ed-drift-item{margin-bottom:2px;background:#fff;padding:18px 20px;border-right:4px solid transparent;cursor:pointer;transition:all .15s}
+.ed-drift-item.high{border-right-color:#e85d3a}
+.ed-drift-item.med{border-right-color:#161622}
+.ed-drift-item:hover{background:#ece4d4}
+.ed-drift-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px}
+.ed-drift-t{font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;color:#161622}
+.ed-drift-sev{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.12em;color:#e85d3a;text-transform:uppercase}
+.ed-drift-sev.med{color:rgba(22,22,34,0.4)}
+.ed-drift-b{font-size:11px;color:rgba(22,22,34,0.55);line-height:1.5;margin-bottom:10px}
+.ed-drift-meta{font-family:'DM Mono',monospace;font-size:8px;color:rgba(22,22,34,0.3);letter-spacing:0.08em}
+.ed-drift-actions{display:flex;gap:6px;margin-top:10px}
+.ed-drift-btn{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;padding:5px 12px;cursor:pointer;border:1.5px solid #161622;background:transparent;color:#161622;transition:all .15s}
+.ed-drift-btn:hover{background:#161622;color:#f2ece0}
+.ed-drift-btn.primary{background:#e85d3a;border-color:#e85d3a;color:#fff}
+.ed-drift-btn.primary:hover{background:#c44a2a}
+
+/* ── NEW: MC MISSION DETAIL (S6) ── */
+.mc-detail{flex:1;display:none;flex-direction:row;overflow:hidden;position:relative;z-index:2}
+.mc-detail.show{display:flex}
+.mc-detail-main{flex:1;padding:16px;overflow:auto;border-left:1px solid rgba(74,240,196,0.08)}
+.mc-detail-side{width:200px;border-left:1px solid rgba(74,240,196,0.08);padding:14px;overflow:auto}
+.mc-detail-back{font-size:8px;letter-spacing:0.15em;color:rgba(74,240,196,0.4);cursor:pointer;margin-bottom:12px;display:flex;align-items:center;gap:5px}
+.mc-detail-back:hover{color:#4af0c4}
+.mc-detail-id{font-size:7px;letter-spacing:0.25em;color:rgba(74,240,196,0.25);margin-bottom:6px}
+.mc-detail-title{font-size:18px;font-weight:300;color:#fff;line-height:1.3;margin-bottom:12px;letter-spacing:-0.01em}
+.mc-detail-sep{height:1px;background:rgba(74,240,196,0.08);margin:12px 0}
+.mc-detail-label{font-size:7px;letter-spacing:0.22em;color:rgba(74,240,196,0.3);text-transform:uppercase;margin-bottom:6px;margin-top:12px}
+.mc-detail-body{font-size:9px;color:rgba(255,255,255,0.5);line-height:1.7;letter-spacing:0.02em}
+.mc-check-row{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid rgba(74,240,196,0.05);cursor:pointer;transition:all .1s}
+.mc-check-row:hover{background:rgba(74,240,196,0.02)}
+.mc-check-box{width:10px;height:10px;border:1px solid rgba(74,240,196,0.3);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#4af0c4;transition:all .15s}
+.mc-check-box.done{background:rgba(74,240,196,0.15);border-color:#4af0c4}
+.mc-check-text{font-size:8px;color:rgba(255,255,255,0.55);line-height:1.4}
+.mc-check-text.done{color:rgba(74,240,196,0.4);text-decoration:line-through;text-decoration-color:rgba(74,240,196,0.2)}
+.mc-side-stat{border:1px solid rgba(74,240,196,0.1);padding:10px;margin-bottom:8px}
+.mc-side-stat-l{font-size:7px;letter-spacing:0.18em;color:rgba(74,240,196,0.25);text-transform:uppercase;margin-bottom:4px}
+.mc-side-stat-v{font-size:20px;font-weight:300;color:#4af0c4;line-height:1;text-shadow:0 0 12px rgba(74,240,196,0.3)}
+.mc-side-stat-s{font-size:7px;color:rgba(74,240,196,0.2);margin-top:2px;letter-spacing:0.08em}
+.mc-action-btn{width:100%;border:1px solid rgba(74,240,196,0.2);background:transparent;color:rgba(74,240,196,0.5);font-family:'IBM Plex Mono',monospace;font-size:7px;letter-spacing:0.15em;text-transform:uppercase;padding:7px;cursor:pointer;margin-bottom:6px;transition:all .15s;text-align:center}
+.mc-action-btn:hover{border-color:#4af0c4;color:#4af0c4;background:rgba(74,240,196,0.05)}
+.mc-action-btn.primary{border-color:rgba(74,240,196,0.5);color:#4af0c4;background:rgba(74,240,196,0.06)}
+
+/* ── NEW: MC COMPANION (S7) ── */
+.mc-companion{flex:1;display:none;flex-direction:row;overflow:hidden;position:relative;z-index:2}
+.mc-companion.show{display:flex}
+.mc-chat-area{flex:1;display:flex;flex-direction:column;border-left:1px solid rgba(74,240,196,0.08)}
+.mc-chat-msgs{flex:1;padding:14px;overflow:auto;display:flex;flex-direction:column;gap:10px}
+.mc-chat-msg{font-size:9px;line-height:1.6;letter-spacing:0.02em;max-width:90%}
+.mc-chat-msg.sys{color:rgba(74,240,196,0.35);font-style:italic}
+.mc-chat-msg.ai{color:rgba(255,255,255,0.65);border-right:2px solid rgba(74,240,196,0.3);padding-right:10px}
+.mc-chat-msg.user{color:rgba(74,240,196,0.7);margin-right:auto;border-right:2px solid rgba(74,240,196,0.6);padding-right:10px}
+.mc-chat-prefix{font-size:7px;letter-spacing:0.2em;color:rgba(74,240,196,0.25);margin-bottom:3px}
+.mc-quick-actions{padding:8px 14px;display:flex;gap:6px;flex-wrap:wrap;border-top:1px solid rgba(74,240,196,0.08)}
+.mc-qa-btn{font-size:7px;letter-spacing:0.1em;padding:4px 10px;border:1px solid rgba(74,240,196,0.2);color:rgba(74,240,196,0.4);cursor:pointer;transition:all .1s;background:transparent;font-family:'IBM Plex Mono',monospace}
+.mc-qa-btn:hover{border-color:rgba(74,240,196,0.5);color:#4af0c4;background:rgba(74,240,196,0.04)}
+.mc-chat-input-row{display:flex;align-items:center;gap:8px;padding:8px 14px;border-top:1px solid rgba(74,240,196,0.08)}
+.mc-chat-prompt{font-size:8px;color:rgba(74,240,196,0.35);letter-spacing:0.1em;white-space:nowrap}
+.mc-chat-input{flex:1;background:transparent;border:none;outline:none;font-family:'IBM Plex Mono',monospace;font-size:9px;color:#4af0c4;caret-color:#4af0c4}
+.mc-chat-input::placeholder{color:rgba(74,240,196,0.2)}
+.mc-chat-send{font-size:7px;letter-spacing:0.15em;padding:4px 10px;border:1px solid rgba(74,240,196,0.3);color:rgba(74,240,196,0.5);cursor:pointer;background:transparent;font-family:'IBM Plex Mono',monospace;transition:all .1s}
+.mc-chat-send:hover{border-color:#4af0c4;color:#4af0c4}
+.mc-companion-ctx{width:200px;border-left:1px solid rgba(74,240,196,0.08);padding:14px;overflow:auto}
+
+/* ── NEW: MC NEW MISSION (S8) ── */
+.mc-wizard{flex:1;display:none;flex-direction:column;overflow:hidden;position:relative;z-index:2}
+.mc-wizard.show{display:flex}
+.mc-wizard-steps{display:flex;align-items:center;gap:0;padding:12px 16px;border-bottom:1px solid rgba(74,240,196,0.08);flex-shrink:0}
+.mc-step{display:flex;align-items:center;gap:8px;font-size:7px;letter-spacing:0.15em;color:rgba(74,240,196,0.25);text-transform:uppercase}
+.mc-step.active{color:#4af0c4}
+.mc-step.done{color:rgba(74,240,196,0.4)}
+.mc-step-num{width:18px;height:18px;border:1px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:8px}
+.mc-step-line{flex:1;height:1px;background:rgba(74,240,196,0.1);margin:0 8px}
+.mc-wizard-body{flex:1;padding:20px;overflow:auto}
+.mc-wizard-q{font-size:11px;color:rgba(255,255,255,0.7);margin-bottom:14px;letter-spacing:0.02em}
+.mc-wizard-opt{border:1px solid rgba(74,240,196,0.12);padding:10px 14px;margin-bottom:6px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:10px;font-size:9px;color:rgba(255,255,255,0.5)}
+.mc-wizard-opt:hover,.mc-wizard-opt.selected{border-color:rgba(74,240,196,0.4);background:rgba(74,240,196,0.04);color:rgba(255,255,255,0.75)}
+.mc-wizard-opt .opt-icon{font-size:12px;flex-shrink:0}
+.mc-wizard-opt .opt-label{font-weight:500;color:rgba(74,240,196,0.6);font-size:10px;margin-bottom:2px}
+.mc-wizard-textarea{width:100%;background:rgba(74,240,196,0.02);border:1px solid rgba(74,240,196,0.15);color:rgba(255,255,255,0.6);font-family:'IBM Plex Mono',monospace;font-size:9px;padding:10px;resize:none;outline:none;line-height:1.6}
+.mc-wizard-textarea:focus{border-color:rgba(74,240,196,0.35)}
+.mc-wizard-footer{padding:12px 20px;border-top:1px solid rgba(74,240,196,0.08);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.mc-wiz-btn{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:0.15em;text-transform:uppercase;padding:7px 16px;cursor:pointer;transition:all .15s;border:1px solid rgba(74,240,196,0.25);color:rgba(74,240,196,0.5);background:transparent}
+.mc-wiz-btn:hover{border-color:#4af0c4;color:#4af0c4}
+.mc-wiz-btn.next{background:rgba(74,240,196,0.08);border-color:rgba(74,240,196,0.4);color:#4af0c4}
+.mc-wiz-progress{font-size:7px;color:rgba(74,240,196,0.25);letter-spacing:0.15em}
+
+/* ── NEW: ED MEMORY (S6) ── */
+.ed-mem-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:rgba(22,22,34,0.08)}
+.ed-mem-card{background:#f2ece0;padding:18px 20px;cursor:default;border-right:3px solid transparent}
+.ed-mem-card.arch{border-right-color:#161622}
+.ed-mem-card.stack{border-right-color:#e85d3a}
+.ed-mem-card.ux{border-right-color:#7c6dab}
+.ed-mem-card.ops{border-right-color:#4a8c6f}
+.ed-mem-tag{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(22,22,34,0.35);margin-bottom:8px}
+.ed-mem-card.stack .ed-mem-tag{color:#e85d3a}
+.ed-mem-card.ux .ed-mem-tag{color:#7c6dab}
+.ed-mem-card.ops .ed-mem-tag{color:#4a8c6f}
+.ed-mem-body{font-size:11px;color:rgba(22,22,34,0.65);line-height:1.65}
+.ed-mem-date{font-family:'DM Mono',monospace;font-size:7px;color:rgba(22,22,34,0.3);margin-top:10px;letter-spacing:0.1em}
+
+/* ── NEW: ED COMPANION PANEL ── */
+.ed-companion-overlay{position:fixed;inset:0;background:rgba(22,22,34,0.4);z-index:100;display:none;cursor:pointer}
+.ed-companion-overlay.show{display:block}
+.ed-companion-panel{position:fixed;top:0;left:0;bottom:0;width:380px;background:#f2ece0;z-index:101;display:flex;flex-direction:column;transform:translateX(-100%);transition:transform .3s cubic-bezier(.4,0,.2,1);box-shadow:4px 0 40px rgba(22,22,34,0.2)}
+.ed-companion-panel.show{transform:translateX(0)}
+.ed-cp-header{height:52px;background:#161622;display:flex;align-items:center;padding:0 18px;gap:12px;flex-shrink:0}
+.ed-cp-title{font-family:'Playfair Display',serif;font-weight:700;font-style:italic;font-size:16px;color:#f2ece0;flex:1}
+.ed-cp-close{width:24px;height:24px;border:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,0.5);font-size:12px;transition:all .1s}
+.ed-cp-close:hover{border-color:#e85d3a;color:#e85d3a}
+.ed-cp-ctx{padding:14px 18px;background:#ece4d4;border-bottom:1px solid rgba(22,22,34,0.1);flex-shrink:0}
+.ed-cp-ctx-label{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(22,22,34,0.35);margin-bottom:4px}
+.ed-cp-ctx-val{font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;color:#161622}
+.ed-cp-msgs{flex:1;padding:16px 18px;overflow:auto;display:flex;flex-direction:column;gap:12px}
+.ed-cp-msg{font-size:12px;line-height:1.65}
+.ed-cp-msg.ai{color:rgba(22,22,34,0.7);padding-right:12px;border-right:2px solid #e85d3a}
+.ed-cp-msg.user{color:#161622;font-weight:500;padding-right:12px;border-right:2px solid rgba(22,22,34,0.3)}
+.ed-cp-msg-who{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(22,22,34,0.3);margin-bottom:3px}
+.ed-cp-qas{display:flex;flex-direction:column;gap:5px;padding:12px 18px;border-top:1px solid rgba(22,22,34,0.1);border-bottom:1px solid rgba(22,22,34,0.1);flex-shrink:0}
+.ed-cp-qa{font-size:10px;color:rgba(22,22,34,0.55);padding:6px 10px;border:1px solid rgba(22,22,34,0.12);cursor:pointer;transition:all .1s;font-family:'Outfit',sans-serif;background:transparent;text-align:right}
+.ed-cp-qa:hover{background:#161622;color:#f2ece0;border-color:#161622}
+.ed-cp-input-row{display:flex;align-items:center;gap:8px;padding:12px 18px;flex-shrink:0}
+.ed-cp-input{flex:1;background:transparent;border:none;border-bottom:1.5px solid rgba(22,22,34,0.2);outline:none;font-family:'Outfit',sans-serif;font-size:12px;color:#161622;padding:4px 0}
+.ed-cp-input::placeholder{color:rgba(22,22,34,0.25)}
+.ed-cp-send{background:#e85d3a;border:none;color:#fff;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.12em;padding:7px 14px;cursor:pointer;transition:background .1s}
+.ed-cp-send:hover{background:#c44a2a}
+</style>
+</head>
+<body>
+
+<!-- TOP SWITCHER -->
+<div class="switcher">
+  <span class="sw-label">בחר עיצוב</span>
+  <div class="sw-btn active-1" onclick="switchDesign(1)" id="sw1">01 — Mission Control</div>
+  <div class="sw-sep"></div>
+  <div class="sw-btn" onclick="switchDesign(2)" id="sw2">02 — Editorial</div>
+</div>
+
+<div class="main">
+
+<!-- ══════════════════════════════════════
+     PANEL 1: MISSION CONTROL
+══════════════════════════════════════ -->
+<div class="panel visible" id="panel-1">
+  <div class="mc">
+    <div class="mc-sb">
+      <div class="mc-logo">T</div>
+      <div class="mc-nav-btn active" onclick="mcNav(1,this)" title="Control">
+        ◈<span class="tooltip">CONTROL TOWER</span>
+      </div>
+      <div class="mc-nav-btn" onclick="mcNav(2,this)">
+        ▦<span class="tooltip">PROJECTS</span>
+      </div>
+      <div class="mc-nav-btn" onclick="mcNav(3,this)">
+        ◎<span class="tooltip">MISSIONS</span>
+      </div>
+      <div class="mc-nav-btn" onclick="mcNav(4,this)">
+        ≡<span class="tooltip">DECISIONS</span>
+      </div>
+      <div class="mc-nav-btn" onclick="mcNav(5,this)">
+        ○<span class="tooltip">MEMORY</span>
+      </div>
+      <div class="mc-nav-btn" onclick="mcNav(6,this)">
+        ◉<span class="tooltip">MISSION BRIEF</span>
+      </div>
+      <div class="mc-nav-btn" onclick="mcNav(7,this)">
+        ⊕<span class="tooltip">NEW MISSION</span>
+      </div>
+      <div class="mc-nav-btn" onclick="mcNav(8,this)">
+        ◇<span class="tooltip">COMPANION AI</span>
+      </div>
+    </div>
+    <div class="mc-wrap">
+      <div class="mc-top">
+        <span class="mc-crumb" id="mc-crumb">TANDEM / <span>CONTROL-TOWER</span></span>
+        <div class="mc-ping"></div>
+        <span class="mc-clock">SYS:ONLINE — 2026.05.25</span>
+      </div>
+
+      <!-- S1: CONTROL TOWER -->
+      <div class="mc-screen visible" id="mc-s1" style="grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto auto 1fr">
+
+        <div class="mc-cell hi">
+          <div class="mc-lbl">ACTIVE OPS</div>
+          <div class="mc-num">3</div>
+          <div class="mc-sub">+1 THIS CYCLE</div>
+        </div>
+        <div class="mc-cell">
+          <div class="mc-lbl">MISSIONS</div>
+          <div class="mc-num sm">7</div>
+          <div class="mc-sub">2 AWAIT REVIEW</div>
+        </div>
+        <div class="mc-cell warn">
+          <div class="mc-lbl warn">DRIFT FLAGS</div>
+          <div class="mc-num sm warn">2</div>
+          <div class="mc-sub warn">ACTION REQUIRED</div>
+        </div>
+
+        <div class="mc-cell span2">
+          <div class="mc-lbl">PROJECT STATUS</div>
+          <div class="mc-row">
+            <div class="mc-dot" style="background:#4af0c4"></div>
+            <span style="flex:1;color:rgba(255,255,255,0.7)">SaaS Dashboard</span>
+            <span class="mc-tag-s">BUILD</span>
+            <span class="mc-pct">68%</span>
+          </div>
+          <div class="mc-bar"><div class="mc-fill" style="width:68%"></div></div>
+          <div class="mc-row" style="margin-top:8px">
+            <div class="mc-dot" style="background:#f7c231"></div>
+            <span style="flex:1;color:rgba(255,255,255,0.7)">Mobile App MVP</span>
+            <span class="mc-tag-s">ARCH</span>
+            <span class="mc-pct" style="color:#f7c231">35%</span>
+          </div>
+          <div class="mc-bar"><div class="mc-fill" style="width:35%;background:#f7c231;box-shadow:0 0 5px #f7c231"></div></div>
+          <div class="mc-row" style="margin-top:8px">
+            <div class="mc-dot" style="background:rgba(255,255,255,0.2)"></div>
+            <span style="flex:1;color:rgba(255,255,255,0.35)">E-commerce Platform</span>
+            <span class="mc-tag-s" style="border-color:rgba(255,255,255,0.1);color:rgba(255,255,255,0.25)">PLAN</span>
+            <span class="mc-pct" style="color:rgba(255,255,255,0.3)">12%</span>
+          </div>
+          <div class="mc-bar"><div class="mc-fill" style="width:12%;background:rgba(255,255,255,0.2);box-shadow:none"></div></div>
+        </div>
+
+        <div class="mc-cell">
+          <div class="mc-lbl">DECISIONS</div>
+          <div class="mc-num sm" style="font-size:22px">24</div>
+          <div class="mc-sub">LOGGED — +5 TODAY</div>
+        </div>
+
+        <div class="mc-cell span3" style="border-color:rgba(247,194,49,0.18)">
+          <div class="mc-lbl warn">DRIFT ALERTS</div>
+          <div class="mc-alert red">
+            <div class="mc-alert-t">⚠ SPEC DRIFT — SaaS Dashboard</div>
+            <div class="mc-alert-b">אימות מומש כ-OAuth. PRD מגדיר Magic Links בלבד. זוהה לפני שעתיים.</div>
+          </div>
+          <div class="mc-alert amber">
+            <div class="mc-alert-t">⚡ UNDOCUMENTED DEP — Mobile App MVP</div>
+            <div class="mc-alert-b">react-native-reanimated נוספה ללא רישום ביומן ההחלטות. זוהה לפני יום.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- S2: PROJECTS -->
+      <div class="mc-screen" id="mc-s2" style="display:none;flex-direction:column;gap:6px;padding:14px;overflow:auto">
+        <div class="mc-proj-card">
+          <div class="mc-proj-head">
+            <div>
+              <div class="mc-proj-id">PRJ-001</div>
+              <div class="mc-proj-name">SaaS Dashboard</div>
+            </div>
+            <div class="mc-proj-phase">PHASE: BUILD</div>
+          </div>
+          <div class="mc-proj-desc">פלטפורמת אנליטיקה לעסקים קטנים — Next.js + Supabase + Stripe</div>
+          <div class="mc-bar"><div class="mc-fill" style="width:68%"></div></div>
+          <div class="mc-proj-meta" style="margin-top:8px">
+            <span>PROGRESS: 68%</span>
+            <span>MISSIONS: 3 ACTIVE</span>
+            <span>LAST: 2H AGO</span>
+          </div>
+        </div>
+        <div class="mc-proj-card">
+          <div class="mc-proj-head">
+            <div>
+              <div class="mc-proj-id">PRJ-002</div>
+              <div class="mc-proj-name">Mobile App MVP</div>
+            </div>
+            <div class="mc-proj-phase" style="border-color:rgba(247,194,49,0.3);color:rgba(247,194,49,0.6)">PHASE: ARCH</div>
+          </div>
+          <div class="mc-proj-desc">אפליקציית מעקב כושר — React Native + Expo + Supabase</div>
+          <div class="mc-bar"><div class="mc-fill" style="width:35%;background:#f7c231;box-shadow:0 0 5px #f7c231"></div></div>
+          <div class="mc-proj-meta" style="margin-top:8px">
+            <span>PROGRESS: 35%</span>
+            <span>MISSIONS: 2 ACTIVE</span>
+            <span>LAST: 1D AGO</span>
+          </div>
+        </div>
+        <div class="mc-proj-card" style="opacity:0.5">
+          <div class="mc-proj-head">
+            <div>
+              <div class="mc-proj-id">PRJ-003</div>
+              <div class="mc-proj-name">E-commerce Platform</div>
+            </div>
+            <div class="mc-proj-phase" style="border-color:rgba(255,255,255,0.1);color:rgba(255,255,255,0.25)">PHASE: PLAN</div>
+          </div>
+          <div class="mc-proj-desc">מרקטפלייס למוצרים בעבודת יד — Shopify + Next.js</div>
+          <div class="mc-bar"><div class="mc-fill" style="width:12%;background:rgba(255,255,255,0.2);box-shadow:none"></div></div>
+          <div class="mc-proj-meta" style="margin-top:8px">
+            <span>PROGRESS: 12%</span>
+            <span>MISSIONS: 0 ACTIVE</span>
+            <span>LAST: 3D AGO</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- S3: MISSIONS -->
+      <div class="mc-screen" id="mc-s3" style="display:none">
+        <div class="mc-mission">
+          <div class="mc-mission-status"><div class="mc-dot" style="background:#4af0c4;box-shadow:0 0 5px #4af0c4"></div>IN-PROGRESS</div>
+          <div class="mc-mission-title">מימוש זרימת אימות משתמשים עם Magic Links ו-OAuth fallback</div>
+          <div class="mc-mission-meta">
+            <span class="mc-badge active">CURSOR</span>
+            <span style="font-size:7px;color:rgba(74,240,196,0.3);letter-spacing:0.1em">SaaS Dashboard — HIGH</span>
+          </div>
+        </div>
+        <div class="mc-mission">
+          <div class="mc-mission-status"><div class="mc-dot" style="background:#f7c231;box-shadow:0 0 5px #f7c231"></div>PENDING REVIEW</div>
+          <div class="mc-mission-title">יצירת קומפוננטות פריסת דשבורד — sidebar, topbar, stats grid</div>
+          <div class="mc-mission-meta">
+            <span class="mc-badge review">V0.DEV</span>
+            <span style="font-size:7px;color:rgba(74,240,196,0.3);letter-spacing:0.1em">SaaS Dashboard — MED</span>
+          </div>
+        </div>
+        <div class="mc-mission">
+          <div class="mc-mission-status"><div class="mc-dot" style="background:rgba(255,255,255,0.2)"></div>QUEUED</div>
+          <div class="mc-mission-title">הגדרת סכמת בסיס נתונים — users, projects, missions, decisions</div>
+          <div class="mc-mission-meta">
+            <span class="mc-badge">CLAUDE CODE</span>
+            <span style="font-size:7px;color:rgba(74,240,196,0.3);letter-spacing:0.1em">Mobile App MVP — HIGH</span>
+          </div>
+        </div>
+        <div class="mc-mission">
+          <div class="mc-mission-status"><div class="mc-dot" style="background:rgba(255,255,255,0.2)"></div>QUEUED</div>
+          <div class="mc-mission-title">API integration layer — REST endpoints + error handling</div>
+          <div class="mc-mission-meta">
+            <span class="mc-badge">WINDSURF</span>
+            <span style="font-size:7px;color:rgba(74,240,196,0.3);letter-spacing:0.1em">SaaS Dashboard — MED</span>
+          </div>
+        </div>
+        <div class="mc-mission">
+          <div class="mc-mission-status"><div class="mc-dot" style="background:rgba(74,240,196,0.15)"></div>COMPLETED</div>
+          <div class="mc-mission-title" style="opacity:0.4">הגדרת ארכיטקטורת המערכת הבסיסית</div>
+          <div class="mc-mission-meta">
+            <span class="mc-badge" style="opacity:0.4">CLAUDE CODE</span>
+            <span style="font-size:7px;color:rgba(74,240,196,0.2);letter-spacing:0.1em">SaaS Dashboard — DONE</span>
+          </div>
+        </div>
+        <div class="mc-mission">
+          <div class="mc-mission-status"><div class="mc-dot" style="background:rgba(74,240,196,0.15)"></div>COMPLETED</div>
+          <div class="mc-mission-title" style="opacity:0.4">בחירת Stack טכנולוגי ו-dependency map</div>
+          <div class="mc-mission-meta">
+            <span class="mc-badge" style="opacity:0.4">MANUAL</span>
+            <span style="font-size:7px;color:rgba(74,240,196,0.2);letter-spacing:0.1em">Mobile App MVP — DONE</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- S4: DECISIONS -->
+      <div class="mc-screen" id="mc-s4" style="display:none;grid-template-columns:1fr">
+        <div class="mc-cell" style="margin:14px;margin-bottom:0;padding:8px 14px">
+          <div class="mc-lbl">DECISION LOG — 24 ENTRIES</div>
+        </div>
+        <div class="mc-decision">
+          <div class="mc-dec-ts">2026.05.25<br>14:32</div>
+          <div><div class="mc-dec-title">שימוש ב-Supabase Auth לאימות — Magic Links + OAuth Google</div><div class="mc-dec-proj">SaaS Dashboard</div></div>
+          <div class="mc-dec-cat">ARCH</div>
+        </div>
+        <div class="mc-decision">
+          <div class="mc-dec-ts">2026.05.25<br>11:10</div>
+          <div><div class="mc-dec-title">Server Side Rendering לכל דפי ה-marketing לטובת SEO</div><div class="mc-dec-proj">E-commerce Platform</div></div>
+          <div class="mc-dec-cat">PERF</div>
+        </div>
+        <div class="mc-decision">
+          <div class="mc-dec-ts">2026.05.24<br>16:45</div>
+          <div><div class="mc-dec-title">React Native + Expo במקום Flutter — ecosystem וידע קיים בצוות</div><div class="mc-dec-proj">Mobile App MVP</div></div>
+          <div class="mc-dec-cat">STACK</div>
+        </div>
+        <div class="mc-decision">
+          <div class="mc-dec-ts">2026.05.24<br>09:20</div>
+          <div><div class="mc-dec-title">Tailwind CSS v4 + shadcn/ui כ-design system בסיסי</div><div class="mc-dec-proj">SaaS Dashboard</div></div>
+          <div class="mc-dec-cat">UI</div>
+        </div>
+        <div class="mc-decision">
+          <div class="mc-dec-ts">2026.05.23<br>17:00</div>
+          <div><div class="mc-dec-title">Vercel לדפלוי — edge functions לפונקציות AI, serverless לשאר</div><div class="mc-dec-proj">SaaS Dashboard</div></div>
+          <div class="mc-dec-cat">OPS</div>
+        </div>
+        <div class="mc-decision">
+          <div class="mc-dec-ts">2026.05.22<br>12:30</div>
+          <div><div class="mc-dec-title">Stripe Checkout לתשלומים — לא לבנות billing logic בעצמנו</div><div class="mc-dec-proj">SaaS Dashboard</div></div>
+          <div class="mc-dec-cat">BIZ</div>
+        </div>
+      </div>
+
+      <!-- S5: MEMORY -->
+      <div class="mc-screen" id="mc-s5" style="display:none">
+        <div class="mc-mem-entry arch">
+          <div class="mc-mem-tag">ARCHITECTURE</div>
+          <div class="mc-mem-body">Next.js App Router עם Supabase כ-backend. RLS מופעל על כל הטבלאות. Auth דרך Magic Links בלבד — ה-PRD מגדיר זאת במפורש.</div>
+          <div class="mc-mem-date">2026.05.25 — SaaS Dashboard</div>
+        </div>
+        <div class="mc-mem-entry stack">
+          <div class="mc-mem-tag stack">STACK</div>
+          <div class="mc-mem-body">React Native + Expo SDK 51. State management עם Zustand. Navigation עם Expo Router. Backend Supabase זהה ל-SaaS Dashboard.</div>
+          <div class="mc-mem-date">2026.05.24 — Mobile App MVP</div>
+        </div>
+        <div class="mc-mem-entry ux">
+          <div class="mc-mem-tag ux">UX DECISIONS</div>
+          <div class="mc-mem-body">Dark theme בלבד — אין light mode בשלב MVP. RTL עברית לכל ממשק המשתמש. Companion AI כ-floating panel, לא embedded בדף.</div>
+          <div class="mc-mem-date">2026.05.23 — Cross-project</div>
+        </div>
+        <div class="mc-mem-entry ops">
+          <div class="mc-mem-tag ops">OPS</div>
+          <div class="mc-mem-body">CI/CD דרך Vercel Git integration. Preview deployments לכל PR. Env secrets ב-Vercel Dashboard — לא ב-.env.local.</div>
+          <div class="mc-mem-date">2026.05.22 — SaaS Dashboard</div>
+        </div>
+        <div class="mc-mem-entry arch" style="border-top-color:rgba(74,240,196,0.3)">
+          <div class="mc-mem-tag">DB SCHEMA</div>
+          <div class="mc-mem-body">טבלאות: projects, missions, return_briefs, decisions, drift_alerts, project_memory. כל טבלה עם user_id + RLS policy. Timestamps ב-UTC.</div>
+          <div class="mc-mem-date">2026.05.21 — Cross-project</div>
+        </div>
+        <div class="mc-mem-entry stack">
+          <div class="mc-mem-tag stack">AI INTEGRATION</div>
+          <div class="mc-mem-body">Vercel AI SDK עם claude-sonnet-4-5. Structured outputs + Zod validation. Companion context window: 20 החלטות אחרונות + project memory.</div>
+          <div class="mc-mem-date">2026.05.20 — Cross-project</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PANEL 2: EDITORIAL
+══════════════════════════════════════ -->
+<div class="panel" id="panel-2">
+  <div class="ed">
+    <div class="ed-sb">
+      <div class="ed-logo-v" onclick="edNav(1)">Tandem</div>
+      <div class="ed-nav-pip active" onclick="edNav(1)"><span class="tt">מגדל שליטה</span></div>
+      <div class="ed-nav-pip" onclick="edNav(2)"><span class="tt">פרויקטים</span></div>
+      <div class="ed-nav-pip" onclick="edNav(3)"><span class="tt">משימה פעילה</span></div>
+      <div class="ed-nav-pip" onclick="edNav(4)"><span class="tt">יומן החלטות</span></div>
+      <div class="ed-nav-pip" onclick="edNav(5)"><span class="tt">זיהוי סטייה</span></div>
+      <div class="ed-nav-pip" onclick="edNav(6)"><span class="tt">זיכרון פרויקט</span></div>
+      <div class="ed-nav-pip" onclick="edCompanion()"><span class="tt">Companion AI</span></div>
+    </div>
+    <div class="ed-wrap">
+      <div class="ed-top">
+        <span class="ed-date">2026.V — Issue No. 001</span>
+        <span class="ed-top-item active" onclick="edNav(1)">מגדל שליטה</span>
+        <span class="ed-top-item" onclick="edNav(2)">פרויקטים</span>
+        <span class="ed-top-item" onclick="edNav(3)">משימות</span>
+        <span class="ed-top-item" onclick="edNav(4)">החלטות</span>
+        <span class="ed-top-item" onclick="edNav(5)">סטייה</span>
+        <span class="ed-top-item" onclick="edNav(6)">זיכרון</span>
+        <span class="ed-top-item" onclick="edCompanion()" style="border-bottom-color:#e85d3a">✦ Companion</span>
+        <div class="ed-status"><div class="ed-status-dot"></div><span>Live</span></div>
+      </div>
+
+      <!-- S1: CONTROL TOWER -->
+      <div class="ed-screen visible" id="ed-s1" style="display:none"><!-- overridden by JS --></div>
+      <div id="ed-s1-inner" style="display:grid;grid-template-columns:1.8fr 1px 1fr;flex:1;overflow:hidden">
+        <div class="ed-left-col">
+          <div class="ed-section">
+            <div class="ed-section-head">סקירת מערכת <span style="font-family:'DM Mono',monospace;font-size:7px">2026.05.25</span></div>
+            <div class="ed-hero-num">3</div>
+            <div class="ed-hero-label">פרויקטים פעילים בתהליך</div>
+            <div class="ed-stat-strip">
+              <div class="ed-stat-cell">
+                <div class="ed-stat-n">7</div><div class="ed-stat-l">משימות</div>
+              </div>
+              <div class="ed-stat-cell">
+                <div class="ed-stat-n">24</div><div class="ed-stat-l">החלטות</div>
+              </div>
+              <div class="ed-stat-cell">
+                <div class="ed-stat-n red">2</div><div class="ed-stat-l">התראות</div>
+              </div>
+            </div>
+          </div>
+          <div class="ed-section">
+            <div class="ed-section-head">פרויקטים</div>
+            <div class="ed-proj-entry" onclick="edNav(2)">
+              <div><div class="ed-proj-name-e">SaaS Dashboard</div><div class="ed-proj-bar-e"><div class="ed-proj-bar-fill" style="width:68%"></div></div></div>
+              <div class="ed-proj-phase-e">BUILD</div>
+              <div class="ed-proj-pct-e">68%</div>
+            </div>
+            <div class="ed-proj-entry" onclick="edNav(2)">
+              <div><div class="ed-proj-name-e">Mobile App MVP</div><div class="ed-proj-bar-e"><div class="ed-proj-bar-fill" style="width:35%"></div></div></div>
+              <div class="ed-proj-phase-e">ARCH</div>
+              <div class="ed-proj-pct-e">35%</div>
+            </div>
+            <div class="ed-proj-entry" onclick="edNav(2)" style="opacity:0.45">
+              <div><div class="ed-proj-name-e">E-commerce Platform</div><div class="ed-proj-bar-e"><div class="ed-proj-bar-fill" style="width:12%"></div></div></div>
+              <div class="ed-proj-phase-e">PLAN</div>
+              <div class="ed-proj-pct-e" style="color:rgba(22,22,34,0.4)">12%</div>
+            </div>
+          </div>
+          <div class="ed-section">
+            <div class="ed-section-head">החלטות אחרונות</div>
+            <div class="ed-dec-row"><span class="ed-dec-cat-e">ARCH</span><span class="ed-dec-text">שימוש ב-Supabase Auth לאימות</span><span class="ed-dec-time">14:32</span></div>
+            <div class="ed-dec-row"><span class="ed-dec-cat-e">PERF</span><span class="ed-dec-text">SSR לכל דפי ה-marketing</span><span class="ed-dec-time">11:10</span></div>
+            <div class="ed-dec-row"><span class="ed-dec-cat-e">STACK</span><span class="ed-dec-text">React Native במקום Flutter</span><span class="ed-dec-time">אתמול</span></div>
+          </div>
+        </div>
+        <div class="ed-divider-v"></div>
+        <div class="ed-right-col">
+          <div class="ed-section">
+            <div class="ed-section-head">התראות סטייה</div>
+            <div class="ed-alert-card hot">
+              <div class="ed-alert-title-e">⚠ Spec Drift — Authentication</div>
+              <div class="ed-alert-body-e">OAuth מומש במקום Magic Links כפי שהוגדר ב-PRD. דורש תשומת לב מיידית.</div>
+            </div>
+            <div class="ed-alert-card cool">
+              <div class="ed-alert-title-e">⚡ Undocumented Dependency</div>
+              <div class="ed-alert-body-e">react-native-reanimated נוספה ללא רישום ביומן ההחלטות.</div>
+            </div>
+          </div>
+          <div class="ed-section">
+            <div class="ed-section-head">משימה נוכחית</div>
+            <div style="background:#161622;padding:14px;cursor:pointer" onclick="edNav(3)">
+              <div style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:0.15em;color:rgba(255,255,255,0.25);margin-bottom:6px">IN PROGRESS</div>
+              <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:16px;color:#fff;line-height:1.2;margin-bottom:8px">מימוש זרימת אימות משתמשים</div>
+              <div style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,0.3)">CURSOR — SaaS Dashboard</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S2: PROJECTS -->
+      <div class="ed-screen" id="ed-s2" style="padding:24px;overflow:auto">
+        <div class="ed-page-title">פרויקטים</div>
+        <div class="ed-page-sub">3 פרויקטים פעילים — Issue No. 001</div>
+        <div class="ed-proj-grid">
+          <div class="ed-proj-tile" onclick="edNav(3)">
+            <div class="ed-pt-header">
+              <div><div class="ed-pt-name">SaaS Dashboard</div><div class="ed-pt-phase">Phase: Build</div></div>
+              <div class="ed-pt-pct">68%</div>
+            </div>
+            <div class="ed-pt-desc">פלטפורמת אנליטיקה לעסקים קטנים. Next.js + Supabase + Stripe integration.</div>
+            <div class="ed-pt-bar"><div class="ed-pt-bar-fill" style="width:68%"></div></div>
+            <div class="ed-pt-meta"><span>3 MISSIONS ACTIVE</span><span>LAST: 2H</span><span>DRIFT: ⚠</span></div>
+          </div>
+          <div class="ed-proj-tile" onclick="edNav(3)">
+            <div class="ed-pt-header">
+              <div><div class="ed-pt-name">Mobile App MVP</div><div class="ed-pt-phase">Phase: Architecture</div></div>
+              <div class="ed-pt-pct" style="color:#161622">35%</div>
+            </div>
+            <div class="ed-pt-desc">אפליקציית מעקב כושר. React Native + Expo + Supabase backend משותף.</div>
+            <div class="ed-pt-bar"><div class="ed-pt-bar-fill" style="width:35%"></div></div>
+            <div class="ed-pt-meta"><span>2 MISSIONS ACTIVE</span><span>LAST: 1D</span><span>DRIFT: ⚡</span></div>
+          </div>
+          <div class="ed-proj-tile" style="opacity:0.5">
+            <div class="ed-pt-header">
+              <div><div class="ed-pt-name">E-commerce Platform</div><div class="ed-pt-phase">Phase: Planning</div></div>
+              <div class="ed-pt-pct" style="color:rgba(22,22,34,0.3)">12%</div>
+            </div>
+            <div class="ed-pt-desc">מרקטפלייס למוצרים בעבודת יד. Shopify + Next.js storefront.</div>
+            <div class="ed-pt-bar"><div class="ed-pt-bar-fill" style="width:12%"></div></div>
+            <div class="ed-pt-meta"><span>0 MISSIONS ACTIVE</span><span>LAST: 3D</span><span>DRIFT: —</span></div>
+          </div>
+          <div class="ed-proj-tile" style="background:#e85d3a;cursor:default">
+            <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:28px;color:#fff;line-height:1;margin-bottom:8px">+<br>פרויקט חדש</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.6)">הגדר מטרה, שפה, Stack ו-first mission</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S3: MISSION DETAIL -->
+      <div class="ed-screen" id="ed-s3">
+        <div class="ed-mission-main">
+          <div class="ed-mission-num">MSN-007 — SaaS Dashboard</div>
+          <div class="ed-mission-title">מימוש זרימת<br>אימות משתמשים</div>
+          <div class="ed-mission-proj">כלי: Cursor AI · עדיפות: High · סטטוס: In Progress</div>
+
+          <div class="ed-mission-label">מטרה</div>
+          <div class="ed-mission-body">מימוש מלא של זרימת האימות עם Supabase Auth — Magic Links כ-primary flow. אין OAuth בשלב זה (ראה החלטה #001).</div>
+
+          <div class="ed-mission-label">צ'קליסט</div>
+          <div class="ed-checklist-item"><div class="ed-check-box done">✓</div><span>הגדרת Supabase Auth ב-Dashboard</span></div>
+          <div class="ed-checklist-item"><div class="ed-check-box done">✓</div><span>יצירת /auth/callback route handler</span></div>
+          <div class="ed-checklist-item"><div class="ed-check-box">□</div><span>דף Login עם Magic Link form</span></div>
+          <div class="ed-checklist-item"><div class="ed-check-box">□</div><span>RLS policies על טבלת users</span></div>
+          <div class="ed-checklist-item"><div class="ed-check-box">□</div><span>middleware.ts לprotected routes</span></div>
+          <div class="ed-checklist-item"><div class="ed-check-box">□</div><span>E2E test עם Playwright</span></div>
+
+          <div class="ed-mission-label">הקשר מהזיכרון</div>
+          <div class="ed-mission-body">PRD מגדיר Magic Links בלבד. אין לממש OAuth Google בשלב זה גם אם Supabase מאפשר — ראה drift alert פתוח.</div>
+        </div>
+        <div class="ed-mission-side">
+          <div class="ed-side-card">
+            <div class="ed-side-card-label">התקדמות</div>
+            <div class="ed-side-card-val">2 / 6</div>
+            <div class="ed-side-card-sub">משימות הושלמו</div>
+          </div>
+          <div class="ed-side-tool">
+            <div class="ed-side-tool-label">כלי עבודה</div>
+            <div class="ed-side-tool-val">Cursor</div>
+          </div>
+          <div class="ed-side-card">
+            <div class="ed-side-card-label">משך משוער</div>
+            <div class="ed-side-card-val">3–4h</div>
+            <div class="ed-side-card-sub">סשן עבודה אחד</div>
+          </div>
+          <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(22,22,34,0.1)">
+            <div style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(22,22,34,0.3);margin-bottom:8px">משימות קשורות</div>
+            <div style="font-size:10px;color:rgba(22,22,34,0.55);padding:5px 0;border-bottom:1px solid rgba(22,22,34,0.08)">יצירת קומפוננטות פריסה</div>
+            <div style="font-size:10px;color:rgba(22,22,34,0.55);padding:5px 0">הגדרת DB Schema</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S4: DECISIONS -->
+      <div class="ed-screen" id="ed-s4" style="padding:24px;overflow:auto">
+        <div class="ed-dec-page-title">יומן<br>החלטות</div>
+        <table class="ed-dec-table" style="margin-top:20px">
+          <thead>
+            <tr>
+              <th style="width:80px">תאריך</th>
+              <th>החלטה</th>
+              <th style="width:100px">פרויקט</th>
+              <th style="width:70px">קטגוריה</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="time-cell">2026.05.25</td><td>שימוש ב-Supabase Auth לאימות — Magic Links + OAuth Google</td><td class="proj-cell">SaaS Dashboard</td><td class="cat-cell">ARCH</td></tr>
+            <tr><td class="time-cell">2026.05.25</td><td>SSR לכל דפי marketing לטובת SEO</td><td class="proj-cell">E-commerce</td><td class="cat-cell">PERF</td></tr>
+            <tr><td class="time-cell">2026.05.24</td><td>React Native + Expo במקום Flutter</td><td class="proj-cell">Mobile MVP</td><td class="cat-cell">STACK</td></tr>
+            <tr><td class="time-cell">2026.05.24</td><td>Tailwind CSS v4 + shadcn/ui כ-design system</td><td class="proj-cell">SaaS Dashboard</td><td class="cat-cell">UI</td></tr>
+            <tr><td class="time-cell">2026.05.23</td><td>Vercel לדפלוי — edge functions לפונקציות AI</td><td class="proj-cell">SaaS Dashboard</td><td class="cat-cell">OPS</td></tr>
+            <tr><td class="time-cell">2026.05.22</td><td>Stripe Checkout לתשלומים — לא לבנות billing logic</td><td class="proj-cell">SaaS Dashboard</td><td class="cat-cell">BIZ</td></tr>
+            <tr><td class="time-cell">2026.05.21</td><td>Zustand לstate management — לא Redux</td><td class="proj-cell">Mobile MVP</td><td class="cat-cell">STACK</td></tr>
+            <tr><td class="time-cell">2026.05.20</td><td>Vercel AI SDK עם claude-sonnet-4-5 לCompanion</td><td class="proj-cell">Cross</td><td class="cat-cell">AI</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- S5: DRIFT -->
+      <div class="ed-screen" id="ed-s5" style="padding:24px;overflow:auto">
+        <div class="ed-drift-title">זיהוי<br>סטייה</div>
+        <div style="margin-top:20px">
+          <div class="ed-drift-item high">
+            <div class="ed-drift-head">
+              <div class="ed-drift-t">מימוש האימות שונה מהמפרט</div>
+              <div class="ed-drift-sev">HIGH</div>
+            </div>
+            <div class="ed-drift-b">תדריך החזרה מציין שמומש OAuth Google, אך ה-PRD מגדיר Magic Links בלבד. הפרש זוהה בהשוואה אוטומטית של Return Brief ל-PRD.</div>
+            <div class="ed-drift-meta">SaaS Dashboard · זוהה 2026.05.25 14:32</div>
+            <div class="ed-drift-actions">
+              <button class="ed-drift-btn primary">סקור הפרשים</button>
+              <button class="ed-drift-btn">עדכן מפרט</button>
+              <button class="ed-drift-btn">התעלם</button>
+            </div>
+          </div>
+          <div class="ed-drift-item med">
+            <div class="ed-drift-head">
+              <div class="ed-drift-t">תלות חדשה נוספה ללא תיעוד</div>
+              <div class="ed-drift-sev med">MEDIUM</div>
+            </div>
+            <div class="ed-drift-b">חבילת react-native-reanimated v3 נוספה ל-package.json אך לא נרשמה ביומן ההחלטות. סיבה אפשרית: שימוש ב-Expo Router שדרש אותה transitively.</div>
+            <div class="ed-drift-meta">Mobile App MVP · זוהה 2026.05.24 09:15</div>
+            <div class="ed-drift-actions">
+              <button class="ed-drift-btn primary">רשום החלטה</button>
+              <button class="ed-drift-btn">בחן תלות</button>
+              <button class="ed-drift-btn">התעלם</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S6: MISSION DETAIL -->
+      <div class="mc-detail" id="mc-s6">
+        <div class="mc-detail-main">
+          <div class="mc-detail-back" onclick="mcNav(3,null)">← BACK TO MISSIONS</div>
+          <div class="mc-detail-id">MSN-007 — SaaS Dashboard — HIGH PRIORITY</div>
+          <div class="mc-detail-title">מימוש זרימת אימות<br>משתמשים עם Magic Links</div>
+          <div style="display:flex;gap:8px;margin-bottom:10px">
+            <span class="mc-tag-s" style="margin:0">CURSOR</span>
+            <span class="mc-tag-s" style="margin:0;border-color:rgba(247,194,49,0.25);color:rgba(247,194,49,0.5)">IN-PROGRESS</span>
+          </div>
+          <div class="mc-detail-sep"></div>
+          <div class="mc-detail-label">OBJECTIVE</div>
+          <div class="mc-detail-body">מימוש מלא של זרימת האימות עם Supabase Auth. Magic Links כ-primary flow. אין OAuth בשלב זה — ראה החלטה #001 ביומן.</div>
+          <div class="mc-detail-label">CHECKLIST</div>
+          <div class="mc-check-row" onclick="toggleCheck(this)">
+            <div class="mc-check-box done">✓</div><span class="mc-check-text done">הגדרת Supabase Auth ב-Dashboard</span>
+          </div>
+          <div class="mc-check-row" onclick="toggleCheck(this)">
+            <div class="mc-check-box done">✓</div><span class="mc-check-text done">יצירת /auth/callback route handler</span>
+          </div>
+          <div class="mc-check-row" onclick="toggleCheck(this)">
+            <div class="mc-check-box"></div><span class="mc-check-text">דף Login עם Magic Link form + validation</span>
+          </div>
+          <div class="mc-check-row" onclick="toggleCheck(this)">
+            <div class="mc-check-box"></div><span class="mc-check-text">RLS policies על טבלת users</span>
+          </div>
+          <div class="mc-check-row" onclick="toggleCheck(this)">
+            <div class="mc-check-box"></div><span class="mc-check-text">middleware.ts לprotected routes</span>
+          </div>
+          <div class="mc-check-row" onclick="toggleCheck(this)">
+            <div class="mc-check-box"></div><span class="mc-check-text">E2E test עם Playwright — login flow</span>
+          </div>
+          <div class="mc-detail-label">CONTEXT FROM MEMORY</div>
+          <div class="mc-detail-body">PRD מגדיר Magic Links בלבד. יש drift alert פתוח — OAuth Google מומש בטעות בסשן אחרון. לבחון ולהסיר לפני merge.</div>
+          <div class="mc-detail-label">ACCEPTANCE CRITERIA</div>
+          <div class="mc-detail-body">משתמש חדש יכול להתחבר עם אימייל בלבד. Redirect לדשבורד אחרי אימות. Session נשמר ב-cookie מוצפן. Protected routes מחזירים 401 ללא session.</div>
+        </div>
+        <div class="mc-detail-side">
+          <div class="mc-side-stat">
+            <div class="mc-side-stat-l">PROGRESS</div>
+            <div class="mc-side-stat-v">2/6</div>
+            <div class="mc-side-stat-s">ITEMS DONE</div>
+          </div>
+          <div class="mc-side-stat" style="border-color:rgba(247,194,49,0.2)">
+            <div class="mc-side-stat-l">EST. TIME</div>
+            <div class="mc-side-stat-v" style="font-size:16px;color:#f7c231;text-shadow:0 0 12px rgba(247,194,49,0.3)">3–4h</div>
+            <div class="mc-side-stat-s" style="color:rgba(247,194,49,0.2)">ONE SESSION</div>
+          </div>
+          <div class="mc-detail-sep"></div>
+          <button class="mc-action-btn primary" onclick="mcNav(8,null)">→ OPEN COMPANION</button>
+          <button class="mc-action-btn" onclick="mcNav(4,null)">LOG DECISION</button>
+          <button class="mc-action-btn">MARK COMPLETE</button>
+          <div class="mc-detail-sep"></div>
+          <div class="mc-detail-label">RELATED</div>
+          <div style="font-size:8px;color:rgba(255,255,255,0.35);padding:4px 0;border-bottom:1px solid rgba(74,240,196,0.05)">MSN-008 Dashboard Components</div>
+          <div style="font-size:8px;color:rgba(255,255,255,0.35);padding:4px 0">MSN-009 DB Schema Setup</div>
+        </div>
+      </div>
+
+      <!-- S7: NEW MISSION WIZARD -->
+      <div class="mc-wizard" id="mc-s7">
+        <div class="mc-wizard-steps">
+          <div class="mc-step active" id="wiz-step-1">
+            <div class="mc-step-num">1</div><span>PROJECT</span>
+          </div>
+          <div class="mc-step-line"></div>
+          <div class="mc-step" id="wiz-step-2">
+            <div class="mc-step-num">2</div><span>TOOL</span>
+          </div>
+          <div class="mc-step-line"></div>
+          <div class="mc-step" id="wiz-step-3">
+            <div class="mc-step-num">3</div><span>OBJECTIVE</span>
+          </div>
+          <div class="mc-step-line"></div>
+          <div class="mc-step" id="wiz-step-4">
+            <div class="mc-step-num">4</div><span>GENERATE</span>
+          </div>
+        </div>
+        <div class="mc-wizard-body" id="wiz-body">
+          <!-- Step 1 content - shown by JS -->
+        </div>
+        <div class="mc-wizard-footer">
+          <button class="mc-wiz-btn" onclick="wizPrev()">← BACK</button>
+          <span class="mc-wiz-progress" id="wiz-prog">STEP 1 OF 4</span>
+          <button class="mc-wiz-btn next" onclick="wizNext()">NEXT →</button>
+        </div>
+      </div>
+
+      <!-- S8: COMPANION AI -->
+      <div class="mc-companion" id="mc-s8">
+        <div class="mc-chat-area">
+          <div class="mc-chat-msgs" id="mc-chat-msgs">
+            <div class="mc-chat-msg sys">// SESSION INITIALIZED — TANDEM COMPANION v2.1</div>
+            <div class="mc-chat-msg sys">// CONTEXT LOADED: SaaS Dashboard → MSN-007</div>
+            <div class="mc-chat-msg ai">
+              <div class="mc-chat-prefix">COMPANION ▸</div>
+              MSN-007 טעון. רואה ש-2 פריטים הושלמו מתוך 6 בצ'קליסט.<br><br>
+              יש drift alert פתוח — OAuth מומש במקום Magic Links. לפני שממשיכים כדאי לוודא שהקוד מ-SaaS Dashboard branch האחרון לא כולל את ה-OAuth flow.<br><br>
+              איפה כדאי להתחיל?
+            </div>
+          </div>
+          <div class="mc-quick-actions">
+            <button class="mc-qa-btn" onclick="mcChat('צור mission prompt ל-Cursor')">⬡ MISSION PROMPT</button>
+            <button class="mc-qa-btn" onclick="mcChat('בדוק את ה-drift ב-OAuth')">⚠ CHECK DRIFT</button>
+            <button class="mc-qa-btn" onclick="mcChat('מה הצעד הבא?')">→ NEXT STEP</button>
+            <button class="mc-qa-btn" onclick="mcChat('סכם סשן')">◈ LOG SESSION</button>
+          </div>
+          <div class="mc-chat-input-row">
+            <span class="mc-chat-prompt">TANDEM:MSN-007 ▸</span>
+            <input class="mc-chat-input" id="mc-input" placeholder="הקלד פקודה..." onkeydown="if(event.key==='Enter')mcSend()">
+            <button class="mc-chat-send" onclick="mcSend()">SEND</button>
+          </div>
+        </div>
+        <div class="mc-companion-ctx">
+          <div class="mc-detail-label">ACTIVE CONTEXT</div>
+          <div class="mc-side-stat" style="margin-top:6px">
+            <div class="mc-side-stat-l">PROJECT</div>
+            <div class="mc-side-stat-v" style="font-size:13px">SaaS<br>Dashboard</div>
+          </div>
+          <div class="mc-side-stat">
+            <div class="mc-side-stat-l">MISSION</div>
+            <div class="mc-side-stat-v" style="font-size:12px">MSN-007</div>
+            <div class="mc-side-stat-s">AUTH FLOW</div>
+          </div>
+          <div class="mc-side-stat" style="border-color:rgba(247,194,49,0.2)">
+            <div class="mc-side-stat-l" style="color:rgba(247,194,49,0.3)">DRIFT FLAGS</div>
+            <div class="mc-side-stat-v" style="color:#f7c231;text-shadow:0 0 10px rgba(247,194,49,0.3)">1</div>
+          </div>
+          <div class="mc-detail-sep"></div>
+          <div class="mc-detail-label">MEMORY REFS</div>
+          <div style="font-size:7px;color:rgba(74,240,196,0.25);padding:3px 0;border-bottom:1px solid rgba(74,240,196,0.05)">Decision #001 — Auth</div>
+          <div style="font-size:7px;color:rgba(74,240,196,0.25);padding:3px 0;border-bottom:1px solid rgba(74,240,196,0.05)">PRD v1.2 — Auth spec</div>
+          <div style="font-size:7px;color:rgba(74,240,196,0.25);padding:3px 0">Drift Alert DA-001</div>
+        </div>
+      </div>
+
+      <!-- S6: MEMORY -->
+      <div class="ed-screen" id="ed-s6" style="padding:24px;overflow:auto">
+        <div class="ed-page-title">זיכרון<br>פרויקט</div>
+        <div class="ed-page-sub">הקשר מצטבר — החלטות, ארכיטקטורה, מגבלות</div>
+        <div class="ed-mem-grid">
+          <div class="ed-mem-card arch">
+            <div class="ed-mem-tag">ארכיטקטורה</div>
+            <div class="ed-mem-body">Next.js App Router עם Supabase כ-backend. RLS מופעל על כל הטבלאות. Auth דרך Magic Links בלבד — ה-PRD מגדיר זאת במפורש. אין לממש OAuth.</div>
+            <div class="ed-mem-date">2026.05.25 — SaaS Dashboard</div>
+          </div>
+          <div class="ed-mem-card stack">
+            <div class="ed-mem-tag">Stack</div>
+            <div class="ed-mem-body">React Native + Expo SDK 51. State management עם Zustand. Navigation עם Expo Router. Backend Supabase זהה ל-SaaS Dashboard — shared schema.</div>
+            <div class="ed-mem-date">2026.05.24 — Mobile App MVP</div>
+          </div>
+          <div class="ed-mem-card ux">
+            <div class="ed-mem-tag">UX Decisions</div>
+            <div class="ed-mem-body">Dark theme בלבד — אין light mode ב-MVP. RTL עברית לכל ממשק המשתמש. Companion AI כ-floating panel. אין embedded chatbot בדפים.</div>
+            <div class="ed-mem-date">2026.05.23 — Cross-project</div>
+          </div>
+          <div class="ed-mem-card ops">
+            <div class="ed-mem-tag">Ops</div>
+            <div class="ed-mem-body">CI/CD דרך Vercel Git integration. Preview deployments לכל PR. Env secrets ב-Vercel Dashboard בלבד — לא ב-.env.local. Stripe Checkout לתשלומים.</div>
+            <div class="ed-mem-date">2026.05.22 — SaaS Dashboard</div>
+          </div>
+          <div class="ed-mem-card arch">
+            <div class="ed-mem-tag">DB Schema</div>
+            <div class="ed-mem-body">טבלאות: projects, missions, return_briefs, decisions, drift_alerts, project_memory. כל טבלה עם user_id + RLS policy. Timestamps ב-UTC.</div>
+            <div class="ed-mem-date">2026.05.21 — Cross-project</div>
+          </div>
+          <div class="ed-mem-card stack">
+            <div class="ed-mem-tag">AI Integration</div>
+            <div class="ed-mem-body">Vercel AI SDK עם claude-sonnet-4-5. Structured outputs + Zod validation. Companion context: 20 החלטות אחרונות + project memory + active mission.</div>
+            <div class="ed-mem-date">2026.05.20 — Cross-project</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- COMPANION PANEL (overlay) -->
+  <div class="ed-companion-overlay" id="ed-cp-overlay" onclick="edCompanionClose()"></div>
+  <div class="ed-companion-panel" id="ed-cp-panel">
+    <div class="ed-cp-header">
+      <div class="ed-cp-title">Tandem Companion</div>
+      <div class="ed-cp-close" onclick="edCompanionClose()">✕</div>
+    </div>
+    <div class="ed-cp-ctx">
+      <div class="ed-cp-ctx-label">הקשר פעיל</div>
+      <div class="ed-cp-ctx-val">SaaS Dashboard — MSN-007</div>
+    </div>
+    <div class="ed-cp-msgs" id="ed-cp-msgs">
+      <div class="ed-cp-msg ai">
+        <div class="ed-cp-msg-who">Companion</div>
+        שלום! טענתי את הקשר של SaaS Dashboard. רואה שמשימה MSN-007 בתהליך עם 2/6 פריטים שהושלמו.<br><br>
+        יש drift alert פתוח על האימות — OAuth מומש במקום Magic Links. כדאי לטפל בזה לפני המשך.
+      </div>
+    </div>
+    <div class="ed-cp-qas">
+      <button class="ed-cp-qa" onclick="edChat('צור mission prompt ל-Cursor')">📋 צור Mission Prompt</button>
+      <button class="ed-cp-qa" onclick="edChat('מה הצעד הבא שצריך לעשות?')">→ מה הצעד הבא?</button>
+      <button class="ed-cp-qa" onclick="edChat('סכם את מה שהושלם בסשן האחרון')">◈ סכם סשן</button>
+      <button class="ed-cp-qa" onclick="edChat('הסבר את ה-drift alert על האימות')">⚠ הסבר את ה-Drift</button>
+    </div>
+    <div class="ed-cp-input-row">
+      <input class="ed-cp-input" id="ed-cp-input" placeholder="שאל שאלה על הפרויקט..." onkeydown="if(event.key==='Enter')edSend()">
+      <button class="ed-cp-send" onclick="edSend()">שלח</button>
+    </div>
+  </div>
+
+</div>
+
+</div><!-- /main -->
+
+<script>
+// ── DESIGN SWITCHER ──
+function switchDesign(n) {
+  document.getElementById('panel-1').style.display = n===1 ? 'flex' : 'none'
+  document.getElementById('panel-2').style.display = n===2 ? 'flex' : 'none'
+  document.getElementById('sw1').className = 'sw-btn' + (n===1?' active-1':'')
+  document.getElementById('sw2').className = 'sw-btn' + (n===2?' active-2':'')
+}
+switchDesign(1)
+
+// ── MISSION CONTROL NAV ──
+const mcCrumbs = {
+  1:'CONTROL-TOWER', 2:'PROJECTS', 3:'MISSIONS',
+  4:'DECISIONS', 5:'MEMORY', 6:'MISSION-BRIEF', 7:'NEW-MISSION', 8:'COMPANION'
+}
+function mcNav(n, btn) {
+  document.querySelectorAll('.mc-nav-btn').forEach(b=>b.classList.remove('active'))
+  if(btn) btn.classList.add('active')
+  else {
+    // activate correct sidebar btn by index
+    const btns = document.querySelectorAll('.mc-nav-btn')
+    if(btns[n-1]) btns[n-1].classList.add('active')
+  }
+  // hide all
+  for(let i=1;i<=5;i++){
+    const s=document.getElementById('mc-s'+i)
+    if(s) s.style.display='none'
+  }
+  ;['mc-s6','mc-s7','mc-s8'].forEach(id=>{
+    const el=document.getElementById(id)
+    if(el){ el.classList.remove('show') }
+  })
+  // show target
+  if(n<=5){
+    const s=document.getElementById('mc-s'+n)
+    if(s) s.style.display=(n===1||n===3||n===5)?'grid':'flex'
+  } else {
+    const el=document.getElementById('mc-s'+n)
+    if(el) el.classList.add('show')
+    if(n===7) wizStep(1)
+  }
+  document.getElementById('mc-crumb').innerHTML='TANDEM / <span>'+mcCrumbs[n]+'</span>'
+}
+mcNav(1, document.querySelector('.mc-nav-btn'))
+
+// ── INTERACTIVE CHECKLIST ──
+function toggleCheck(row) {
+  const box = row.querySelector('.mc-check-box')
+  const text = row.querySelector('.mc-check-text')
+  const done = box.classList.toggle('done')
+  box.textContent = done ? '✓' : ''
+  text.classList.toggle('done', done)
+}
+
+// ── MC COMPANION CHAT ──
+const mcResponses = {
+  'צור mission prompt ל-Cursor': 'Mission Prompt — MSN-007:\n\n"You are working on SaaS Dashboard auth. Implement Magic Links only using Supabase Auth. Create /auth/callback route, login form, and RLS policies on users table. Do NOT implement OAuth. See decision #001."\n\nהעתק ל-Cursor והתחל.',
+  'בדוק את ה-drift ב-OAuth': 'Drift DA-001 — SPEC MISMATCH:\n\nמה קרה: OAuth Google מומש ב-commit abc123f\nמה ה-PRD אומר: Magic Links בלבד (section 3.2)\nפעולה נדרשת: הסר את ה-Google OAuth provider מ-Supabase Dashboard + מחק את קובץ /auth/google/route.ts',
+  'מה הצעד הבא?': 'לפי הצ\'קליסט של MSN-007, הצעד הבא הוא:\n→ דף Login עם Magic Link form + validation\n\nקובץ לצור: app/(auth)/login/page.tsx\nהשתמש ב-supabase.auth.signInWithOtp({ email })\nאחרי זה: RLS policies על טבלת users',
+  'סכם סשן': 'Return Brief — 2026.05.25:\n\n✅ הושלם:\n• Supabase Auth הוגדר\n• /auth/callback נוצר\n\n⚠ לא הושלם:\n• דף Login\n• RLS policies\n• middleware.ts\n\n🚨 Drift:\n• OAuth הוסר חלקית — לוודא clean commit'
+}
+function mcChat(msg) {
+  const msgs = document.getElementById('mc-chat-msgs')
+  const userDiv = document.createElement('div')
+  userDiv.className = 'mc-chat-msg user'
+  userDiv.innerHTML = '<div class="mc-chat-prefix">USER ▸</div>' + msg
+  msgs.appendChild(userDiv)
+  setTimeout(()=>{
+    const aiDiv = document.createElement('div')
+    aiDiv.className = 'mc-chat-msg ai'
+    const resp = mcResponses[msg] || 'מעבד את הבקשה...\n\nלפי הקשר המשימה והזיכרון הפרויקט, ' + msg
+    aiDiv.innerHTML = '<div class="mc-chat-prefix">COMPANION ▸</div>' + resp.replace(/\n/g,'<br>')
+    msgs.appendChild(aiDiv)
+    msgs.scrollTop = msgs.scrollHeight
+  }, 400)
+  msgs.scrollTop = msgs.scrollHeight
+}
+function mcSend() {
+  const inp = document.getElementById('mc-input')
+  const val = inp.value.trim()
+  if(!val) return
+  mcChat(val)
+  inp.value = ''
+}
+
+// ── MC WIZARD ──
+let wizCurrentStep = 1
+const wizContent = {
+  1: {
+    q: 'בחר פרויקט למשימה החדשה:',
+    opts: [
+      {icon:'◈', label:'SaaS Dashboard', desc:'פלטפורמת אנליטיקה — Phase: Build 68%'},
+      {icon:'◎', label:'Mobile App MVP', desc:'אפליקציית כושר — Phase: Architecture 35%'},
+      {icon:'○', label:'E-commerce Platform', desc:'מרקטפלייס — Phase: Planning 12%'},
+    ]
+  },
+  2: {
+    q: 'בחר את הכלי שבו תעבוד:',
+    opts: [
+      {icon:'⊙', label:'Cursor', desc:'קוד + AI עם full codebase context'},
+      {icon:'⊕', label:'v0.dev', desc:'UI components ו-prototypes'},
+      {icon:'◇', label:'Claude Code', desc:'ארכיטקטורה, תכנון, ניתוח'},
+      {icon:'▷', label:'Windsurf', desc:'refactoring ו-large-scale edits'},
+    ]
+  },
+  3: {
+    q: 'תאר את המטרה של המשימה:',
+    textarea: true,
+    placeholder: 'לדוגמה: מימוש מערכת notifications עם real-time updates...'
+  },
+  4: {
+    q: 'Mission Brief נוצר — מוכן להתחיל:',
+    generated: true
+  }
+}
+function wizStep(n) {
+  wizCurrentStep = n
+  const body = document.getElementById('wiz-body')
+  const prog = document.getElementById('wiz-prog')
+  prog.textContent = 'STEP ' + n + ' OF 4'
+  // update step indicators
+  for(let i=1;i<=4;i++){
+    const el = document.getElementById('wiz-step-'+i)
+    if(el){
+      el.className = 'mc-step' + (i===n?' active':i<n?' done':'')
+    }
+  }
+  const c = wizContent[n]
+  if(!c) return
+  let html = '<div class="mc-wizard-q">' + c.q + '</div>'
+  if(c.opts){
+    c.opts.forEach((o,i) => {
+      html += `<div class="mc-wizard-opt" onclick="wizSelect(this)">
+        <span class="opt-icon">${o.icon}</span>
+        <div><div class="opt-label">${o.label}</div>${o.desc}</div>
+      </div>`
+    })
+  }
+  if(c.textarea){
+    html += `<textarea class="mc-wizard-textarea" rows="5" placeholder="${c.placeholder}"></textarea>`
+    html += '<div style="font-size:7px;color:rgba(74,240,196,0.25);margin-top:6px;letter-spacing:0.1em">COMPANION WILL GENERATE ACCEPTANCE CRITERIA + CONTEXT FROM MEMORY</div>'
+  }
+  if(c.generated){
+    html += `<div class="mc-cell" style="margin-top:8px;padding:14px">
+      <div class="mc-lbl">GENERATED MISSION BRIEF</div>
+      <div style="font-size:9px;color:rgba(255,255,255,0.6);line-height:1.6;margin-top:6px">
+        <span style="color:rgba(74,240,196,0.5)">PROJECT:</span> SaaS Dashboard<br>
+        <span style="color:rgba(74,240,196,0.5)">TOOL:</span> Cursor<br>
+        <span style="color:rgba(74,240,196,0.5)">OBJECTIVE:</span> מימוש מערכת notifications עם real-time updates<br>
+        <span style="color:rgba(74,240,196,0.5)">CONTEXT:</span> Supabase Realtime + RLS. אל תשתמש ב-polling.<br>
+        <span style="color:rgba(74,240,196,0.5)">ACCEPTANCE:</span> User מקבל notification תוך 500ms. מוצג ב-sidebar badge.
+      </div>
+    </div>
+    <div style="margin-top:8px">
+      <button class="mc-action-btn primary" onclick="mcNav(6,null)" style="width:auto;padding:7px 16px">→ צפה ב-Mission Brief המלא</button>
+    </div>`
+  }
+  body.innerHTML = html
+}
+function wizSelect(el) {
+  el.closest('.mc-wizard-body').querySelectorAll('.mc-wizard-opt').forEach(o=>o.classList.remove('selected'))
+  el.classList.add('selected')
+}
+function wizNext() {
+  if(wizCurrentStep < 4) wizStep(wizCurrentStep + 1)
+}
+function wizPrev() {
+  if(wizCurrentStep > 1) wizStep(wizCurrentStep - 1)
+}
+
+// ── EDITORIAL NAV ──
+const edTopItems = document.querySelectorAll('.ed-top-item')
+const edPips = document.querySelectorAll('.ed-nav-pip')
+function edNav(n) {
+  ['ed-s2','ed-s3','ed-s4','ed-s5','ed-s6'].forEach(id=>{
+    const el = document.getElementById(id)
+    if(el) el.style.display='none'
+  })
+  const s1inner = document.getElementById('ed-s1-inner')
+  if(n===1){
+    s1inner.style.display='grid'
+  } else {
+    s1inner.style.display='none'
+    const target = document.getElementById('ed-s'+n)
+    if(target) target.style.display = n===3?'grid':'block'
+  }
+  edTopItems.forEach((it,i)=>it.classList.toggle('active',i===n-1))
+  edPips.forEach((p,i)=>p.classList.toggle('active',i===n-1))
+}
+edNav(1)
+
+// ── ED COMPANION ──
+function edCompanion() {
+  document.getElementById('ed-cp-overlay').classList.add('show')
+  document.getElementById('ed-cp-panel').classList.add('show')
+}
+function edCompanionClose() {
+  document.getElementById('ed-cp-overlay').classList.remove('show')
+  document.getElementById('ed-cp-panel').classList.remove('show')
+}
+const edResponses = {
+  'צור mission prompt ל-Cursor': 'Mission Prompt מוכן:\n\n"You are working on SaaS Dashboard. Implement Magic Links authentication using Supabase Auth. Create /auth/callback route handler, login page component, and RLS policies on the users table. Do NOT implement OAuth Google — per decision #001."\n\nהעתק ל-Cursor.',
+  'מה הצעד הבא שצריך לעשות?': 'לפי הצ׳קליסט של MSN-007:\n\n→ הצעד הבא: דף Login עם Magic Link form\n\nאת הדף צור ב: app/(auth)/login/page.tsx\nהשתמש: supabase.auth.signInWithOtp({ email })\n\nאחר כך: RLS policies על טבלת users.',
+  'סכם את מה שהושלם בסשן האחרון': 'Return Brief — 2026.05.25:\n\n✅ הושלם:\n• Supabase Auth הוגדר ב-Dashboard\n• /auth/callback route handler נוצר\n\n⚠ בתהליך:\n• דף Login (50%)\n\n🚨 Drift:\n• OAuth הוסר — לוודא ב-PR שאין שאריות.',
+  'הסבר את ה-drift alert על האימות': 'Drift Alert DA-001 — SPEC MISMATCH:\n\nמה קרה: המפתח מימש OAuth Google כ-fallback.\nמה ה-PRD אומר: Magic Links בלבד (PRD v1.2, section 3.2).\n\nפעולה: הסר Google provider מ-Supabase Dashboard ומחק /auth/google/route.ts לפני ה-merge.'
+}
+function edChat(msg) {
+  const msgs = document.getElementById('ed-cp-msgs')
+  const uDiv = document.createElement('div')
+  uDiv.className = 'ed-cp-msg user'
+  uDiv.innerHTML = '<div class="ed-cp-msg-who">אתה</div>' + msg
+  msgs.appendChild(uDiv)
+  setTimeout(()=>{
+    const aDiv = document.createElement('div')
+    aDiv.className = 'ed-cp-msg ai'
+    const r = edResponses[msg] || 'מעבד... לפי ההקשר הפרויקט, ' + msg
+    aDiv.innerHTML = '<div class="ed-cp-msg-who">Companion</div>' + r.replace(/\n/g,'<br>')
+    msgs.appendChild(aDiv)
+    msgs.scrollTop = msgs.scrollHeight
+  }, 350)
+  msgs.scrollTop = msgs.scrollHeight
+}
+function edSend() {
+  const inp = document.getElementById('ed-cp-input')
+  const val = inp.value.trim()
+  if(!val) return
+  edChat(val)
+  inp.value = ''
+}
+</script>
+</body>
+</html>

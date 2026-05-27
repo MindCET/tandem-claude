@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { X, Loader2, Zap, Clipboard, ArrowDownCircle } from "lucide-react"
+import { Loader2, Zap, Clipboard, ArrowDownCircle, ClipboardList, CornerDownLeft, Download, HelpCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Badge } from "@/components/ui/badge"
@@ -16,10 +16,10 @@ interface CompanionPanelProps {
 }
 
 const QUICK_ACTIONS = [
-  { label: "📋 Mission Prompt", message: "תייצר לי mission prompt למשימה הנוכחית" },
-  { label: "↩️ Return Prompt", message: "תייצר לי return prompt לסוף הסשן" },
-  { label: "💾 הדבק סיכום", message: "רוצה להדביק סיכום סשן" },
-  { label: "❓ מה הלאה?", message: "מה הצעד הבא שאני צריך לעשות בפרויקט?" },
+  { label: "Mission Prompt", icon: ClipboardList, message: "תייצר לי mission prompt למשימה הנוכחית" },
+  { label: "Return Prompt",  icon: CornerDownLeft, message: "תייצר לי return prompt לסוף הסשן" },
+  { label: "הדבק סיכום",    icon: Download,       message: "רוצה להדביק סיכום סשן" },
+  { label: "מה הלאה?",      icon: HelpCircle,     message: "מה הצעד הבא שאני צריך לעשות בפרויקט?" },
 ]
 
 export function CompanionPanel({ open, onClose, projectId, projectName }: CompanionPanelProps) {
@@ -84,7 +84,7 @@ export function CompanionPanel({ open, onClose, projectId, projectName }: Compan
 
   async function handleChat(content: string, userMsg: CompanionMessageData) {
     const apiMessages = [
-      ...messages.filter((m) => m.id !== "welcome"),
+      ...messages.filter((m) => m.id !== "welcome" && m.content.trim() !== ""),
       userMsg,
     ].map((m) => ({ role: m.role, content: m.content }))
 
@@ -250,8 +250,9 @@ export function CompanionPanel({ open, onClose, projectId, projectName }: Compan
               key={action.label}
               onClick={() => sendMessage(action.message)}
               disabled={isLoading}
-              className="text-xs px-2 py-1 rounded-md bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
+              className="cursor-pointer flex items-center gap-1 text-xs px-2 py-1 rounded-md bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
             >
+              <action.icon className="h-3 w-3 shrink-0" />
               {action.label}
             </button>
           ))}

@@ -1,14 +1,17 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Rubik, IBM_Plex_Mono } from 'next/font/google'
 import './globals.css'
+import { LanguageProvider } from '@/components/language-provider'
 
-const geist = Geist({
-  subsets: ["latin"],
-  variable: '--font-geist'
+const rubik = Rubik({
+  subsets: ["latin", "hebrew"],
+  weight: ["300", "400", "500", "700", "900"],
+  variable: '--font-rubik'
 })
-const geistMono = Geist_Mono({
+const ibmPlexMono = IBM_Plex_Mono({
   subsets: ["latin"],
-  variable: '--font-geist-mono'
+  weight: ["300", "400", "500", "600"],
+  variable: '--font-ibm-plex-mono'
 })
 
 export const metadata: Metadata = {
@@ -30,9 +33,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${geist.variable} ${geistMono.variable}`} suppressHydrationWarning>
+    <html lang="he" dir="rtl" className={`${rubik.variable} ${ibmPlexMono.variable}`} suppressHydrationWarning>
       <body className="font-sans antialiased bg-background text-foreground">
-        {children}
+        <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
   )

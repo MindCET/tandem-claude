@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { anthropic } from "@ai-sdk/anthropic"
+import { anthropic, MODEL } from "@/lib/ai/client"
 import { generateText } from "ai"
 import { createClient } from "@/lib/supabase/server"
 import {
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
   let parsed
   try {
     const { text } = await generateText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic(MODEL),
       system: INGESTION_SYSTEM,
       prompt: INGESTION_USER(rawSummary),
     })
@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
     project_id: projectId,
     task_type: "companion_ingestion",
     provider: "anthropic",
-    model: "claude-sonnet-4-5",
+    model: MODEL,
     input: { rawSummary: rawSummary.slice(0, 500) },
     output: parsed,
     status: "success",

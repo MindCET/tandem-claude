@@ -166,7 +166,7 @@ export default function TasksPage() {
         /* Empty state */
         <Card>
           <CardHeader className="text-center">
-            <CardTitle>תוכנית משימות — Task Plan</CardTitle>
+            <CardTitle>תוכנית משימות</CardTitle>
             <CardDescription>
               AI יפרק את ה-Architecture לרשימת משימות מסודרת לפי שלבים, עדיפות, ומורכבות
             </CardDescription>

@@ -205,15 +205,15 @@ code.inline {
   </div>
   <div class="phase-body">
     <div class="callout success">כל משימות Phase 0 הושלמו. Next.js 16 + shadcn/ui + Supabase helpers + CLAUDE.md + GitHub repo.</div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>0-1 Next.js 16 bootstrapped</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>0-2 shadcn/ui מותקן (60+ components)</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>0-3 תלויות: Supabase · AI SDK · Zod · framer-motion</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>0-4 CLAUDE.md נוצר</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>0-5 .env.local + .env.example</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>0-6 lib/supabase/ — client + server + middleware</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>0-7 middleware.ts — route protection</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>0-8 GitHub repo: ilanmichalby/tandem-claude</strong></label></div>
-    <div class="task" onclick="chk(this)"><input type="checkbox"><label class="task-label"><strong>0-9 Vercel deployment live</strong><span class="hint">npx vercel → הוסף env vars בדשבורד</span></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>0-1 Next.js 16 bootstrapped</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>0-2 shadcn/ui מותקן (60+ components)</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>0-3 תלויות: Supabase · AI SDK · Zod · framer-motion</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>0-4 CLAUDE.md נוצר</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>0-5 .env.local + .env.example</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>0-6 lib/supabase/ — client + server + middleware</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>0-7 middleware.ts — route protection</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>0-8 GitHub repo: ilanmichalby/tandem-claude</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>0-9 Vercel deployment live ✅</strong><span class="hint">🚀 <a href="https://tandem-claude.vercel.app" target="_blank">tandem-claude.vercel.app</a> · deployed 2026-05-24 · env vars הוגדרו ב-CLI</span></label></div>
   </div>
 </div>
 
@@ -232,13 +232,13 @@ code.inline {
   </div>
   <div class="phase-body">
     <div class="callout success">Phase 1 הושלם. Auth עובד, schema רץ, CRUD פועל.</div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>1-1 פרויקט Supabase נוצר (mindcetdev+tandem-claude@gmail.com)</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>1-2 Schema + RLS — 10 טבלאות</strong><span class="hint">profiles · projects · artifacts · decisions · tasks · missions · tool_sessions · risks · open_questions · ai_logs</span></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>1-3 TypeScript types — types/database.ts + types/index.ts</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>1-4 דף Login/Signup בעברית עם Tabs</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>1-5 app/auth/callback/route.ts — PKCE flow</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>1-6 דשבורד פרויקטים — server component עם RLS</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>1-7 Project CRUD — New + Detail pages</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>1-1 פרויקט Supabase נוצר (mindcetdev+tandem-claude@gmail.com)</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>1-2 Schema + RLS — 10 טבלאות</strong><span class="hint">profiles · projects · artifacts · decisions · tasks · missions · tool_sessions · risks · open_questions · ai_logs</span></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>1-3 TypeScript types — types/database.ts + types/index.ts</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>1-4 דף Login/Signup בעברית עם Tabs</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>1-5 app/auth/callback/route.ts — PKCE flow</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>1-6 דשבורד פרויקטים — server component עם RLS</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>1-7 Project CRUD — New + Detail pages</strong></label></div>
   </div>
 </div>
 
@@ -257,10 +257,10 @@ code.inline {
   </div>
   <div class="phase-body">
     <div class="callout success">Phase 2 הושלם. AI layer פעיל, וויזרד 3 שלבים עובד.</div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>2-1 lib/ai/client.ts + schemas.ts + prompts.ts + service.ts</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>2-2 POST /api/ai/generate-clarification + generate-brief</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>2-3 Wizard: IdeaStep → ClarifyStep → BriefPreviewStep</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>Bug fixes: כפול projects · form data lost · silent failure · parallel approve</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>2-1 lib/ai/client.ts + schemas.ts + prompts.ts + service.ts</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>2-2 POST /api/ai/generate-clarification + generate-brief</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>2-3 Wizard: IdeaStep → ClarifyStep → BriefPreviewStep</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>Bug fixes: כפול projects · form data lost · silent failure · parallel approve</strong></label></div>
   </div>
 </div>
 
@@ -281,46 +281,46 @@ code.inline {
     <div class="callout success">Phase 3 הושלם. PRD + Architecture + Decisions עובדים. 7 באגים תוקנו.</div>
 
     <div class="task-group">3-1 — PRD Generator</div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>PRDSchema ל-lib/ai/schemas.ts</strong><span class="hint">overview · goals · non_goals · personas · core_features · functional_requirements · data_model_draft · mvp_scope · future_scope</span></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>generatePRD() + prdToMarkdown() ל-lib/ai/service.ts</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>POST /api/ai/generate-prd/route.ts</strong><span class="hint">טוען Brief מאושר → מייצר PRD → שומר ל-artifacts → מקדם stage</span></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>app/.../prd/page.tsx — Generate + Approve flow</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>components/artifacts/ArtifactViewer.tsx — markdown renderer</strong><span class="hint">custom markdown→HTML · headings · bold · lists · code blocks</span></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>PRDSchema ל-lib/ai/schemas.ts</strong><span class="hint">overview · goals · non_goals · personas · core_features · functional_requirements · data_model_draft · mvp_scope · future_scope</span></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>generatePRD() + prdToMarkdown() ל-lib/ai/service.ts</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>POST /api/ai/generate-prd/route.ts</strong><span class="hint">טוען Brief מאושר → מייצר PRD → שומר ל-artifacts → מקדם stage</span></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>app/.../prd/page.tsx — Generate + Approve flow</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>components/artifacts/ArtifactViewer.tsx — markdown renderer</strong><span class="hint">custom markdown→HTML · headings · bold · lists · code blocks</span></label></div>
 
     <div class="task-group">3-2 — Architecture Generator</div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>ArchitectureSchema + generateArchitecture() + architectureToMarkdown()</strong><span class="hint">recommended_stack · system_diagram_text · api_routes · deployment_plan · decisions[] · risks[] · alternatives_considered[]</span></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>POST /api/ai/generate-architecture/route.ts</strong><span class="hint">שמור architecture artifact + auto-save decisions[] ל-decisions table + risks[] ל-risks table</span></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>app/.../architecture/page.tsx — Generate + Approve + savedCounts alert</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>ArchitectureSchema + generateArchitecture() + architectureToMarkdown()</strong><span class="hint">recommended_stack · system_diagram_text · api_routes · deployment_plan · decisions[] · risks[] · alternatives_considered[]</span></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>POST /api/ai/generate-architecture/route.ts</strong><span class="hint">שמור architecture artifact + auto-save decisions[] ל-decisions table + risks[] ל-risks table</span></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>app/.../architecture/page.tsx — Generate + Approve + savedCounts alert</strong></label></div>
 
     <div class="task-group">3-3 — Decision Log</div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>components/decisions/DecisionCard.tsx</strong><span class="hint">title · decision · rationale · category badge · status (active/deprecated)</span></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>app/.../decisions/page.tsx — grouped by category</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>components/decisions/DecisionCard.tsx</strong><span class="hint">title · decision · rationale · category badge · status (active/deprecated)</span></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>app/.../decisions/page.tsx — grouped by category</strong></label></div>
 
     <div class="task-group">🐛 תיקוני באגים — Phase 3</div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label">
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
       <strong>Bug 1: Infinite re-render — הוסר supabase מ-useEffect deps</strong>
       <span class="hint">prd/page.tsx + architecture/page.tsx: deps array שונה מ-[projectId, supabase] ל-[projectId]</span>
     </label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label">
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
       <strong>Bug 2: ArtifactViewer — var(--slate-*) הוחלפו ב-hex hardcoded</strong>
       <span class="hint">Tailwind v4 לא מגדיר --slate-* CSS variables. תוקן ב-components/artifacts/ArtifactViewer.tsx</span>
     </label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label">
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
       <strong>Bug 3: handleApprove — בדיקת שגיאות מ-Supabase .update()</strong>
       <span class="hint">supabase לא זורק exception — מחזיר {data, error}. תוקן: בודק artRes.error + projRes.error</span>
     </label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label">
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
       <strong>Bug 4: Architecture page — בדיקת קיום PRD לפני יצירה</strong>
       <span class="hint">load() מביא PRD מאושר; אם אין → הודעת שגיאה + כפתור "עבור ל-PRD" במקום generate</span>
     </label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label">
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
       <strong>Bug 5: ArtifactViewer — regex לפסקאות תוקן</strong>
       <span class="hint">^(?!&lt;[hup2lo]) שונה ל-^(?!&lt;)(.+)$ — מחסל עטיפת תגיות HTML בתוך &lt;p&gt;</span>
     </label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label">
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
       <strong>Bug 6: PRD page — הוסר import/usage מיותרים של useRouter</strong>
     </label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label">
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
       <strong>Bug 7: PRD page — תוקן prd.product_name → projectName</strong>
       <span class="hint">שדה product_name לא קיים ב-PRD type; שם הפרויקט נלקח מהמשתנה projectName</span>
     </label></div>
@@ -328,15 +328,45 @@ code.inline {
 </div>
 
 <!-- ═══════════════════════════════════════ NOW ════ -->
-<div class="divider">🧪 בדיקות — עכשיו</div>
+<div class="divider">⚠️ ממתין לאימות — לפני 100%</div>
 
-<!-- SMOKE TEST PHASE 3 -->
-<div class="phase-block open" id="smoke3">
-  <div class="phase-header" onclick="toggle('smoke3')">
+<!-- SCHEMA VALIDATION -->
+<div class="phase-block" id="schema-check">
+  <div class="phase-header" onclick="toggle('schema-check')">
+    <div class="phase-icon done">🗄️</div>
+    <div style="flex:1">
+      <div class="phase-title">Schema Validation</div>
+      <div class="phase-sub">ה-schema אומת, database.sql נמחק, migrations הם source of truth</div>
+    </div>
+    <div class="phase-badge-wrap">
+      <span class="badge done">✓ הושלם</span>
+      <span class="phase-chevron">▶</span>
+    </div>
+  </div>
+  <div class="phase-body">
+    <div class="callout success">Schema conflict נפתר ✅ — <code class="inline">database.sql</code> נמחק, 10 טבלאות פעילות ב-Supabase.</div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
+      <strong>10 טבלאות פעילות ב-Supabase</strong>
+      <span class="hint">profiles · projects · artifacts · decisions · tasks · missions · tool_sessions · risks · open_questions · ai_logs</span>
+    </label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
+      <strong>שתי המיגרציות רצו בהצלחה</strong>
+      <span class="hint">20260524_01_initial_schema.sql + 20260524_02_rls_policies.sql</span>
+    </label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
+      <strong>מחק את <code class="inline">database.sql</code> (root)</strong>
+      <span class="hint">הקובץ נמחק ✓ — ה-migrations הם ה-source of truth</span>
+    </label></div>
+  </div>
+</div>
+
+<!-- E2E SMOKE TEST -->
+<div class="phase-block" id="smoke-e2e">
+  <div class="phase-header" onclick="toggle('smoke-e2e')">
     <div class="phase-icon test">🧪</div>
     <div style="flex:1">
-      <div class="phase-title">Smoke Tests — Phase 3</div>
-      <div class="phase-sub">בדוק שה-PRD + Architecture + Decisions עובדים לפני שממשיכים</div>
+      <div class="phase-title">Smoke Test — מקצה לקצה</div>
+      <div class="phase-sub">בדוק את כל ה-SPDD loop על פרויקט חדש בפרודקשן</div>
     </div>
     <div class="phase-badge-wrap">
       <span class="badge test">בדוק עכשיו</span>
@@ -344,45 +374,38 @@ code.inline {
     </div>
   </div>
   <div class="phase-body">
-    <div class="callout warn">בצע את הבדיקות האלה לפני שמתחילים Phase 4</div>
+    <div class="callout info">בצע את הבדיקה על <a href="https://tandem-claude.vercel.app" target="_blank" style="color:#3b82f6">tandem-claude.vercel.app</a> (פרודקשן)</div>
 
-    <div class="task-group">בדיקה 1 — PRD flow</div>
-    <div class="task" onclick="chk(this)"><input type="checkbox"><label class="task-label">
-      <strong>נכנסתי לפרויקט עם Brief מאושר → לחצתי "צור PRD"</strong>
-      <span class="hint">Spinner → "מייצר PRD..." → מסמך מוצג ב-ArtifactViewer עם עיצוב תקין</span>
+    <div class="task-group">Auth + Dashboard</div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
+      <strong>Signup → קיבלתי אימות אימייל (או disabled) → redirect ל-/app</strong>
     </label></div>
-    <div class="task" onclick="chk(this)"><input type="checkbox"><label class="task-label">
-      <strong>לחצתי "אשר PRD" → badge מציג "מאושר" → כפתור "המשך לארכיטקטורה" מופיע</strong>
-    </label></div>
-    <div class="task" onclick="chk(this)"><input type="checkbox"><label class="task-label">
-      <strong>ניסיתי לפתוח Architecture ללא PRD מאושר → מוצגת הודעת שגיאה ברורה</strong>
-      <span class="hint">✅ "יש לאשר PRD לפני יצירת ארכיטקטורה" + כפתור "עבור ל-PRD"</span>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
+      <strong>Dashboard ריק → לחצתי "+ פרויקט חדש" → Wizard נפתח</strong>
     </label></div>
 
-    <div class="task-group">בדיקה 2 — Architecture flow</div>
-    <div class="task" onclick="chk(this)"><input type="checkbox"><label class="task-label">
-      <strong>לחצתי "צור ארכיטקטורה" → Architecture נוצרת</strong>
-      <span class="hint">Alert ירוק: "X החלטות נשמרו · Y סיכונים נשמרו"</span>
+    <div class="task-group">Wizard → Brief → PRD → Architecture</div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
+      <strong>Wizard: הזנתי רעיון → שאלות הבהרה AI → Brief נוצר ואושר</strong>
     </label></div>
-    <div class="task" onclick="chk(this)"><input type="checkbox"><label class="task-label">
-      <strong>אישרתי Architecture → כפתורים "יומן החלטות" + "המשך למשימות" מופיעים</strong>
-    </label></div>
-
-    <div class="task-group">בדיקה 3 — Decisions page</div>
-    <div class="task" onclick="chk(this)"><input type="checkbox"><label class="task-label">
-      <strong>נכנסתי ל-Decisions page → רואה את ההחלטות שנשמרו אוטומטית</strong>
-      <span class="hint">כרטיסיות עם category badge (technical/architecture/product...)</span>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
+      <strong>PRD נוצר ואושר → Architecture נוצרה + "X החלטות נשמרו"</strong>
     </label></div>
 
-    <div class="task-group">בדיקה 4 — Supabase</div>
-    <div class="task" onclick="chk(this)"><input type="checkbox"><label class="task-label">
-      <strong>Table Editor → artifacts: שורות prd + architecture עם status='approved'</strong>
+    <div class="task-group">Tasks → Mission → Return</div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
+      <strong>Tasks נוצרו מקובצים לפי phases → Mission Brief נוצר עם copy button</strong>
     </label></div>
-    <div class="task" onclick="chk(this)"><input type="checkbox"><label class="task-label">
-      <strong>Table Editor → decisions: שורות עם project_id נכון + category + rationale</strong>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
+      <strong>הדבקתי Return Brief מדומה → Drift detection + decisions + risks נשמרו</strong>
     </label></div>
-    <div class="task" onclick="chk(this)"><input type="checkbox"><label class="task-label">
-      <strong>Table Editor → projects: current_stage = 'architecture_approved'</strong>
+
+    <div class="task-group">Companion</div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
+      <strong>לחצתי על כפתור ה-Companion (bottom-right) → Panel נפתח → שאלתי שאלה → תשובה streamed</strong>
+    </label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
+      <strong>ביקשתי "הפק פרומפט Cursor" → קיבלתי code block עם copy button</strong>
     </label></div>
   </div>
 </div>
@@ -402,16 +425,16 @@ code.inline {
   </div>
   <div class="phase-body">
     <div class="callout success">Phase 4 הושלם. Tasks + Missions + copy UI עובדים. Build עבר ✅</div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>TaskListSchema + MissionBriefSchema ב-schemas.ts</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>generateTasks() + generateMissionBrief() ב-service.ts</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>POST /api/ai/generate-tasks + /generate-mission</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>components/tasks/TaskCard.tsx + components/missions/MissionBriefCard.tsx</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>tasks/page.tsx · missions/page.tsx · missions/new · missions/[id]</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>TaskListSchema + MissionBriefSchema ב-schemas.ts</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>generateTasks() + generateMissionBrief() ב-service.ts</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>POST /api/ai/generate-tasks + /generate-mission</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>components/tasks/TaskCard.tsx + components/missions/MissionBriefCard.tsx</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>tasks/page.tsx · missions/page.tsx · missions/new · missions/[id]</strong></label></div>
 
     <div class="task-group">Smoke Test — Phase 4</div>
-    <div class="task" onclick="chk(this)"><input type="checkbox"><label class="task-label"><strong>לחצתי "צור תוכנית משימות" → tasks נוצרו לפי phases</strong></label></div>
-    <div class="task" onclick="chk(this)"><input type="checkbox"><label class="task-label"><strong>לחצתי "צור Mission Brief" על task → Brief נוצר עם כל sections</strong></label></div>
-    <div class="task" onclick="chk(this)"><input type="checkbox"><label class="task-label"><strong>לחצתי "העתק" → Brief + Return Prompt הועתקו ל-clipboard</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>לחצתי "צור תוכנית משימות" → tasks נוצרו לפי phases</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>לחצתי "צור Mission Brief" על task → Brief נוצר עם כל sections</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>לחצתי "העתק" → Brief + Return Prompt הועתקו ל-clipboard</strong></label></div>
   </div>
 </div>
 
@@ -430,16 +453,16 @@ code.inline {
   </div>
   <div class="phase-body">
     <div class="callout success">Phase 5 הושלם. Return loop מלא עובד.</div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>ReturnAnalysisSchema + analyzeReturnBrief() + RETURN_SYSTEM prompt</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>POST /api/ai/analyze-return — שמור decisions + risks + tool_session</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>return/page.tsx — Textarea → ניתוח → תוצאות מפורטות עם drift alert</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>risks/page.tsx — רגיסטר סיכונים ממוין לפי severity</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>Project overview: Return Brief + Decisions + Risks + computeNextAction לכל stages</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>ReturnAnalysisSchema + analyzeReturnBrief() + RETURN_SYSTEM prompt</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>POST /api/ai/analyze-return — שמור decisions + risks + tool_session</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>return/page.tsx — Textarea → ניתוח → תוצאות מפורטות עם drift alert</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>risks/page.tsx — רגיסטר סיכונים ממוין לפי severity</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>Project overview: Return Brief + Decisions + Risks + computeNextAction לכל stages</strong></label></div>
 
     <div class="task-group">Smoke Test — Phase 5</div>
-    <div class="task" onclick="chk(this)"><input type="checkbox"><label class="task-label"><strong>הדבקתי סיכום מדומה → ניתוח הצליח + decisions + risks נשמרו</strong></label></div>
-    <div class="task" onclick="chk(this)"><input type="checkbox"><label class="task-label"><strong>Drift detected → alert בצבע מתאים לפי severity</strong></label></div>
-    <div class="task" onclick="chk(this)"><input type="checkbox"><label class="task-label"><strong>risks/page.tsx — רואה סיכונים מ-Architecture + מ-Return Brief</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>הדבקתי סיכום מדומה → ניתוח הצליח + decisions + risks נשמרו</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>Drift detected → alert בצבע מתאים לפי severity</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>risks/page.tsx — רואה סיכונים מ-Architecture + מ-Return Brief</strong></label></div>
   </div>
 </div>
 
@@ -458,10 +481,10 @@ code.inline {
   </div>
   <div class="phase-body">
     <div class="callout success">Phase 6 הושלם. Production build עבר — 31 routes ✅</div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>6-1 docs/page.tsx — Living Docs: aggregates כל הנתונים → Markdown + copy</strong><span class="hint">Brief + PRD + Architecture + Decisions + Tasks + Risks → markdown preview + "העתק Markdown"</span></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>6-2 Landing page — dark themed, framer-motion, Features + Workflow + CTA</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>6-3 Production build עבר — npx next build ✅ (TypeScript clean, all routes)</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label">
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>6-1 docs/page.tsx — Living Docs: aggregates כל הנתונים → Markdown + copy</strong><span class="hint">Brief + PRD + Architecture + Decisions + Tasks + Risks → markdown preview + "העתק Markdown"</span></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>6-2 Landing page — dark themed, framer-motion, Features + Workflow + CTA</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>6-3 Production build עבר — npx next build ✅ (TypeScript clean, all routes)</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
       <strong>6-4 Vercel deploy live ✅</strong>
       <span class="hint">
         🚀 <a href="https://tandem-claude.vercel.app" target="_blank">https://tandem-claude.vercel.app</a><br>
@@ -480,30 +503,161 @@ code.inline {
       <div class="phase-sub">כבר קיים חלקית — בדיקה ועידון</div>
     </div>
     <div class="phase-badge-wrap">
-      <span class="badge done">~חלקי</span>
+      <span class="badge done">✓ הושלם</span>
       <span class="phase-chevron">▶</span>
     </div>
   </div>
   <div class="phase-body">
     <div class="callout success">Phase 7 הושלם ✅ — Companion fully wired: context-aware, code blocks with copy button, ingestion, platform routing.</div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>7-1 CompanionButton + CompanionPanel (floating Sheet)</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>7-2 POST /api/ai/companion — streaming + project context</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label"><strong>7-2b lib/ai/companion/context.ts — buildProjectContext()</strong></label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label">
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>7-1 CompanionButton + CompanionPanel (floating Sheet)</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>7-2 POST /api/ai/companion — streaming + project context</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label"><strong>7-2b lib/ai/companion/context.ts — buildProjectContext()</strong></label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
       <strong>7-3 Platform routing — tool recommendation intent detection</strong>
       <span class="hint">platforms.ts + system prompt intent detection · AI outputs prompts in code blocks with copy button</span>
     </label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label">
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
       <strong>7-4 Return prompt generation (platform-specific)</strong>
       <span class="hint">system prompt handles "return prompt" intent · CompanionMessage renders code blocks with copy button</span>
     </label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label">
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
       <strong>7-5 Return summary ingestion → שמירה ל-decisions + risks</strong>
       <span class="hint">POST /api/ai/companion/ingest + handleIngestion in CompanionPanel · auto-detects pasted summaries</span>
     </label></div>
-    <div class="task checked" onclick="chk(this)"><input type="checkbox" checked><label class="task-label">
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
       <strong>7-6 Context refresh כשמנווטים בין פרויקטים</strong>
       <span class="hint">layout extracts projectId from URL regex → fetches project name → passes to CompanionButton</span>
+    </label></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ v0.2 IN PROGRESS ════ -->
+<div class="divider">🔵 v0.2 — בפיתוח (2026-05-26)</div>
+
+<!-- PHASE 8 — Artifact Flexibility -->
+<div class="phase-block open" id="ph8">
+  <div class="phase-header" onclick="toggle('ph8')">
+    <div class="phase-icon active">8</div>
+    <div style="flex:1">
+      <div class="phase-title">Phase 8 — Artifact Flexibility + Wizard Entry Points</div>
+      <div class="phase-sub">ייבוא ארטיפקטים · Health Panel · דרכי כניסה מרובות · i18n</div>
+    </div>
+    <div class="phase-badge-wrap">
+      <span class="badge active">בביצוע</span>
+      <span class="phase-chevron">▶</span>
+    </div>
+  </div>
+  <div class="phase-body">
+    <div class="callout info">קבצים נוצרו — נדרש: הרצת Migration 03 ב-Supabase + smoke test של הפיצ'רים החדשים.</div>
+
+    <div class="task-group">8-1 — Database Migration</div>
+    <div class="task" onclick="chk(this, event)"><input type="checkbox" onclick="cbClick(this, event)"><label class="task-label">
+      <strong>הרץ את Migration 03 ב-Supabase SQL Editor</strong>
+      <span class="hint">supabase/migrations/20260525_03_artifact_flexibility.sql — מוסיף source, skip_reason, completeness_score לאופנות + טבלת artifact_versions + RLS</span>
+    </label></div>
+    <div class="task" onclick="chk(this, event)"><input type="checkbox" onclick="cbClick(this, event)"><label class="task-label">
+      <strong>וודא שטבלת artifact_versions קיימת ב-Supabase Dashboard</strong>
+    </label></div>
+
+    <div class="task-group">8-2 — Artifact Health Panel</div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
+      <strong>components/artifacts/ArtifactHealthPanel.tsx נוצר</strong>
+      <span class="hint">ציון איכות Mission Brief, סטטוס per-artifact (complete/draft/missing/skipped), כפתור "דלג" עם סיבה, lib/artifacts/brief-quality.ts</span>
+    </label></div>
+    <div class="task" onclick="chk(this, event)"><input type="checkbox" onclick="cbClick(this, event)"><label class="task-label">
+      <strong>שלב ArtifactHealthPanel לדף Overview של הפרויקט</strong>
+      <span class="hint">app/(app)/app/projects/[projectId]/page.tsx — הוסף לקטע ה-Command Center</span>
+    </label></div>
+
+    <div class="task-group">8-3 — Editable + Import Artifacts</div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
+      <strong>components/artifacts/EditableArtifact.tsx נוצר</strong>
+      <span class="hint">עריכה מוטבעת עם שמירה וגרסאות</span>
+    </label></div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
+      <strong>components/artifacts/ImportArtifactDialog.tsx נוצר</strong>
+      <span class="hint">ייבוא מ-Notion / Google Docs / טקסט חופשי</span>
+    </label></div>
+    <div class="task" onclick="chk(this, event)"><input type="checkbox" onclick="cbClick(this, event)"><label class="task-label">
+      <strong>חבר ImportArtifactDialog לדפי PRD / Architecture / Brief</strong>
+    </label></div>
+    <div class="task" onclick="chk(this, event)"><input type="checkbox" onclick="cbClick(this, event)"><label class="task-label">
+      <strong>Smoke test: ייבא PRD קיים → ראה אותו נשמר ב-DB</strong>
+    </label></div>
+
+    <div class="task-group">8-4 — Wizard Entry Points</div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
+      <strong>components/wizard/EntryPointStep.tsx נוצר</strong>
+      <span class="hint">4 נתיבי כניסה: "יש לי רעיון" / "יש לי PRD" / "יש לי קוד" / "אני כבר בבנייה"</span>
+    </label></div>
+    <div class="task" onclick="chk(this, event)"><input type="checkbox" onclick="cbClick(this, event)"><label class="task-label">
+      <strong>שלב EntryPointStep כשלב 0 ב-ProjectWizard</strong>
+      <span class="hint">components/wizard/ProjectWizard.tsx — הוסף לפני IdeaStep, נתב לפי הבחירה</span>
+    </label></div>
+    <div class="task" onclick="chk(this, event)"><input type="checkbox" onclick="cbClick(this, event)"><label class="task-label">
+      <strong>Smoke test: כל 4 נתיבי כניסה מנתבים נכון</strong>
+    </label></div>
+
+    <div class="task-group">8-5 — i18n Infrastructure</div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
+      <strong>lib/i18n/ + components/language-provider.tsx נוצרו</strong>
+      <span class="hint">תשתית רב-לשונית ל-Tandem</span>
+    </label></div>
+    <div class="task" onclick="chk(this, event)"><input type="checkbox" onclick="cbClick(this, event)"><label class="task-label">
+      <strong>שלב LanguageProvider ל-app/layout.tsx</strong>
+    </label></div>
+
+    <div class="task-group">8-6 — Artifact API Routes</div>
+    <div class="task checked" onclick="chk(this, event)"><input type="checkbox" checked onclick="cbClick(this, event)"><label class="task-label">
+      <strong>app/api/artifacts/ + app/api/ai/artifacts/ נוצרו</strong>
+      <span class="hint">skip endpoint + AI-powered artifact operations</span>
+    </label></div>
+    <div class="task" onclick="chk(this, event)"><input type="checkbox" onclick="cbClick(this, event)"><label class="task-label">
+      <strong>Smoke test: כפתור "דלג" באתיפקט → skip_reason נשמר ב-DB</strong>
+    </label></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ FUTURE ════ -->
+<div class="divider">🚀 v0.3+ — Future Scope</div>
+
+<div class="phase-block" id="future">
+  <div class="phase-header" onclick="toggle('future')">
+    <div class="phase-icon future">∞</div>
+    <div style="flex:1">
+      <div class="phase-title">פיצ'רים עתידיים — v0.3+</div>
+      <div class="phase-sub">BYOK · E2E Tests · Drift מתקדם · Teams · IDE extension · Control Tower אמיתי</div>
+    </div>
+    <div class="phase-badge-wrap">
+      <span class="badge future">Future</span>
+      <span class="phase-chevron">▶</span>
+    </div>
+  </div>
+  <div class="phase-body">
+    <div class="callout info">אלה לא חסמות ל-v0.2. מתוכננים ל-v0.3+ לאחר ולידציה עם משתמשים.</div>
+    <div class="task" onclick="chk(this, event)"><input type="checkbox" onclick="cbClick(this, event)"><label class="task-label">
+      <strong>BYOK — Bring Your Own Key</strong>
+      <span class="hint">/app/settings → שמירת ANTHROPIC_API_KEY פרטי ב-user_settings table (מוצפן)</span>
+    </label></div>
+    <div class="task" onclick="chk(this, event)"><input type="checkbox" onclick="cbClick(this, event)"><label class="task-label">
+      <strong>Drift Detection מתקדם</strong>
+      <span class="hint">זיהוי אוטומטי ומדויק יותר של סטיות בין Return Brief לבין ה-PRD המאושר</span>
+    </label></div>
+    <div class="task" onclick="chk(this, event)"><input type="checkbox" onclick="cbClick(this, event)"><label class="task-label">
+      <strong>Control Tower — נתוני אגרגציה אמיתיים</strong>
+      <span class="hint">החלפת mock data ב-/app בנתונים אמיתיים: סה"כ פרויקטים, משימות פעילות, החלטות אחרונות</span>
+    </label></div>
+    <div class="task" onclick="chk(this, event)"><input type="checkbox" onclick="cbClick(this, event)"><label class="task-label">
+      <strong>E2E Tests אוטומטיים</strong>
+      <span class="hint">Playwright: signup → wizard → PRD → Architecture → Tasks → Mission → Return</span>
+    </label></div>
+    <div class="task" onclick="chk(this, event)"><input type="checkbox" onclick="cbClick(this, event)"><label class="task-label">
+      <strong>Team Collaboration</strong>
+      <span class="hint">שיתוף פרויקט עם מספר משתמשים, הרשאות role-based</span>
+    </label></div>
+    <div class="task" onclick="chk(this, event)"><input type="checkbox" onclick="cbClick(this, event)"><label class="task-label">
+      <strong>IDE Extension</strong>
+      <span class="hint">VS Code / Cursor extension שמושך context ישירות מ-Tandem לתוך ה-IDE</span>
     </label></div>
   </div>
 </div>
@@ -528,10 +682,17 @@ function toggle(id) {
 }
 
 // ── check / uncheck a task row ────────────────────────────────────
-function chk(el) {
+function chk(el, event) {
+  if (event && event.target && event.target.type === 'checkbox') return;
   const cb = el.querySelector('input[type="checkbox"]');
   cb.checked = !cb.checked;
   el.classList.toggle('checked', cb.checked);
+  save(); refresh();
+}
+
+function cbClick(cb, event) {
+  event.stopPropagation();
+  cb.closest('.task').classList.toggle('checked', cb.checked);
   save(); refresh();
 }
 
@@ -561,12 +722,14 @@ function save() {
 
 function load() {
   try {
-    const state = JSON.parse(localStorage.getItem(KEY) || '{}');
+    const raw = localStorage.getItem(KEY);
+    if (!raw) return; // אין state שמור — השתמש בברירת המחדל מה-HTML
+    const state = JSON.parse(raw);
     document.querySelectorAll('.task input[type="checkbox"]').forEach((cb, i) => {
       const key = cb.id || i;
-      if (state[key]) {
-        cb.checked = true;
-        cb.closest('.task').classList.add('checked');
+      if (key in state) {
+        cb.checked = state[key];
+        cb.closest('.task').classList.toggle('checked', state[key]);
       }
     });
   } catch(e) {}

@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { 
-  FileText, 
+import {
+  FileText,
   Search,
   Plus,
   CheckCircle2,
@@ -12,7 +12,6 @@ import {
   Palette,
   Database,
   ArrowRight,
-  Copy,
   ExternalLink,
   ChevronDown,
   ChevronUp
@@ -27,13 +26,13 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 const returnBriefs = [
   {
     id: "rb1",
-    missionTitle: "Implement user authentication with Supabase",
+    missionTitle: "מימוש אימות משתמשים עם Supabase",
     project: "SaaS Dashboard",
     tool: "Cursor",
     toolIcon: Code,
-    completedAt: "2 hours ago",
+    completedAt: "לפני שעתיים",
     status: "completed",
-    summary: "Successfully implemented Supabase authentication with email/password and OAuth providers (Google, GitHub). Added session management and protected routes.",
+    summary: "מומש בהצלחה אימות Supabase עם אימייל/סיסמה ו-OAuth providers (Google, GitHub). נוסף ניהול session ו-protected routes.",
     artifacts: {
       filesCreated: [
         "lib/supabase/client.ts",
@@ -53,36 +52,36 @@ const returnBriefs = [
     },
     decisions: [
       {
-        title: "Added OAuth in addition to magic links",
-        rationale: "Better UX for users who prefer social login",
+        title: "נוסף OAuth בנוסף ל-magic links",
+        rationale: "חוויית משתמש טובה יותר למי שמעדיף כניסה חברתית",
         needsReview: true
       },
       {
-        title: "Used middleware for route protection",
-        rationale: "More efficient than checking in each page",
+        title: "שימוש ב-middleware להגנת routes",
+        rationale: "יעיל יותר מבדיקה בכל דף בנפרד",
         needsReview: false
       }
     ],
     completionChecklist: [
-      { item: "Users can sign up with email", completed: true },
-      { item: "Session persists across refreshes", completed: true },
-      { item: "Protected routes redirect to login", completed: true },
-      { item: "Password reset flow works", completed: false }
+      { item: "משתמשים יכולים להירשם עם אימייל", completed: true },
+      { item: "ה-session נשמר בין רענונים", completed: true },
+      { item: "protected routes מפנים ל-login", completed: true },
+      { item: "זרימת איפוס סיסמה עובדת", completed: false }
     ],
-    notes: "OAuth was added as an enhancement beyond the original spec. Recommend updating PRD to reflect this change. Password reset flow needs additional work - created follow-up mission.",
+    notes: "OAuth נוסף כשיפור מעבר למפרט המקורי. מומלץ לעדכן PRD לשקף שינוי זה. זרימת איפוס סיסמה דורשת עבודה נוספת — נוצרה משימת המשך.",
     driftFlags: [
-      "OAuth implementation differs from spec (magic links only)"
+      "מימוש OAuth שונה מהמפרט (magic links בלבד)"
     ]
   },
   {
     id: "rb2",
-    missionTitle: "Create dashboard layout components",
+    missionTitle: "יצירת קומפוננטות פריסת דשבורד",
     project: "SaaS Dashboard",
     tool: "v0",
     toolIcon: Palette,
-    completedAt: "1 day ago",
+    completedAt: "לפני יום",
     status: "pending-review",
-    summary: "Built the main dashboard shell with responsive sidebar navigation, header with user menu, and flexible content area. Supports dark mode.",
+    summary: "נבנה מעטפת הדשבורד הראשית עם ניווט sidebar רספונסיבי, header עם תפריט משתמש ואזור תוכן גמיש. תומך במצב כהה.",
     artifacts: {
       filesCreated: [
         "components/layout/sidebar.tsx",
@@ -98,28 +97,28 @@ const returnBriefs = [
     },
     decisions: [
       {
-        title: "Used CSS variables for theming",
-        rationale: "Easier dark mode support and customization",
+        title: "שימוש ב-CSS variables לעיצוב",
+        rationale: "תמיכה קלה יותר במצב כהה והתאמה אישית",
         needsReview: false
       }
     ],
     completionChecklist: [
-      { item: "Responsive down to 320px", completed: true },
-      { item: "Collapsible sidebar", completed: true },
-      { item: "Breadcrumb navigation", completed: false }
+      { item: "רספונסיבי עד 320px", completed: true },
+      { item: "sidebar מתקפל", completed: true },
+      { item: "ניווט breadcrumb", completed: false }
     ],
-    notes: "Breadcrumb navigation deferred to separate mission. All other acceptance criteria met.",
+    notes: "ניווט breadcrumb נדחה למשימה נפרדת. כל שאר קריטריוני הקבלה עומדים.",
     driftFlags: []
   },
   {
     id: "rb3",
-    missionTitle: "Set up database schema",
+    missionTitle: "הגדרת סכמת בסיס נתונים",
     project: "Mobile App MVP",
     tool: "Claude Code",
     toolIcon: Database,
-    completedAt: "3 days ago",
+    completedAt: "לפני 3 ימים",
     status: "completed",
-    summary: "Created initial database schema with users, workouts, exercises, and progress tables. Added RLS policies and seed data.",
+    summary: "נוצרה סכמת בסיס נתונים ראשונית עם טבלאות users, workouts, exercises ו-progress. נוספו מדיניות RLS ונתוני seed.",
     artifacts: {
       filesCreated: [
         "supabase/migrations/001_initial_schema.sql",
@@ -132,22 +131,22 @@ const returnBriefs = [
     },
     decisions: [
       {
-        title: "Used soft deletes for all tables",
-        rationale: "Data recovery and audit trail",
+        title: "שימוש ב-soft deletes לכל הטבלאות",
+        rationale: "שחזור נתונים ו-audit trail",
         needsReview: false
       },
       {
-        title: "Added composite indexes for common queries",
-        rationale: "Performance optimization",
+        title: "נוספו composite indexes לשאילתות נפוצות",
+        rationale: "אופטימיזציית ביצועים",
         needsReview: false
       }
     ],
     completionChecklist: [
-      { item: "All tables created", completed: true },
-      { item: "RLS enabled", completed: true },
-      { item: "Seed data script ready", completed: true }
+      { item: "כל הטבלאות נוצרו", completed: true },
+      { item: "RLS מופעל", completed: true },
+      { item: "סקריפט seed מוכן", completed: true }
     ],
-    notes: "Schema follows the entity relationship diagram. Types generated for TypeScript integration.",
+    notes: "הסכמה עוקבת אחר תרשים יחסי הישויות. טיפוסים נוצרו לאינטגרציה עם TypeScript.",
     driftFlags: []
   },
 ]
@@ -157,8 +156,8 @@ export default function ReturnsPage() {
   const [expandedSections, setExpandedSections] = useState<string[]>(["artifacts", "decisions", "checklist"])
 
   const toggleSection = (section: string) => {
-    setExpandedSections(prev => 
-      prev.includes(section) 
+    setExpandedSections(prev =>
+      prev.includes(section)
         ? prev.filter(s => s !== section)
         : [...prev, section]
     )
@@ -170,12 +169,12 @@ export default function ReturnsPage() {
       <header className="sticky top-0 z-10 border-b border-border/50 bg-background/80 backdrop-blur-sm">
         <div className="flex h-16 items-center justify-between px-6">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Return Briefs</h1>
-            <p className="text-sm text-muted-foreground">Results from completed AI tool sessions</p>
+            <h1 className="text-xl font-semibold tracking-tight">תדריכי חזרה</h1>
+            <p className="text-sm text-muted-foreground">תוצאות מסשנים שהושלמו בכלי AI</p>
           </div>
           <Button size="sm" className="gap-2">
             <Plus className="h-4 w-4" />
-            Submit Return Brief
+            הגש תדריך חזרה
           </Button>
         </div>
       </header>
@@ -185,8 +184,8 @@ export default function ReturnsPage() {
         <div className="flex items-center gap-4 mb-6">
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input 
-              placeholder="Search return briefs..." 
+            <Input
+              placeholder="חיפוש תדריכי חזרה..."
               className="pl-10 bg-background/50 border-border/50"
             />
           </div>
@@ -194,9 +193,9 @@ export default function ReturnsPage() {
 
         <Tabs defaultValue="all" className="space-y-6">
           <TabsList className="bg-muted/50">
-            <TabsTrigger value="all">All Returns</TabsTrigger>
-            <TabsTrigger value="pending">Pending Review</TabsTrigger>
-            <TabsTrigger value="completed">Processed</TabsTrigger>
+            <TabsTrigger value="all">כל התדריכים</TabsTrigger>
+            <TabsTrigger value="pending">ממתינים לבחינה</TabsTrigger>
+            <TabsTrigger value="completed">עובדו</TabsTrigger>
           </TabsList>
 
           <TabsContent value="all" className="space-y-0">
@@ -204,7 +203,7 @@ export default function ReturnsPage() {
               {/* Brief List */}
               <div className="space-y-3">
                 {returnBriefs.map((brief) => (
-                  <Card 
+                  <Card
                     key={brief.id}
                     className={`cursor-pointer border-border/50 bg-card/50 backdrop-blur-sm transition-all hover:border-primary/50 ${
                       selectedBrief?.id === brief.id ? "border-primary ring-1 ring-primary/20" : ""
@@ -250,11 +249,11 @@ export default function ReturnsPage() {
                       <div>
                         <div className="flex items-center gap-2 mb-2">
                           <Badge className={`text-xs ${
-                            selectedBrief.status === "completed" 
-                              ? "bg-emerald-500 text-white" 
+                            selectedBrief.status === "completed"
+                              ? "bg-emerald-500 text-white"
                               : "bg-amber-500 text-white"
                           }`}>
-                            {selectedBrief.status === "completed" ? "Processed" : "Pending Review"}
+                            {selectedBrief.status === "completed" ? "עובד" : "ממתין לבחינה"}
                           </Badge>
                           <Badge variant="outline" className="text-xs gap-1">
                             <selectedBrief.toolIcon className="h-3 w-3" />
@@ -267,13 +266,12 @@ export default function ReturnsPage() {
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    {/* Drift Flags */}
                     {selectedBrief.driftFlags.length > 0 && (
                       <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-3">
                         <div className="flex items-start gap-2">
                           <AlertCircle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
                           <div>
-                            <p className="text-sm font-medium text-amber-500">Drift Detected</p>
+                            <p className="text-sm font-medium text-amber-500">סטייה זוהתה</p>
                             <ul className="mt-1 space-y-1">
                               {selectedBrief.driftFlags.map((flag, i) => (
                                 <li key={i} className="text-xs text-muted-foreground">{flag}</li>
@@ -287,13 +285,13 @@ export default function ReturnsPage() {
                     {/* Artifacts */}
                     <Collapsible open={expandedSections.includes("artifacts")} onOpenChange={() => toggleSection("artifacts")}>
                       <CollapsibleTrigger className="flex items-center justify-between w-full py-2 text-sm font-medium">
-                        <span>Artifacts</span>
+                        <span>ארטיפקטים</span>
                         {expandedSections.includes("artifacts") ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                       </CollapsibleTrigger>
                       <CollapsibleContent className="space-y-3">
                         {selectedBrief.artifacts.filesCreated.length > 0 && (
                           <div>
-                            <p className="text-xs text-muted-foreground mb-1.5">Files Created</p>
+                            <p className="text-xs text-muted-foreground mb-1.5">קבצים שנוצרו</p>
                             <div className="space-y-1">
                               {selectedBrief.artifacts.filesCreated.map((file, i) => (
                                 <code key={i} className="block text-xs font-mono text-emerald-500 bg-emerald-500/5 px-2 py-1 rounded">
@@ -305,7 +303,7 @@ export default function ReturnsPage() {
                         )}
                         {selectedBrief.artifacts.filesModified.length > 0 && (
                           <div>
-                            <p className="text-xs text-muted-foreground mb-1.5">Files Modified</p>
+                            <p className="text-xs text-muted-foreground mb-1.5">קבצים שעודכנו</p>
                             <div className="space-y-1">
                               {selectedBrief.artifacts.filesModified.map((file, i) => (
                                 <code key={i} className="block text-xs font-mono text-amber-500 bg-amber-500/5 px-2 py-1 rounded">
@@ -317,7 +315,7 @@ export default function ReturnsPage() {
                         )}
                         {selectedBrief.artifacts.dependencies.length > 0 && (
                           <div>
-                            <p className="text-xs text-muted-foreground mb-1.5">Dependencies Added</p>
+                            <p className="text-xs text-muted-foreground mb-1.5">תלויות שנוספו</p>
                             <div className="flex flex-wrap gap-1">
                               {selectedBrief.artifacts.dependencies.map((dep, i) => (
                                 <Badge key={i} variant="secondary" className="text-xs font-mono">
@@ -333,7 +331,7 @@ export default function ReturnsPage() {
                     {/* Decisions */}
                     <Collapsible open={expandedSections.includes("decisions")} onOpenChange={() => toggleSection("decisions")}>
                       <CollapsibleTrigger className="flex items-center justify-between w-full py-2 text-sm font-medium">
-                        <span>Decisions Made</span>
+                        <span>החלטות שהתקבלו</span>
                         {expandedSections.includes("decisions") ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                       </CollapsibleTrigger>
                       <CollapsibleContent className="space-y-2">
@@ -343,7 +341,7 @@ export default function ReturnsPage() {
                               <p className="text-sm font-medium">{decision.title}</p>
                               {decision.needsReview && (
                                 <Badge variant="outline" className="text-xs text-amber-500 border-amber-500/50">
-                                  Needs Review
+                                  דורש בחינה
                                 </Badge>
                               )}
                             </div>
@@ -356,7 +354,7 @@ export default function ReturnsPage() {
                     {/* Completion Checklist */}
                     <Collapsible open={expandedSections.includes("checklist")} onOpenChange={() => toggleSection("checklist")}>
                       <CollapsibleTrigger className="flex items-center justify-between w-full py-2 text-sm font-medium">
-                        <span>Acceptance Criteria</span>
+                        <span>קריטריוני קבלה</span>
                         {expandedSections.includes("checklist") ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                       </CollapsibleTrigger>
                       <CollapsibleContent className="space-y-2">
@@ -373,23 +371,21 @@ export default function ReturnsPage() {
                       </CollapsibleContent>
                     </Collapsible>
 
-                    {/* Notes */}
                     {selectedBrief.notes && (
                       <div>
-                        <p className="text-sm font-medium mb-2">Notes</p>
+                        <p className="text-sm font-medium mb-2">הערות</p>
                         <p className="text-sm text-muted-foreground">{selectedBrief.notes}</p>
                       </div>
                     )}
 
-                    {/* Actions */}
                     <div className="flex gap-2 pt-2 border-t border-border/50">
                       <Button className="flex-1 gap-2" size="sm">
                         <CheckCircle2 className="h-4 w-4" />
-                        Approve & Sync
+                        אשר וסנכרן
                       </Button>
                       <Button variant="outline" size="sm" className="gap-2">
                         <ExternalLink className="h-4 w-4" />
-                        View Mission
+                        פתח משימה
                       </Button>
                     </div>
                   </CardContent>
@@ -398,7 +394,7 @@ export default function ReturnsPage() {
                 <Card className="border-border/50 bg-card/30 backdrop-blur-sm flex items-center justify-center min-h-[400px]">
                   <div className="text-center text-muted-foreground">
                     <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p className="text-sm">Select a return brief to view details</p>
+                    <p className="text-sm">בחר תדריך חזרה לצפייה בפרטים</p>
                   </div>
                 </Card>
               )}
@@ -407,13 +403,13 @@ export default function ReturnsPage() {
 
           <TabsContent value="pending">
             <div className="text-center py-12 text-muted-foreground">
-              <p>Pending review briefs will appear here</p>
+              <p>תדריכים הממתינים לבחינה יופיעו כאן</p>
             </div>
           </TabsContent>
 
           <TabsContent value="completed">
             <div className="text-center py-12 text-muted-foreground">
-              <p>Processed briefs will appear here</p>
+              <p>תדריכים שעובדו יופיעו כאן</p>
             </div>
           </TabsContent>
         </Tabs>

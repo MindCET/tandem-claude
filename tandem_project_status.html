@@ -104,7 +104,7 @@
                     <div class="w-full max-w-[200px]">
                         <canvas id="progressChart"></canvas>
                     </div>
-                    <p class="text-center mt-4 text-gray-400 text-sm">ה-MVP נמצא בשלבי סיום. נותרו משימות ליטוש ומקרי קצה.</p>
+                    <p class="text-center mt-4 text-gray-400 text-sm">MVP v0.1 ✅ הושלם ועלה לפרודקשן. כעת בביצוע v0.2 — Artifact Flexibility.</p>
                 </div>
             </div>
         </div>
@@ -116,35 +116,56 @@
             <div class="space-y-6">
                 <!-- Completed -->
                 <div class="glass-panel p-6 rounded-xl border-l-4 border-green-500">
-                    <h3 class="text-xl font-bold text-green-400 mb-4"><i class="fa-solid fa-check-circle ml-2"></i> מה כבר נעשה (Completed)</h3>
+                    <h3 class="text-xl font-bold text-green-400 mb-4"><i class="fa-solid fa-check-circle ml-2"></i> מה כבר נעשה — כל 8 הפאזות הושלמו ✅</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                         <ul class="space-y-2 text-gray-300">
-                            <li><i class="fa-solid fa-check text-green-500 ml-2"></i> <strong>תשתית:</strong> Next.js App Router, Tailwind, Supabase Auth & DB.</li>
-                            <li><i class="fa-solid fa-check text-green-500 ml-2"></i> <strong>ה-Wizard:</strong> קליטת רעיון, הפקת Product Brief ו-PRD אוטומטי מבוסס AI.</li>
-                            <li><i class="fa-solid fa-check text-green-500 ml-2"></i> <strong>תכנון משימות:</strong> המלצות ארכיטקטורה ופירוק למשימות וייעוד AI Router.</li>
-                            <li><i class="fa-solid fa-check text-green-500 ml-2"></i> <strong>מעגל SPDD:</strong> יצירת Mission Briefs וקליטת Return Briefs.</li>
+                            <li><i class="fa-solid fa-check text-green-500 ml-2"></i> <strong>Phase 0–1 — תשתית ו-Auth:</strong> Next.js 16 App Router, Tailwind v4, shadcn/ui, Supabase Auth + RLS, 10 טבלאות, route protection.</li>
+                            <li><i class="fa-solid fa-check text-green-500 ml-2"></i> <strong>Phase 2 — Wizard + Brief:</strong> 3-step wizard (Idea → Clarify → Brief), AI service layer עם Zod schemas, generate-clarification + generate-brief routes.</li>
+                            <li><i class="fa-solid fa-check text-green-500 ml-2"></i> <strong>Phase 3 — PRD + Architecture:</strong> PRD Generator, Architecture Generator, auto-save decisions + risks, Decision Log page.</li>
+                            <li><i class="fa-solid fa-check text-green-500 ml-2"></i> <strong>Phase 4 — Tasks + Missions:</strong> Task Generator, Mission Brief Generator, MissionBriefCard עם copy button, Missions pages.</li>
                         </ul>
                         <ul class="space-y-2 text-gray-300">
-                            <li><i class="fa-solid fa-check text-green-500 ml-2"></i> <strong>ממשק:</strong> לוח פיקוד (Command Center), יומן החלטות (Decision Log).</li>
-                            <li><i class="fa-solid fa-check text-green-500 ml-2"></i> <strong>לוקליזציה:</strong> תרגום מלא של הממשק לעברית (RTL).</li>
-                            <li><i class="fa-solid fa-check text-green-500 ml-2"></i> <strong>Copilot:</strong> צ'אט מלווה חכם שמייצר פרומפטים ישירות מהממשק.</li>
+                            <li><i class="fa-solid fa-check text-green-500 ml-2"></i> <strong>Phase 5 — Return Brief Loop:</strong> Return analysis AI, Drift Detection, Risk Register, computeNextAction לכל השלבים.</li>
+                            <li><i class="fa-solid fa-check text-green-500 ml-2"></i> <strong>Phase 6 — Living Docs + Deploy:</strong> Markdown export, Landing Page, production build ✅ (31 routes), Vercel live — <a href="https://tandem-claude.vercel.app" target="_blank" class="text-blue-400 underline">tandem-claude.vercel.app</a>.</li>
+                            <li><i class="fa-solid fa-check text-green-500 ml-2"></i> <strong>Phase 7 — AI Companion:</strong> floating chat panel, streaming API עם project context, platform routing (Cursor / Claude Code / v0 / Lovable), mission prompt + return prompt generation, return summary ingestion → שמירה ל-DB.</li>
+                            <li><i class="fa-solid fa-check text-green-500 ml-2"></i> <strong>Smoke Tests (כל ה-SPDD loop):</strong> Signup → Wizard → Brief → PRD → Architecture → Tasks → Mission → Return → Companion — אומתו בפרודקשן ✅</li>
+                            <li><i class="fa-solid fa-check text-green-500 ml-2"></i> <strong>Schema cleanup:</strong> <code class="text-xs bg-gray-800 px-1 rounded">database.sql</code> הישן נמחק — migrations הם ה-source of truth ✅</li>
                         </ul>
                     </div>
                 </div>
 
-                <!-- To Do -->
-                <div class="glass-panel p-6 rounded-xl border-l-4 border-orange-500">
-                    <h3 class="text-xl font-bold text-orange-400 mb-4"><i class="fa-solid fa-hourglass-half ml-2"></i> מה נשאר לעשות (To Do / Future Scope)</h3>
+                <!-- v0.2 in progress -->
+                <div class="glass-panel p-6 rounded-xl border-l-4 border-blue-500">
+                    <h3 class="text-xl font-bold text-blue-400 mb-4"><i class="fa-solid fa-code-branch ml-2"></i> v0.2 — בפיתוח עכשיו (2026-05-26)</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                         <ul class="space-y-2 text-gray-300">
-                            <li><i class="fa-regular fa-circle text-orange-500 ml-2"></i> <strong>בדיקות E2E:</strong> סימולציה מלאה של פתיחת פרויקט ועד סיום עם כלי חיצוני.</li>
-                            <li><i class="fa-regular fa-circle text-orange-500 ml-2"></i> <strong>Drift Detection מתקדם:</strong> זיהוי אוטומטי ומדויק יותר של סטיות ב-Return Briefs.</li>
-                            <li><i class="fa-regular fa-circle text-orange-500 ml-2"></i> <strong>פרופיל אישי:</strong> אזור Settings מתקדם לניהול מפתחות API פרטיים (BYOK).</li>
+                            <li><i class="fa-solid fa-spinner text-blue-400 ml-2"></i> <strong>Artifact Flexibility Migration:</strong> עמודות חדשות ל-artifacts (<code class="text-xs bg-gray-800 px-1 rounded">source, skip_reason, completeness_score</code>) + טבלת <code class="text-xs bg-gray-800 px-1 rounded">artifact_versions</code> עם היסטוריה מלאה + RLS.</li>
+                            <li><i class="fa-solid fa-spinner text-blue-400 ml-2"></i> <strong>ArtifactHealthPanel:</strong> ויזואליזציה של איכות Mission Brief — ציון %, סטטוס לכל ארטיפקט (complete / draft / missing / skipped), כפתור "דלג" עם סיבה.</li>
+                            <li><i class="fa-solid fa-spinner text-blue-400 ml-2"></i> <strong>EditableArtifact:</strong> עריכה מוטבעת של ארטיפקטים ישירות מהדף.</li>
+                            <li><i class="fa-solid fa-spinner text-blue-400 ml-2"></i> <strong>ImportArtifactDialog:</strong> ייבוא ארטיפקט קיים מ-Notion / Google Docs / טקסט חופשי.</li>
                         </ul>
                         <ul class="space-y-2 text-gray-300">
-                            <li><i class="fa-regular fa-circle text-orange-500 ml-2"></i> <strong>אופטימיזציית AI:</strong> חידוד הפרומפטים כך שלא יאבדו קונטקסט לאורך זמן.</li>
-                            <li><i class="fa-solid fa-users text-gray-500 ml-2"></i> <em>(Future Scope)</em> שיתוף פעולה בצוותים (Team Collaboration).</li>
-                            <li><i class="fa-solid fa-plug text-gray-500 ml-2"></i> <em>(Future Scope)</em> תוספים אינטגרטיביים ישירות לסביבת הפיתוח.</li>
+                            <li><i class="fa-solid fa-spinner text-blue-400 ml-2"></i> <strong>EntryPointStep (Wizard):</strong> שלב חדש ראשוני ב-Wizard — "איפה אתה עכשיו?" עם 4 נתיבי כניסה: רעיון / PRD קיים / קוד קיים / כבר בבנייה.</li>
+                            <li><i class="fa-solid fa-spinner text-blue-400 ml-2"></i> <strong>i18n / Language Provider:</strong> תשתית רב-לשונית — <code class="text-xs bg-gray-800 px-1 rounded">lib/i18n/</code> + <code class="text-xs bg-gray-800 px-1 rounded">components/language-provider.tsx</code>.</li>
+                            <li><i class="fa-solid fa-spinner text-blue-400 ml-2"></i> <strong>Artifact API Routes:</strong> <code class="text-xs bg-gray-800 px-1 rounded">app/api/artifacts/</code> (skip endpoint) + <code class="text-xs bg-gray-800 px-1 rounded">app/api/ai/artifacts/</code> (AI-powered operations).</li>
+                            <li><i class="fa-solid fa-exclamation-triangle text-yellow-400 ml-2"></i> <strong>נדרש:</strong> הרצת Migration 03 ב-Supabase SQL Editor + smoke test של EntryPointStep + Health Panel.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Future scope -->
+                <div class="glass-panel p-6 rounded-xl border-l-4 border-gray-600">
+                    <h3 class="text-xl font-bold text-gray-400 mb-4"><i class="fa-solid fa-rocket ml-2"></i> v0.3+ — Future Scope</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <ul class="space-y-2 text-gray-500">
+                            <li><i class="fa-regular fa-circle text-gray-500 ml-2"></i> <strong>BYOK (Bring Your Own Key):</strong> /app/settings לניהול מפתחות API פרטיים.</li>
+                            <li><i class="fa-regular fa-circle text-gray-500 ml-2"></i> <strong>Drift Detection מתקדם:</strong> זיהוי אוטומטי מדויק יותר של סטיות בין Return לבין PRD מאושר.</li>
+                            <li><i class="fa-regular fa-circle text-gray-500 ml-2"></i> <strong>E2E Tests אוטומטיים:</strong> Playwright — סימולציה מלאה של ה-SPDD loop.</li>
+                        </ul>
+                        <ul class="space-y-2 text-gray-500">
+                            <li><i class="fa-solid fa-users text-gray-600 ml-2"></i> שיתוף פעולה בצוותים (Team Collaboration).</li>
+                            <li><i class="fa-solid fa-plug text-gray-600 ml-2"></i> אינטגרציה ישירה לסביבת הפיתוח (IDE extension — VS Code / Cursor).</li>
+                            <li><i class="fa-solid fa-chart-line text-gray-600 ml-2"></i> Control Tower עם נתוני אגרגציה אמיתיים (במקום mock data).</li>
                         </ul>
                     </div>
                 </div>
@@ -229,9 +250,9 @@
         new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ['בוצע', 'נותר ל-MVP'],
+                labels: ['MVP v0.1 ✅', 'v0.2 בביצוע'],
                 datasets: [{
-                    data: [85, 15],
+                    data: [100, 0],
                     backgroundColor: ['#3b82f6', '#1e293b'],
                     borderWidth: 0,
                     hoverOffset: 4

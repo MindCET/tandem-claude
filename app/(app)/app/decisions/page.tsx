@@ -1,10 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { 
-  GitBranch, 
-  Search, 
-  Filter,
+import {
+  GitBranch,
+  Search,
   CheckCircle2,
   ChevronRight,
   Calendar,
@@ -18,111 +17,110 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ScrollArea } from "@/components/ui/scroll-area"
 
 const decisions = [
   {
     id: "d1",
-    title: "Use Supabase for authentication and database",
-    description: "After evaluating Firebase, Auth0, and Supabase, we chose Supabase for its PostgreSQL foundation, built-in auth, and real-time capabilities.",
+    title: "שימוש ב-Supabase לאימות ובסיס נתונים",
+    description: "לאחר הערכת Firebase, Auth0 ו-Supabase, בחרנו ב-Supabase בזכות בסיס ה-PostgreSQL, אימות מובנה ויכולות real-time.",
     project: "SaaS Dashboard",
-    category: "Architecture",
+    category: "ארכיטקטורה",
     status: "approved",
-    timestamp: "2 hours ago",
-    date: "May 14, 2026",
+    timestamp: "לפני שעתיים",
+    date: "14 במאי 2026",
     author: "Tandem AI",
-    rationale: "Supabase provides the best balance of developer experience, scalability, and cost for an early-stage SaaS product. The PostgreSQL foundation allows for complex queries as we scale.",
+    rationale: "Supabase מספק את האיזון הטוב ביותר בין חוויית מפתח, מדרגיות ועלות למוצר SaaS בשלב מוקדם. בסיס ה-PostgreSQL מאפשר שאילתות מורכבות בצמיחה.",
     alternatives: [
-      { name: "Firebase", reason: "NoSQL would require data modeling changes" },
-      { name: "Auth0", reason: "Additional cost and complexity for separate auth" },
-      { name: "PlanetScale", reason: "Would need separate auth solution" }
+      { name: "Firebase", reason: "NoSQL היה מחייב שינויי מודל נתונים" },
+      { name: "Auth0", reason: "עלות ומורכבות נוספות לאימות נפרד" },
+      { name: "PlanetScale", reason: "היה נדרש פתרון אימות נפרד" }
     ],
     implications: [
-      "All data models will be relational",
-      "Auth flows will use Supabase magic links",
-      "Real-time features available via subscriptions"
+      "כל מודלי הנתונים יהיו רלציוניים",
+      "זרימות אימות ישתמשו ב-Supabase magic links",
+      "תכונות real-time זמינות דרך subscriptions"
     ],
-    linkedArtifacts: ["Architecture Doc", "PRD v1.2", "Mission Brief #12"]
+    linkedArtifacts: ["מסמך ארכיטקטורה", "PRD v1.2", "תדריך משימה #12"]
   },
   {
     id: "d2",
-    title: "Implement server-side rendering for SEO pages",
-    description: "Public-facing pages will use SSR for SEO, while dashboard pages remain client-side for better interactivity.",
+    title: "רינדור בצד שרת לדפי SEO",
+    description: "דפים ציבוריים ישתמשו ב-SSR לטובת SEO, בעוד דפי הדשבורד יישארו client-side לאינטראקטיביות טובה יותר.",
     project: "E-commerce Platform",
-    category: "Performance",
+    category: "ביצועים",
     status: "approved",
-    timestamp: "1 day ago",
-    date: "May 13, 2026",
+    timestamp: "לפני יום",
+    date: "13 במאי 2026",
     author: "Tandem AI",
-    rationale: "SEO is critical for discoverability. SSR ensures search engines can index product pages while keeping the dashboard fast and interactive.",
+    rationale: "SEO קריטי לגילויות. SSR מבטיח שמנועי חיפוש יכולים לאנדקס דפי מוצר תוך שמירת הדשבורד מהיר ואינטראקטיבי.",
     alternatives: [
-      { name: "Full SSR", reason: "Would slow down dashboard interactions" },
-      { name: "Full CSR", reason: "Poor SEO for product pages" }
+      { name: "SSR מלא", reason: "יאיט את אינטראקציות הדשבורד" },
+      { name: "CSR מלא", reason: "SEO גרוע לדפי מוצר" }
     ],
     implications: [
-      "Need to separate public and private routes",
-      "Some state management complexity",
-      "Caching strategy for SSR pages needed"
+      "צורך בהפרדה של routes ציבוריים ופרטיים",
+      "מורכבות ניהול state מסוימת",
+      "אסטרטגיית caching לדפי SSR נדרשת"
     ],
-    linkedArtifacts: ["Performance Spec", "SEO Requirements"]
+    linkedArtifacts: ["מפרט ביצועים", "דרישות SEO"]
   },
   {
     id: "d3",
-    title: "Use React Native over Flutter for mobile",
-    description: "React Native chosen for better code sharing with the existing Next.js web app and team familiarity with React.",
+    title: "React Native במקום Flutter למובייל",
+    description: "React Native נבחר לשיתוף קוד טוב יותר עם אפליקציית Next.js הקיימת והיכרות הצוות עם React.",
     project: "Mobile App MVP",
     category: "Stack",
     status: "approved",
-    timestamp: "2 days ago",
-    date: "May 12, 2026",
-    author: "User",
-    rationale: "Team already knows React and TypeScript. Code sharing between web and mobile will accelerate development significantly.",
+    timestamp: "לפני יומיים",
+    date: "12 במאי 2026",
+    author: "משתמש",
+    rationale: "הצוות כבר מכיר React ו-TypeScript. שיתוף קוד בין web למובייל יאיץ את הפיתוח משמעותית.",
     alternatives: [
-      { name: "Flutter", reason: "Would require learning Dart" },
-      { name: "Native iOS/Android", reason: "Double the development effort" },
-      { name: "Expo only", reason: "Limited native module access" }
+      { name: "Flutter", reason: "היה מחייב לימוד Dart" },
+      { name: "Native iOS/Android", reason: "כפל מאמץ הפיתוח" },
+      { name: "Expo בלבד", reason: "גישה מוגבלת ל-native modules" }
     ],
     implications: [
-      "Can share validation logic and types",
-      "Some UI components portable",
-      "Need React Native specialists eventually"
+      "ניתן לשתף לוגיקת validation וטיפוסים",
+      "חלק מקומפוננטות UI ניידות",
+      "בעתיד תידרש מומחיות React Native"
     ],
-    linkedArtifacts: ["Tech Stack Doc", "Mobile Requirements"]
+    linkedArtifacts: ["מסמך Tech Stack", "דרישות מובייל"]
   },
   {
     id: "d4",
-    title: "Adopt a monorepo structure with Turborepo",
-    description: "Consolidating web, mobile, and shared packages into a monorepo for better code sharing and CI/CD efficiency.",
+    title: "מבנה monorepo עם Turborepo",
+    description: "איחוד web, מובייל ופקאג'ים משותפים ל-monorepo לשיתוף קוד טוב יותר ויעילות CI/CD.",
     project: "SaaS Dashboard",
     category: "DevOps",
     status: "pending",
-    timestamp: "3 days ago",
-    date: "May 11, 2026",
+    timestamp: "לפני 3 ימים",
+    date: "11 במאי 2026",
     author: "Tandem AI",
-    rationale: "As we add mobile and shared packages, a monorepo will reduce duplication and simplify dependency management.",
+    rationale: "עם הוספת מובייל ופקאג'ים משותפים, monorepo יצמצם כפילויות ויפשט ניהול תלויות.",
     alternatives: [
-      { name: "Separate repos", reason: "More CI/CD complexity, duplicate packages" },
-      { name: "Nx", reason: "More complex than needed for current scale" }
+      { name: "Repos נפרדים", reason: "מורכבות CI/CD רבה יותר, פקאג'ים כפולים" },
+      { name: "Nx", reason: "מורכב מדי לגודל הנוכחי" }
     ],
     implications: [
-      "Need to restructure project layout",
-      "CI/CD pipeline changes required",
-      "Better cache sharing across builds"
+      "צורך לבנות מחדש את מבנה הפרויקט",
+      "שינויים בצינור CI/CD נדרשים",
+      "שיתוף cache טוב יותר בין builds"
     ],
-    linkedArtifacts: ["Architecture Doc", "DevOps Plan"]
+    linkedArtifacts: ["מסמך ארכיטקטורה", "תכנית DevOps"]
   },
 ]
 
-const categories = ["All", "Architecture", "Stack", "Performance", "DevOps", "Security", "Design"]
+const categories = ["הכל", "ארכיטקטורה", "Stack", "ביצועים", "DevOps", "אבטחה", "עיצוב"]
 
 export default function DecisionsPage() {
   const [selectedDecision, setSelectedDecision] = useState<typeof decisions[0] | null>(null)
   const [searchQuery, setSearchQuery] = useState("")
-  const [activeCategory, setActiveCategory] = useState("All")
+  const [activeCategory, setActiveCategory] = useState("הכל")
 
-  const filteredDecisions = decisions.filter(d => 
-    activeCategory === "All" || d.category === activeCategory
+  const filteredDecisions = decisions.filter(d =>
+    activeCategory === "הכל" || d.category === activeCategory
   )
 
   return (
@@ -131,13 +129,13 @@ export default function DecisionsPage() {
       <header className="sticky top-0 z-10 border-b border-border/50 bg-background/80 backdrop-blur-sm">
         <div className="flex h-16 items-center justify-between px-6">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Decision Log</h1>
-            <p className="text-sm text-muted-foreground">Track and reference all product decisions</p>
+            <h1 className="text-xl font-semibold tracking-tight">יומן החלטות</h1>
+            <p className="text-sm text-muted-foreground">מעקב ורפרנס לכל החלטות המוצר</p>
           </div>
           <div className="flex items-center gap-2">
             <Badge variant="secondary" className="gap-1">
               <CheckCircle2 className="h-3 w-3" />
-              {decisions.filter(d => d.status === "approved").length} Approved
+              {decisions.filter(d => d.status === "approved").length} מאושרות
             </Badge>
           </div>
         </div>
@@ -148,8 +146,8 @@ export default function DecisionsPage() {
         <div className="flex items-center gap-4 mb-6">
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input 
-              placeholder="Search decisions..." 
+            <Input
+              placeholder="חיפוש החלטות..."
               className="pl-10 bg-background/50 border-border/50"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -179,12 +177,11 @@ export default function DecisionsPage() {
               <div className="space-y-2 pr-4">
                 {filteredDecisions.map((decision, index) => (
                   <div key={decision.id} className="relative">
-                    {/* Timeline line */}
                     {index < filteredDecisions.length - 1 && (
                       <div className="absolute left-[11px] top-10 bottom-0 w-px bg-border/50" />
                     )}
-                    
-                    <div 
+
+                    <div
                       className={`cursor-pointer rounded-lg border border-border/50 bg-card/50 p-4 transition-all hover:border-primary/50 ${
                         selectedDecision?.id === decision.id ? "border-primary ring-1 ring-primary/20" : ""
                       }`}
@@ -192,8 +189,8 @@ export default function DecisionsPage() {
                     >
                       <div className="flex items-start gap-3">
                         <div className={`mt-0.5 h-6 w-6 rounded-full border-2 flex items-center justify-center shrink-0 ${
-                          decision.status === "approved" 
-                            ? "border-emerald-500 bg-emerald-500/10" 
+                          decision.status === "approved"
+                            ? "border-emerald-500 bg-emerald-500/10"
                             : "border-amber-500 bg-amber-500/10"
                         }`}>
                           {decision.status === "approved" ? (
@@ -231,14 +228,14 @@ export default function DecisionsPage() {
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <div className="flex items-center gap-2 mb-2">
-                        <Badge 
+                        <Badge
                           className={`text-xs ${
-                            selectedDecision.status === "approved" 
-                              ? "bg-emerald-500 text-white" 
+                            selectedDecision.status === "approved"
+                              ? "bg-emerald-500 text-white"
                               : "bg-amber-500 text-white"
                           }`}
                         >
-                          {selectedDecision.status === "approved" ? "Approved" : "Pending"}
+                          {selectedDecision.status === "approved" ? "מאושר" : "ממתין"}
                         </Badge>
                         <Badge variant="secondary" className="text-xs">
                           {selectedDecision.category}
@@ -259,23 +256,20 @@ export default function DecisionsPage() {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  {/* Description */}
                   <div>
                     <p className="text-sm text-muted-foreground">{selectedDecision.description}</p>
                   </div>
 
-                  {/* Rationale */}
                   <div>
                     <h4 className="text-sm font-medium mb-2 flex items-center gap-2">
                       <MessageSquare className="h-4 w-4 text-primary" />
-                      Rationale
+                      נימוק
                     </h4>
                     <p className="text-sm text-muted-foreground">{selectedDecision.rationale}</p>
                   </div>
 
-                  {/* Alternatives Considered */}
                   <div>
-                    <h4 className="text-sm font-medium mb-2">Alternatives Considered</h4>
+                    <h4 className="text-sm font-medium mb-2">חלופות שנשקלו</h4>
                     <div className="space-y-2">
                       {selectedDecision.alternatives.map((alt, i) => (
                         <div key={i} className="flex items-start gap-2 text-sm">
@@ -286,9 +280,8 @@ export default function DecisionsPage() {
                     </div>
                   </div>
 
-                  {/* Implications */}
                   <div>
-                    <h4 className="text-sm font-medium mb-2">Implications</h4>
+                    <h4 className="text-sm font-medium mb-2">השלכות</h4>
                     <ul className="space-y-1.5">
                       {selectedDecision.implications.map((impl, i) => (
                         <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
@@ -299,17 +292,16 @@ export default function DecisionsPage() {
                     </ul>
                   </div>
 
-                  {/* Linked Artifacts */}
                   <div>
                     <h4 className="text-sm font-medium mb-2 flex items-center gap-2">
                       <Link2 className="h-4 w-4 text-primary" />
-                      Linked Artifacts
+                      ארטיפקטים מקושרים
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {selectedDecision.linkedArtifacts.map((artifact, i) => (
-                        <Badge 
-                          key={i} 
-                          variant="outline" 
+                        <Badge
+                          key={i}
+                          variant="outline"
                           className="text-xs cursor-pointer hover:bg-muted gap-1"
                         >
                           {artifact}
@@ -324,7 +316,7 @@ export default function DecisionsPage() {
               <Card className="border-border/50 bg-card/30 backdrop-blur-sm flex items-center justify-center min-h-[500px]">
                 <div className="text-center text-muted-foreground">
                   <GitBranch className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p className="text-sm">Select a decision to view details</p>
+                  <p className="text-sm">בחר החלטה לצפייה בפרטים</p>
                 </div>
               </Card>
             )}

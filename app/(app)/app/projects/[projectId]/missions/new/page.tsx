@@ -55,7 +55,7 @@ export default function NewMissionPage() {
       })
       if (!res.ok) {
         const body = await res.json().catch(() => ({}))
-        throw new Error(body.error ?? 'שגיאה ביצירת Mission Brief')
+        throw new Error(body.error ?? 'שגיאה ביצירת תדריך משימה')
       }
       const data = await res.json()
       setMission(data.mission)
@@ -141,9 +141,9 @@ export default function NewMissionPage() {
       ) : (
         <Card>
           <CardHeader className="text-center">
-            <CardTitle>Mission Brief — {task.title}</CardTitle>
+            <CardTitle>תדריך משימה — {task.title}</CardTitle>
             <CardDescription>
-              AI ייצר Mission Brief מלא ומוכן להדבקה ב-{task.recommended_tool ?? 'כלי AI'}
+              AI ייצר תדריך משימה מלא ומוכן להדבקה ב-{task.recommended_tool ?? 'כלי AI'}
             </CardDescription>
           </CardHeader>
           <CardContent className="text-center pb-8">
@@ -151,12 +151,12 @@ export default function NewMissionPage() {
               {generating ? (
                 <>
                   <Loader2 className="ml-2 h-4 w-4 animate-spin" />
-                  מייצר Mission Brief...
+                  מייצר תדריך משימה...
                 </>
               ) : (
                 <>
                   <Sparkles className="ml-2 h-4 w-4" />
-                  צור Mission Brief מ-AI
+                  צור תדריך משימה מ-AI
                 </>
               )}
             </Button>

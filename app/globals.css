@@ -4,62 +4,64 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Deep space black base */
-  --background: oklch(0.08 0.01 260);
-  --foreground: oklch(0.95 0.01 260);
-  
-  /* Cards with subtle warmth */
-  --card: oklch(0.12 0.015 260);
-  --card-foreground: oklch(0.95 0.01 260);
-  
-  --popover: oklch(0.12 0.015 260);
-  --popover-foreground: oklch(0.95 0.01 260);
-  
-  /* Electric cyan accent */
-  --primary: oklch(0.75 0.15 195);
-  --primary-foreground: oklch(0.08 0.01 260);
-  
-  /* Muted steel */
-  --secondary: oklch(0.18 0.02 260);
-  --secondary-foreground: oklch(0.85 0.02 260);
-  
-  --muted: oklch(0.15 0.015 260);
-  --muted-foreground: oklch(0.55 0.02 260);
-  
-  /* Accent - warm amber for highlights */
-  --accent: oklch(0.78 0.14 75);
-  --accent-foreground: oklch(0.12 0.01 260);
-  
-  --destructive: oklch(0.65 0.2 25);
-  --destructive-foreground: oklch(0.95 0.01 260);
-  
-  /* Subtle borders */
-  --border: oklch(0.22 0.02 260);
-  --input: oklch(0.18 0.02 260);
-  --ring: oklch(0.75 0.15 195);
-  
-  /* Chart colors - mission control palette */
-  --chart-1: oklch(0.75 0.15 195);
-  --chart-2: oklch(0.78 0.14 75);
-  --chart-3: oklch(0.65 0.18 145);
-  --chart-4: oklch(0.70 0.12 320);
-  --chart-5: oklch(0.80 0.10 55);
-  
-  --radius: 0.5rem;
-  
-  --sidebar: oklch(0.10 0.015 260);
-  --sidebar-foreground: oklch(0.95 0.01 260);
-  --sidebar-primary: oklch(0.75 0.15 195);
-  --sidebar-primary-foreground: oklch(0.08 0.01 260);
-  --sidebar-accent: oklch(0.18 0.02 260);
-  --sidebar-accent-foreground: oklch(0.95 0.01 260);
-  --sidebar-border: oklch(0.22 0.02 260);
-  --sidebar-ring: oklch(0.75 0.15 195);
+  /* Editorial — warm cream base */
+  --background: #f0e9da;
+  --foreground: #18182a;
+
+  /* Cards — slightly cooler cream */
+  --card: #f8f3e8;
+  --card-foreground: #18182a;
+
+  --popover: #f8f3e8;
+  --popover-foreground: #18182a;
+
+  /* Terracotta primary */
+  --primary: #e85d3a;
+  --primary-foreground: #ffffff;
+
+  /* Muted cream tones */
+  --secondary: #e8dfc8;
+  --secondary-foreground: #18182a;
+
+  --muted: #ece5d4;
+  --muted-foreground: rgba(22, 22, 34, 0.45);
+
+  /* Accent — dark navy (for filled cards, banners) */
+  --accent: #18182a;
+  --accent-foreground: #f0e9da;
+
+  --destructive: #e85d3a;
+  --destructive-foreground: #ffffff;
+
+  /* Hairline borders */
+  --border: rgba(22, 22, 34, 0.12);
+  --input: rgba(22, 22, 34, 0.12);
+  --ring: #e85d3a;
+
+  /* Chart palette */
+  --chart-1: #e85d3a;
+  --chart-2: #18182a;
+  --chart-3: #9b6b4a;
+  --chart-4: #c4a882;
+  --chart-5: #6b8c7a;
+
+  /* Radius — very tight, editorial feel */
+  --radius: 0.125rem;
+
+  /* Sidebar — always dark */
+  --sidebar: #18182a;
+  --sidebar-foreground: #f0e9da;
+  --sidebar-primary: #e85d3a;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgba(240, 233, 218, 0.08);
+  --sidebar-accent-foreground: #f0e9da;
+  --sidebar-border: rgba(255, 255, 255, 0.06);
+  --sidebar-ring: #e85d3a;
 }
 
 @theme inline {
-  --font-sans: 'Geist', 'Geist Fallback', system-ui, sans-serif;
-  --font-mono: 'Geist Mono', 'Geist Mono Fallback', monospace;
+  --font-sans: var(--font-rubik, 'Rubik'), system-ui, sans-serif;
+  --font-mono: var(--font-ibm-plex-mono, 'IBM Plex Mono'), monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -84,9 +86,9 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
+  --radius-sm: calc(var(--radius));
+  --radius-md: calc(var(--radius));
+  --radius-lg: calc(var(--radius) + 2px);
   --radius-xl: calc(var(--radius) + 4px);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
@@ -104,99 +106,60 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Rubik', system-ui, sans-serif;
   }
 }
 
-/* Custom scrollbar */
+/* Scrollbar — warm tones */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
-
 ::-webkit-scrollbar-track {
-  background: oklch(0.12 0.015 260);
+  background: #e8dfc8;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: oklch(0.25 0.02 260);
+  background: rgba(22, 22, 34, 0.2);
   border-radius: 3px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: oklch(0.35 0.02 260);
+  background: rgba(22, 22, 34, 0.35);
 }
 
-/* Grid pattern background */
-.grid-pattern {
-  background-image: 
-    linear-gradient(oklch(0.18 0.02 260 / 0.5) 1px, transparent 1px),
-    linear-gradient(90deg, oklch(0.18 0.02 260 / 0.5) 1px, transparent 1px);
-  background-size: 60px 60px;
+/* Editorial section header underline */
+.ed-section-head {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(22, 22, 34, 0.35);
+  padding-bottom: 8px;
+  border-bottom: 2px solid #18182a;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-/* Scanline effect */
-.scanlines {
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    oklch(0.08 0.01 260 / 0.03) 2px,
-    oklch(0.08 0.01 260 / 0.03) 4px
-  );
-  pointer-events: none;
+/* Editorial large stat number */
+.ed-stat-num {
+  font-weight: 900;
+  font-size: 2.5rem;
+  color: #18182a;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.ed-stat-num.accent {
+  color: #e85d3a;
 }
 
-/* Glow effects */
-.glow-cyan {
-  box-shadow: 0 0 20px oklch(0.75 0.15 195 / 0.3),
-              0 0 40px oklch(0.75 0.15 195 / 0.1);
-}
-
-.glow-amber {
-  box-shadow: 0 0 20px oklch(0.78 0.14 75 / 0.3),
-              0 0 40px oklch(0.78 0.14 75 / 0.1);
-}
-
-.text-glow-cyan {
-  text-shadow: 0 0 20px oklch(0.75 0.15 195 / 0.5);
-}
-
-/* Animated border */
-@keyframes border-flow {
-  0%, 100% {
-    background-position: 0% 50%;
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-spin,
+  .animate-pulse {
+    animation: none;
   }
-  50% {
-    background-position: 100% 50%;
+  * {
+    transition-duration: 0.01ms !important;
   }
-}
-
-.animated-border {
-  background: linear-gradient(90deg,
-    oklch(0.75 0.15 195),
-    oklch(0.78 0.14 75),
-    oklch(0.75 0.15 195));
-  background-size: 200% 200%;
-  animation: border-flow 3s ease infinite;
-}
-
-/* Terminal cursor blink */
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-/* Noise texture overlay */
-.noise {
-  position: relative;
-}
-
-.noise::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.02;
-  pointer-events: none;
-  mix-blend-mode: overlay;
 }

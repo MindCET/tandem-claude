@@ -57,7 +57,7 @@ export default async function MissionDetailPage({ params }: PageProps) {
           <div className="space-y-2">
             <div className="flex items-start justify-between gap-4 mb-4">
               <div>
-                <h1 className="text-xl font-bold">{task?.title ?? 'Mission Brief'}</h1>
+                <h1 className="text-xl font-bold">{task?.title ?? 'תדריך משימה'}</h1>
                 {task?.phase && (
                   <p className="text-sm text-muted-foreground mt-1">{task.phase}</p>
                 )}
