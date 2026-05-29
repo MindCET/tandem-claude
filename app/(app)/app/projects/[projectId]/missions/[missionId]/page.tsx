@@ -2,8 +2,7 @@ import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent } from '@/components/ui/card'
-import { MissionBriefCard } from '@/components/missions/MissionBriefCard'
-import type { MissionBrief } from '@/lib/ai/schemas'
+import { escapeHtml } from '@/lib/utils'
 
 interface PageProps {
   params: Promise<{ projectId: string; missionId: string }>
@@ -31,14 +30,6 @@ export default async function MissionDetailPage({ params }: PageProps) {
   const mission = missionRes.data
   const task = mission.tasks as { title: string; phase: string } | null
   const projectName = projRes.data?.name ?? ''
-
-  // Parse mission_brief markdown back — or use stored JSON if available
-  // The mission_brief column stores the markdown; we need structured data from re-parsing
-  // Since we store structured data in the API response but not in DB, reconstruct from markdown
-  // We'll extract sections from the markdown for display.
-  // Actually: we stored markdown in mission_brief — use ArtifactViewer-style display
-  // For the MissionBriefCard we need structured data. Store it as JSON in a separate parse.
-  // Fallback: display the raw markdown in a pre block if structured data isn't available.
 
   return (
     <div className="container mx-auto px-6 py-8 max-w-4xl">
@@ -122,7 +113,7 @@ function MissionMarkdownDisplay({
 }
 
 function renderMissionMarkdown(md: string): string {
-  return md
+  return escapeHtml(md)
     .replace(/```[\w]*\n([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
     .replace(/^### (.+)$/gm, '<h3>$1</h3>')
     .replace(/^## (.+)$/gm,  '<h2>$1</h2>')

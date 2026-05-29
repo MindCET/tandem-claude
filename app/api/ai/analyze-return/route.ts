@@ -8,6 +8,12 @@ export async function POST(req: NextRequest) {
     if (!projectId || !rawSummary?.trim()) {
       return NextResponse.json({ error: 'projectId ו-rawSummary נדרשים' }, { status: 400 })
     }
+    if (typeof rawSummary !== 'string' || rawSummary.length > 50_000) {
+      return NextResponse.json(
+        { error: 'rawSummary ארוך מדי (מקסימום 50,000 תווים)' },
+        { status: 400 }
+      )
+    }
 
     const supabase = await createClient()
 
