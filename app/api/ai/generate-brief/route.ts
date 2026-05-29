@@ -19,6 +19,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
   }
 
+  if (!Array.isArray(questions) || questions.length > 100) {
+    return NextResponse.json({ error: 'Invalid input' }, { status: 400 })
+  }
+
   // Verify user owns the project (RLS enforces this, but belt-and-suspenders)
   const { data: project, error: projectError } = await supabase
     .from('projects')
