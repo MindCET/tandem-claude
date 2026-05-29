@@ -43,6 +43,7 @@ export default function ReturnPage() {
   const [analysis, setAnalysis] = useState<ReturnAnalysis | null>(null)
   const [savedCounts, setSavedCounts] = useState<{ decisions: number; risks: number } | null>(null)
   const [loading, setLoading] = useState(true)
+  const [loadError, setLoadError] = useState(false)
   const [analyzing, setAnalyzing] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -57,8 +58,13 @@ export default function ReturnPage() {
           .in('status', ['ready', 'sent_to_tool'])
           .order('created_at', { ascending: false }),
       ])
-      setProjectName(projRes.data?.name ?? '')
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // Project missing or inaccessible (RLS) — surface as not found.
+      if (projRes.error || !projRes.data) {
+        setLoadError(true)
+        setLoading(false)
+        return
+      }
+      setProjectName(projRes.data.name ?? '')
       setMissions((missionsRes.data ?? []) as unknown as Array<{ id: string; tasks: { title: string } | null }>)
       setLoading(false)
     }
@@ -102,6 +108,20 @@ export default function ReturnPage() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
+
+  if (loadError) {
+    return (
+      <div className="container mx-auto px-6 py-8 max-w-4xl">
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>הפרויקט לא נמצא או שאין לך גישה אליו</AlertDescription>
+        </Alert>
+        <Button asChild variant="outline" className="mt-4">
+          <Link href="/app/projects">חזרה לפרויקטים</Link>
+        </Button>
       </div>
     )
   }

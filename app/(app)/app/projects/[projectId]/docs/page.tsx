@@ -77,6 +77,7 @@ export default function DocsPage() {
   const [tasks, setTasks] = useState<Task[]>([])
   const [risks, setRisks] = useState<Risk[]>([])
   const [loading, setLoading] = useState(true)
+  const [loadError, setLoadError] = useState(false)
 
   useEffect(() => {
     async function load() {
@@ -104,7 +105,13 @@ export default function DocsPage() {
           .eq('project_id', projectId)
           .order('created_at', { ascending: true }),
       ])
-      setProjectName(projRes.data?.name ?? '')
+      // Project missing or inaccessible (RLS) — surface as not found.
+      if (projRes.error || !projRes.data) {
+        setLoadError(true)
+        setLoading(false)
+        return
+      }
+      setProjectName(projRes.data.name ?? '')
       setArtifacts((artRes.data ?? []) as Artifact[])
       setDecisions((decRes.data ?? []) as Decision[])
       setTasks((taskRes.data ?? []) as Task[])
@@ -209,6 +216,20 @@ export default function DocsPage() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
+
+  if (loadError) {
+    return (
+      <div className="container mx-auto px-6 py-8 max-w-5xl">
+        <div className="flex items-center gap-2 rounded-lg border border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive">
+          <AlertTriangle className="h-4 w-4 shrink-0" />
+          הפרויקט לא נמצא או שאין לך גישה אליו
+        </div>
+        <Button asChild variant="outline" className="mt-4">
+          <Link href="/app/projects">חזרה לפרויקטים</Link>
+        </Button>
       </div>
     )
   }

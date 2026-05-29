@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from "next/server"
-import { anthropic } from "@ai-sdk/anthropic"
-import { generateText } from "ai"
+import { generateObject } from "ai"
+import { anthropic, MODEL } from "@/lib/ai/client"
 import { createClient } from "@/lib/supabase/server"
 import {
   IngestionSchema,
   INGESTION_SYSTEM,
   INGESTION_USER,
 } from "@/lib/ai/companion/ingestion"
+
+const MAX_SUMMARY_LENGTH = 50_000
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient()
@@ -27,20 +29,39 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  // Parse the summary with Claude
+  if (typeof rawSummary !== "string" || rawSummary.length > MAX_SUMMARY_LENGTH) {
+    return NextResponse.json(
+      { error: `rawSummary must be a string under ${MAX_SUMMARY_LENGTH} characters` },
+      { status: 400 }
+    )
+  }
+
+  // Verify the project exists and is owned by the user (RLS-scoped read).
+  // Without this, ownership only fails silently at insert time.
+  const { data: project, error: projectError } = await supabase
+    .from("projects")
+    .select("id")
+    .eq("id", projectId)
+    .single()
+
+  if (projectError || !project) {
+    return NextResponse.json({ error: "Project not found" }, { status: 404 })
+  }
+
+  // Parse the summary with Claude (structured output — no manual JSON.parse).
   let parsed
   try {
-    const { text } = await generateText({
-      model: anthropic("claude-sonnet-4-5"),
+    const { object } = await generateObject({
+      model: anthropic(MODEL),
+      schema: IngestionSchema,
       system: INGESTION_SYSTEM,
       prompt: INGESTION_USER(rawSummary),
     })
-
-    const json = JSON.parse(text)
-    parsed = IngestionSchema.parse(json)
+    parsed = object
   } catch (err) {
+    console.error("companion ingest: failed to parse summary", err)
     return NextResponse.json(
-      { error: "Failed to parse summary", details: String(err) },
+      { error: "Failed to parse summary" },
       { status: 500 }
     )
   }
@@ -55,7 +76,14 @@ export async function POST(req: NextRequest) {
       category: d.category,
       status: "active",
     }))
-    await supabase.from("decisions").insert(decisionRows)
+    const { error } = await supabase.from("decisions").insert(decisionRows)
+    if (error) {
+      console.error("companion ingest: failed to insert decisions", error)
+      return NextResponse.json(
+        { error: "Failed to save decisions" },
+        { status: 500 }
+      )
+    }
   }
 
   // Save risks to Supabase
@@ -68,19 +96,29 @@ export async function POST(req: NextRequest) {
       source: "companion_ingestion",
       status: "open",
     }))
-    await supabase.from("risks").insert(riskRows)
+    const { error } = await supabase.from("risks").insert(riskRows)
+    if (error) {
+      console.error("companion ingest: failed to insert risks", error)
+      return NextResponse.json(
+        { error: "Failed to save risks" },
+        { status: 500 }
+      )
+    }
   }
 
-  // Log to ai_logs
-  await supabase.from("ai_logs").insert({
+  // Log to ai_logs (best-effort — don't fail the request on logging errors)
+  const { error: logError } = await supabase.from("ai_logs").insert({
     project_id: projectId,
     task_type: "companion_ingestion",
     provider: "anthropic",
-    model: "claude-sonnet-4-5",
+    model: MODEL,
     input: { rawSummary: rawSummary.slice(0, 500) },
     output: parsed,
     status: "success",
   })
+  if (logError) {
+    console.error("companion ingest: failed to write ai_log", logError)
+  }
 
   return NextResponse.json({ parsed })
 }

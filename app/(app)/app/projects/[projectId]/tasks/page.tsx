@@ -23,6 +23,7 @@ export default function TasksPage() {
   const [projectName, setProjectName] = useState('')
   const [hasArchitecture, setHasArchitecture] = useState(true)
   const [loading, setLoading] = useState(true)
+  const [loadError, setLoadError] = useState(false)
   const [generating, setGenerating] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [generatedCount, setGeneratedCount] = useState<number | null>(null)
@@ -45,8 +46,16 @@ export default function TasksPage() {
           .eq('status', 'approved')
           .maybeSingle(),
       ])
+      // The project query fails (or returns nothing) when the project does not
+      // exist or the user has no access to it under RLS — treat as not found
+      // instead of silently rendering an empty task list.
+      if (projRes.error || !projRes.data) {
+        setLoadError(true)
+        setLoading(false)
+        return
+      }
       setTasks(tasksRes.data ?? [])
-      setProjectName(projRes.data?.name ?? '')
+      setProjectName(projRes.data.name ?? '')
       setHasArchitecture(!!archRes.data)
       setLoading(false)
     }
@@ -67,7 +76,7 @@ export default function TasksPage() {
         const body = await res.json().catch(() => ({}))
         throw new Error(body.error ?? 'שגיאה ביצירת משימות')
       }
-      const { taskList, tasksCount } = await res.json()
+      const { tasksCount } = await res.json()
 
       // Reload tasks from DB to get proper IDs
       const { data } = await supabase
@@ -108,6 +117,20 @@ export default function TasksPage() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
+
+  if (loadError) {
+    return (
+      <div className="container mx-auto px-6 py-8 max-w-5xl">
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>הפרויקט לא נמצא או שאין לך גישה אליו</AlertDescription>
+        </Alert>
+        <Button asChild variant="outline" className="mt-4">
+          <Link href="/app/projects">חזרה לפרויקטים</Link>
+        </Button>
       </div>
     )
   }

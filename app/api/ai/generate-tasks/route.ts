@@ -75,8 +75,17 @@ export async function POST(req: NextRequest) {
       status: 'not_started',
     }))
 
-    // Delete any previous auto-generated tasks first, then insert fresh ones
-    await supabase.from('tasks').delete().eq('project_id', projectId)
+    // Delete any previous auto-generated tasks first, then insert fresh ones.
+    // Bail out if the delete fails so we don't wipe tasks and then fail to
+    // re-insert (which would leave the project with no tasks at all).
+    const { error: deleteError } = await supabase
+      .from('tasks')
+      .delete()
+      .eq('project_id', projectId)
+    if (deleteError) {
+      console.error('Tasks delete error:', deleteError)
+      return NextResponse.json({ error: 'שגיאה בשמירת משימות' }, { status: 500 })
+    }
     const { error: insertError } = await supabase.from('tasks').insert(taskInserts)
     if (insertError) {
       console.error('Tasks insert error:', insertError)

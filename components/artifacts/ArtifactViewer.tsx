@@ -2,6 +2,7 @@
 
 import { Badge } from '@/components/ui/badge'
 import { Clock, FileText } from 'lucide-react'
+import { escapeHtml } from '@/lib/utils'
 
 interface Props {
   title: string
@@ -15,7 +16,7 @@ interface Props {
 // Simple Markdown-to-HTML renderer
 // Handles: headings, bold, lists, code blocks, paragraphs
 function renderMarkdown(md: string): string {
-  return md
+  return escapeHtml(md)
     // Code blocks first — replace before other rules so content isn't processed again
     .replace(/```[\w]*\n([\s\S]*?)```/g, '<pre class="art-code"><code>$1</code></pre>')
     // Headings

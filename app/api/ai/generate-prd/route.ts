@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { generatePRD, prdToMarkdown } from '@/lib/ai/service'
+import { upsertArtifact } from '@/lib/ai/artifacts'
 import type { ProductBrief } from '@/lib/ai/schemas'
 
 export async function POST(req: NextRequest) {
@@ -40,53 +41,15 @@ export async function POST(req: NextRequest) {
     const prd = await generatePRD(brief)
     const markdown = prdToMarkdown(prd)
 
-    // Check for existing PRD artifact
-    const { data: existing } = await supabase
-      .from('artifacts')
-      .select('id, version')
-      .eq('project_id', projectId)
-      .eq('type', 'prd')
-      .maybeSingle()
+    const artifact = await upsertArtifact(supabase, {
+      projectId,
+      type: 'prd',
+      title: `PRD — ${brief.product_name}`,
+      contentJson: prd,
+      markdown,
+    })
 
-    let artifact = null
-    let artifactError = null
-
-    if (existing) {
-      const { data, error } = await supabase
-        .from('artifacts')
-        .update({
-          title: `PRD — ${brief.product_name}`,
-          content_json: prd,
-          content_markdown: markdown,
-          status: 'draft',
-          version: (existing.version ?? 1) + 1,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', existing.id)
-        .select('id')
-        .single()
-      artifact = data
-      artifactError = error
-    } else {
-      const { data, error } = await supabase
-        .from('artifacts')
-        .insert({
-          project_id: projectId,
-          type: 'prd',
-          title: `PRD — ${brief.product_name}`,
-          content_json: prd,
-          content_markdown: markdown,
-          status: 'draft',
-          version: 1,
-        })
-        .select('id')
-        .single()
-      artifact = data
-      artifactError = error
-    }
-
-    if (artifactError || !artifact) {
-      console.error('[generate-prd] artifact save error:', artifactError)
+    if (!artifact) {
       return NextResponse.json({ error: 'Failed to save PRD' }, { status: 500 })
     }
 

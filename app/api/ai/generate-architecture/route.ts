@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { generateArchitecture, architectureToMarkdown } from '@/lib/ai/service'
+import { upsertArtifact } from '@/lib/ai/artifacts'
 import type { ProductBrief, PRD } from '@/lib/ai/schemas'
 
 export async function POST(req: NextRequest) {
@@ -50,53 +51,15 @@ export async function POST(req: NextRequest) {
     const architecture = await generateArchitecture(prd, brief, preferences)
     const markdown = architectureToMarkdown(architecture)
 
-    // Save architecture artifact
-    const { data: existing } = await supabase
-      .from('artifacts')
-      .select('id, version')
-      .eq('project_id', projectId)
-      .eq('type', 'architecture')
-      .maybeSingle()
+    const artifact = await upsertArtifact(supabase, {
+      projectId,
+      type: 'architecture',
+      title: `Architecture — ${brief.product_name}`,
+      contentJson: architecture,
+      markdown,
+    })
 
-    let artifact = null
-    let artifactError = null
-
-    if (existing) {
-      const { data, error } = await supabase
-        .from('artifacts')
-        .update({
-          title: `Architecture — ${brief.product_name}`,
-          content_json: architecture,
-          content_markdown: markdown,
-          status: 'draft',
-          version: (existing.version ?? 1) + 1,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', existing.id)
-        .select('id')
-        .single()
-      artifact = data
-      artifactError = error
-    } else {
-      const { data, error } = await supabase
-        .from('artifacts')
-        .insert({
-          project_id: projectId,
-          type: 'architecture',
-          title: `Architecture — ${brief.product_name}`,
-          content_json: architecture,
-          content_markdown: markdown,
-          status: 'draft',
-          version: 1,
-        })
-        .select('id')
-        .single()
-      artifact = data
-      artifactError = error
-    }
-
-    if (artifactError || !artifact) {
-      console.error('[generate-architecture] artifact save error:', artifactError)
+    if (!artifact) {
       return NextResponse.json({ error: 'Failed to save architecture' }, { status: 500 })
     }
 
